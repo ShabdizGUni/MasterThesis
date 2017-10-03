@@ -84,7 +84,7 @@ class APIRequester(object):
             return rateLimitedFunction
         return decorate
 
-    @RateLimited(0.833)
+    @RateLimited(0.833) ## 500 requests/600 sec = 0.833 requests/sec
     def sendRequest(self, url):
         for attempt in range(1,10):
             try:
@@ -106,7 +106,8 @@ class APIRequester(object):
                         raise ServiceException
                 except KeyError:
                     break
-                except (RateLimitException, InternalServerErrorException, ServiceException):
+                except (RateLimitException, InternalServerErrorException, ServiceException) as e:
+                    print("Had an exeption: "+ str(e.message)+". Retry after 10 sec for attempt No."+str(attempt))
                     time.sleep(10)
                     pass
             except ConnectionError:
@@ -201,5 +202,5 @@ class APIRequester(object):
                 response = self.sendRequest(url)
                 matchlist += response['matches']
                 numgames = response['totalGames']
-                pprint("beginIndex: " + str(beginIndex) + " endIndex: " + str(endIndex) + "  totalGames: " + str(numgames))
+                pprint(str(self.region) + ": beginIndex: " + str(beginIndex) + " endIndex: " + str(endIndex) + "  totalGames: " + str(numgames))
         return matchlist

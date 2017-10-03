@@ -29,6 +29,7 @@ library(RColorBrewer)
 library(ggiraphExtra)
 require(dplyr)
 require(tibble)
+library(rgl)
 
 coord_radar <- function (theta = "x", start = 0, direction = 1) 
 {
@@ -55,8 +56,9 @@ playerstats <-
     by.y = c("gameId", "platformId", "teamId")
   )
 
-champPerformancePatchRegion <- data.table(dbReadTable(connection, "champPerformancePatchRegion"))
 champPerformancePatch <- data.table(dbReadTable(connection, "champPerformancePatch"))
+champPerformancePatchRegion <- data.table(dbReadTable(connection, "champPerformancePatchRegion"))
+champPerformancePatchByRegionByWin <- data.table(dbReadTable(connection, "champPerformancePatchRegionWin"))
 
 patchOrder = c("6.23",
                "6.24",
@@ -171,9 +173,12 @@ setnames(mid.distribution,"name", "names")
 ### AD CARRIES
 adc <- playerstats[lane == "BOTTOM" & role == "DUO_CARRY"] 
 relchamps.adc <- adc[,list(gamesPlayed = .N), by = championId][order(by = gamesPlayed, decreasing = T)][,.SD[1:16]][,championId]
+
 adc.relevant <- adc[championId %in% relchamps.adc]
 adc.performance <- champPerformancePatchRegion[lane=="BOTTOM" & role == "DUO_CARRY" & championId %in% unique(adc.relevant$championId)]
 adc.performance.patch <- champPerformancePatch[lane == "BOTTOM" & role == "DUO_CARRY" & championId %in% unique(adc.relevant$championId)]
+
+
 
 adc.distribution <- merge(
   data.table(adc[,list(gamesPlayed = .N), by = championId][order(by = gamesPlayed, decreasing = T)]),

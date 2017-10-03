@@ -3,6 +3,7 @@ import threading
 import os
 import re
 import json
+import random
 from datetime import datetime
 from pymongo import MongoClient
 from Lib.API.APIRequests import *
@@ -50,24 +51,25 @@ class Crawler(threading.Thread):
             }
             }
         ]))}
-        pprint("Patches in Detail: " + str(detailedPatches))
+        #print(str(self.region) + " Patches in Detail: " + str(detailedPatches))
         patchCycles = {p.patch: 0 for p in PATCH_LIST}
         for k, v in detailedPatches.items():
             patchCycles[re.match("\d.\d+", k, flags=0).group(0)] += v
+        print(str(self.region) + ": " + str(patchCycles))
         return patchCycles
 
 
     def fetch(self):
         req = self.req
         fetchedMatches = self.get_matches()
+        strdSum = self.get_summoners() # stored summoners in matchDetails collection
         unfetchedSummoners = deque()
-        for s in self.get_summoners(): unfetchedSummoners.append(s)
         fetchedSummoners = []
         versions = self.get_versions()
         pprint(versions)
         unfetchedSummoners.append(
             self.req.requestSummonerData(self.region, EntrySummoner[self.region].value)["accountId"])
-        for s in self.get_summoners(): unfetchedSummoners.append(s)
+        for s in random.sample(strdSum, len(strdSum)): unfetchedSummoners.append(s) #random order of summoners
         while len(unfetchedSummoners) > 0:
             versions = self.get_versions() #update Versions in case something halfway still went wrong
             summoner = unfetchedSummoners.popleft()

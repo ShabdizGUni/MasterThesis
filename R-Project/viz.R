@@ -185,12 +185,10 @@ for(i in 1:length(patchOrder)){
 }
 do.call("grid.arrange", c(p, ncol= 5))
 
-adc.set1 <- c("Varus", "Jhin", "Ashe")
-adc.set2 <- c("Lucian", "Ezreal", "Miss Fortune")
-adc.set3 <- c("Caitlyn", "Tristana", "Kog'Maw")
+adc.set1 <- c("Ashe","Caitlyn", "Draven", "Ezreal", "Kog'Maw", "Lucian", "Jhin", "Tristana", "Vayne", "Varus", "Xayah")
 adc.set <- adc.set1
 
-df <- items.adc[championName %in% adc.set][, list(count=.N), by = c("championName", "patch", "itemName")]
+df <- items.adc[championName %in% adc.set[1:4]][, list(count=.N), by = c("championName", "patch", "itemName")]
 setkeyv(df, c("championName", "patch"))
 championCount <- items.adc[championName %in% adc.set,list(championName, patch)][,list(gamesPlayed = .N), by = c("championName", "patch")]
 setkeyv(championCount, c("championName", "patch"))
@@ -218,29 +216,38 @@ p + coord_polar(theta = "y")
 
 
 ### attempt to illustrate specific traits of adcs
+# OVERALL
 dfprep = adc.performance.patch %>%
-  select(
-  name, patch,
-  winrate,
-  DmgDealt = totalDamageToChampions,
-  kills,
-  assists, 
-  deaths,
-  DmgTaken = totalDamageTaken,
-  cs = csPerGame,
-  gold = goldEarned
-) 
+    mutate(DPS = totalDamageToChampions/gameDuration) %>%
+      select(
+      name, patch,
+      games,
+      summoners,
+      winrate,
+      DPS,
+      DmgDealt = totalDamageToChampions,
+      kills,
+      assists, 
+      deaths,
+      DmgTaken = totalDamageTaken,
+      cs = csPerGame,
+      gold = goldEarned
+    )
+dfprep = data.table(dfprep)
+
 df = dfprep %>%
        rownames_to_column( var = "champ" ) %>%
        mutate_each(funs(rescale), -c(champ,name,patch)) %>%
        melt(id.vars=c('champ','name','patch'), measure.vars=colnames(dfprep[,-c("name","patch")])) %>%
        arrange(champ)
+df = data.table(df)
 
-#radar charts
-df %>%
+#radar charts: better filter out some champs
+df[name %in% c(adc.set1,adc.set2)] %>%
   ggplot(aes(x=variable, y=value, group=name, color=name)) + 
+  geom_polygon()
   geom_polygon(fill=NA) + 
-  coord_radar() + theme_bw() + facet_grid(name ~ factor(patch, levels=patchOrder)) + 
+  coord_radar() + theme_bw() + facet_grid(name~factor(patch, levels=patchOrder)) + 
   #scale_x_discrete(labels = abbreviate) + 
   theme(axis.text.x = element_text(size = 5), legend.position="none")
 
@@ -249,7 +256,7 @@ df %>%
   ggplot(aes(x=variable, y=value, group= name, fill = name)) + 
   geom_bar(stat="identity") + 
   geom_line(y = 0.5, linetype  =2, color = "black") +
-  facet_grid(name ~ factor(patch, levels=patchOrder)) +
+  facet_grid(factor(patch, levels=patchOrder)~name) +
   coord_flip() +
   theme_igray() + scale_fill_manual(values = colorRampPalette(brewer.pal(8, "Accent"))(length(unique(df$name)))) +
   theme(axis.text.y = element_text(size = 5), legend.position="none")
@@ -263,6 +270,75 @@ for(j in 1:length(patchOrder))
 do.call("grid.arrange", c(p, nrow = 4 ))
 
 ## attempt to scale into 3d and illustrate
+adc.performance.patch %>%
+  rownames_to_column(var="id") -> adc.cmd 
+
+adc.cmd.numerics = adc.cmd[,-c("name", "championId", "lane", "role", "patch")]
+setkey(adc.cmd.numerics, "id")
+rownames(adc.cmd.numerics) = adc.cmd.numerics$id
+adc.cmd.dist <- dist(adc.cmd.numerics[,-1])
+colnames(adc.cmd.dist) = rownames
+
+fit <- cmdscale(adc.cmd.dist, k = 3)
+data.table(fit) %>%
+  rownames_to_column(var = "id") %>%
+  merge(adc.cmd[,c("id","name", "patch")], by="id") -> fit2 
+fit2$detailedName = paste0(fit2$name, " ", fit2$patch)
+kmeans3 = kmeans(x = fit2[,2:4], centers = 3)
+kmeans4 = kmeans(x = fit2[,2:4], centers = 4)
+kmeans5 = kmeans(x = fit2[,2:4], centers = 5)
+kmeans6 = kmeans(x = fit2[,2:4], centers = 6)
+
+fit2$cluster3 = kmeans3$cluster
+fit2$cluster4 = kmeans4$cluster
+fit2$cluster5 = kmeans5$cluster
+fit2$cluster6 = kmeans6$cluster
+
+plot3d(fit2[,2:4], size = 10, col = fit2$cluster6)
+text3d(fit2[,2:4], texts = fit2$detailedName, size=2)
+
+## GAME DURATION, DPS AND DAMAGE DONE
+
+# duration of games where champions participated
+adc.performance.patch[championId %in% relchamps.adc] %>%
+  ggplot(aes(y = gameDuration, x = patch, group=name)) + 
+  geom_line() + 
+  scale_x_discrete(limits=patchOrder) + 
+  facet_wrap(~name, ncol = 4)
+
+
+# damage done to champions
+adc.performance.patch[championId %in% relchamps.adc] %>%
+  ggplot(aes(y = totalDamageToChampions, x = patch, group=name)) + 
+  geom_line() + 
+  geom_line() + 
+  geom_line() + 
+  scale_x_discrete(limits=patchOrder) + 
+  facet_wrap(~name, ncol = 4)
+
+
+# dps
+adc.performance.patch[championId %in% relchamps.adc] %>%
+  ggplot(aes(y = totalDamageToChampions/(gameDuration/60), x = patch, group=name)) + 
+  geom_line() + 
+  scale_x_discrete(limits=patchOrder) + 
+  facet_wrap(~name, ncol = 4)
+
+
+## gold earned and gold per min
+
+adc.performance.patch[championId %in% relchamps.adc] %>%
+  ggplot(aes(y = goldEarned, x = patch, group=name)) + 
+  geom_line() + 
+  scale_x_discrete(limits=patchOrder) + 
+  facet_wrap(~name, ncol = 4)
+
+adc.performance.patch[championId %in% relchamps.adc] %>%
+  ggplot(aes(y = goldEarned/gameDuration, x = patch, group=name)) + 
+  geom_line() + 
+  scale_x_discrete(limits=patchOrder) + 
+  facet_wrap(~name, ncol = 4)
+
 
 ## winrate by game duration 
 df = adc.performance.patch[,list(name, patch, winrate, winrateAt25, winrateAt30, winrateAt35, winrateAt40, winrateAt45, winrateOver45)]
