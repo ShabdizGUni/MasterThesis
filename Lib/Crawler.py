@@ -57,6 +57,7 @@ class Crawler(threading.Thread):
         patchCycles = {p.patch: 0 for p in PATCH_LIST}
         for k, v in detailedPatches.items():
             patchCycles[re.match("\d.\d+", k, flags=0).group(0)] += v
+        #del patchCycles["6.22"]
         print(str(self.region) + ": " + str(patchCycles))
         return patchCycles
 
@@ -69,6 +70,7 @@ class Crawler(threading.Thread):
         fetchedSummoners = self.get_fetched_summoners()
         versions = self.get_versions()
         pprint(versions)
+        iteration = 0
         if not strdSum: #first run
             unfetchedSummoners.append(
                 self.req.requestSummonerData(self.region, EntrySummoner[self.region].value)["accountId"])
@@ -83,7 +85,6 @@ class Crawler(threading.Thread):
 
         # AS LONG AS THERE ARE SUMMONERS TO PROCESS:
         while len(unfetchedSummoners) > 0:
-            versions = self.get_versions() #update Versions in case something halfway still went wrong
             summoner = unfetchedSummoners.popleft()
             if summoner in fetchedSummoners:
                 pprint("Summoner: " + str(summoner) + " already processed, continue to next")
@@ -117,9 +118,12 @@ class Crawler(threading.Thread):
                             pprint(self.region + " {} :".format(
                                 datetime.datetime.now() - self.start_time) + e.message + ": Change up your API Key! Script will abort for now" )
                             return
+                        except requests.HTTPError as e:
+                            pprint("HTTPError when trying to fetch match "+ str(match["gameId"]) + ". Trying again!")
+                            continue
                         except Exception as e:
                             pprint(self.region + " {} :".format(
-                                datetime.datetime.now() - self.start_time) + e.message + " when trying to fetch Match " + str(
+                                datetime.datetime.now() - self.start_time) + str(e) + " when trying to fetch Match " + str(
                                 match["gameId"]))
                             time.sleep(10)
                     else:
@@ -138,4 +142,9 @@ class Crawler(threading.Thread):
             fetchedSummoners.append(summoner)
             blub = self.db.fetchedSummoners.insert_one({"id": summoner, "platformId": self.region})
             print("Completed processing Summoner " +str(summoner)+ "! Stored him into the MongoDB collection with the _id: " + str(blub.inserted_id))
-            if all(v >= self.matchesPerPatch for v in versions.values()): break
+            iteration += 1
+            if  iteration % 10 == 0: # update every 10 summoners
+                versions = self.get_versions() #update Versions in case something halfway still went wrong
+            if all(v >= self.matchesPerPatch for v in versions.values()):
+                print(self.region + ": Completed crawling!")
+                break

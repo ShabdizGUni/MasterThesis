@@ -311,8 +311,6 @@ adc.performance.patch[championId %in% relchamps.adc] %>%
 adc.performance.patch[championId %in% relchamps.adc] %>%
   ggplot(aes(y = totalDamageToChampions, x = patch, group=name)) + 
   geom_line() + 
-  geom_line() + 
-  geom_line() + 
   scale_x_discrete(limits=patchOrder) + 
   facet_wrap(~name, ncol = 4)
 
@@ -324,6 +322,12 @@ adc.performance.patch[championId %in% relchamps.adc] %>%
   scale_x_discrete(limits=patchOrder) + 
   facet_wrap(~name, ncol = 4)
 
+# dps by win/loss
+df = adc.performance.patch.win[championId %in% relchamps.adc]
+ggplot(df,aes(y = totalDamageToChampions/(gameDuration/60), x = patch, group=as.factor(win), color = as.factor(win))) + 
+  geom_line() + 
+  scale_x_discrete(limits=patchOrder) + 
+  facet_wrap(~name, ncol = 4)
 
 ## gold earned and gold per min
 
@@ -334,7 +338,79 @@ adc.performance.patch[championId %in% relchamps.adc] %>%
   facet_wrap(~name, ncol = 4)
 
 adc.performance.patch[championId %in% relchamps.adc] %>%
-  ggplot(aes(y = goldEarned/gameDuration, x = patch, group=name)) + 
+  ggplot(aes(y = goldEarned/(gameDuration/60), x = patch, group=name)) + 
+  geom_line() + 
+  scale_x_discrete(limits=patchOrder) + 
+  facet_wrap(~name, ncol = 4)
+
+# win and loss
+df = adc.performance.patch.win[championId %in% relchamps.adc]
+ggplot(df,aes(y = goldEarned/(gameDuration/60), x = patch, group=as.factor(win), color = as.factor(win))) + 
+geom_line() + 
+scale_x_discrete(limits=patchOrder) + 
+facet_wrap(~name, ncol = 4)
+
+### cs and xp development
+
+#cs diffs
+df = adc.performance.patch[championId %in% relchamps.adc, list(name, patch, csDiffPerMinTen, csDiffPerMinTwenty, csDiffPerMinThirty)]  
+melt(df, id.vars=c('name','patch'), measure.vars=colnames(df[,-c("name","patch")])) %>% 
+  ggplot(aes(y = value, x = variable, group = name)) + 
+  geom_line() + scale_x_discrete(labels=c("10","20","30")) + 
+  facet_grid(name~factor(patch, levels = patchOrder)) + 
+  ggtitle("Creep Score Differential for each Champion and Patch")
+  
+
+#xp Diffs
+df = adc.performance.patch[championId %in% relchamps.adc, list(name, patch, xpDiffPerMinTen, xpDiffPerMinTwenty, xpDiffPerMinThirty)]  
+melt(df, id.vars=c('name','patch'), measure.vars=colnames(df[,-c("name","patch")])) %>% 
+  ggplot(aes(y = value, x = variable, group = name)) + 
+  geom_line() + scale_x_discrete(labels=c("10","20","30")) + 
+  facet_grid(name~factor(patch, levels = patchOrder)) + 
+  ggtitle("Experience Differential for each Champion and Patch")
+
+# cs deltas
+df = adc.performance.patch[championId %in% relchamps.adc, list(name, patch, csPerMinDeltaTen, csPerMinDeltaTwenty, csPerMinDeltaThirty)]  
+melt(df, id.vars=c('name','patch'), measure.vars=colnames(df[,-c("name","patch")])) %>% 
+  ggplot(aes(y = value, x = variable, group = name)) + 
+  geom_line() + scale_x_discrete(labels=c("0-10","10-20","20-30")) + 
+  facet_grid(name~factor(patch, levels = patchOrder)) + 
+  ggtitle("Creep Score Per Minute Delta for each Champion and Patch")
+
+
+
+
+
+## first blood
+
+adc.performance.patch[championId %in% relchamps.adc] %>%
+  ggplot(aes(y = firstBloodKill + firstBloodAssist, x = patch, group=name)) + 
+  geom_line() + 
+  scale_x_discrete(limits=patchOrder) + 
+  facet_wrap(~name, ncol = 4)
+
+
+adc.performance.patch.win[championId %in% relchamps.adc] %>%
+  ggplot(aes(y = firstBloodKill + firstBloodAssist, x = patch, group=as.factor(win), color=as.factor(win))) + 
+  geom_line() + 
+  scale_x_discrete(limits=patchOrder) + 
+  facet_wrap(~name, ncol = 4)
+
+
+
+# first tower
+
+adc.performance.patch[championId %in% relchamps.adc] %>%
+  ggplot(aes(y = firstTowerKill + firstTowerAssist, x = patch, group=name)) + 
+  geom_line() + 
+  scale_x_discrete(limits=patchOrder) + 
+  facet_wrap(~name, ncol = 4)
+
+
+#first inhib
+
+adc.performance.patch[championId %in% relchamps.adc] %>%
+  ggplot(aes(y = firstInhibitorKill + firstInhibitorAssist, x = patch, group=name)) + 
   geom_line() + 
   scale_x_discrete(limits=patchOrder) + 
   facet_wrap(~name, ncol = 4)
@@ -357,6 +433,8 @@ p = ggplot(data = df1[variableNew!=0], aes(x = variableNew, y=value, color = nam
   theme(legend.position="none")
 p
 
+
+
 ############################ SUP ####################################
 #overall distribution in season 7
 p <- ggplot(data=sup.distribution,aes(x=names, y=gamesPlayed)) + 
@@ -365,11 +443,38 @@ p <- ggplot(data=sup.distribution,aes(x=names, y=gamesPlayed)) +
   theme(axis.text.x = element_text(angle = 90, hjust = 1), axis.text.y = element_text(size=6))
 p
 
-p <- ggplot(data = sup.relevant) + 
-  geom_bar(aes(x=as.vector(champ[as.character(sup.relevant$championId)]), fill = as.vector(champ[as.character(sup.relevant$championId)]))) + 
+#Barchart 
+p <- ggplot(data = sup.performance, aes(x=name, y=games/2000 *100, fill = name)) + 
+  geom_bar(stat="Identity") + 
   facet_wrap( ~ platformId+factor(patch, levels = patchOrder), nrow=4) + 
-  theme(axis.text.x = element_text(angle = 90, hjust = 1), axis.text.y = element_text(size=6)) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1), axis.text.y = element_text(size=6)) + 
+  labs(x = "Champion", y = "Playrate in Percentages") +
   coord_flip() + 
-  guides(fill=F) 
+  guides(fill=F)
 p+ ggtitle("Support Picks per Patch and Region")
 
+#Linechart
+p <- ggplot(data = sup.performance[championId %in% relchamps.sup], aes(x = patch, y=games/2000 * 100, group=platformId, color=platformId)) + 
+  geom_line(linetype = 1) + 
+  #geom_line(data = adc.performance , aes(y = winrate), linetype = 2) + 
+  scale_x_discrete(limits=patchOrder) +
+  theme(axis.text.x = element_text(size=5)) +
+  labs(x = "Patch", y = "Playrate in Percentage") +
+  facet_wrap(~ name, ncol = 4) 
+p + ggtitle("Support Picks per Patch and Region")
+
+
+
+#botlane sup and adc combined:
+
+botlane %>%
+  filter(sup.Id %in% relchamps.sup) %>%
+  group_by(ad,sup,patch) %>%
+  summarise(count =n()) %>%
+  left_join(botlane %>% group_by(ad, patch) %>% summarise(adCount = n())) %>% 
+  mutate(perc = count/adCount) %>%
+  ggplot(aes(x = sup, y = perc)) + geom_bar(stat="identity") + 
+    theme(axis.text.x = element_text(angle = 90, hjust = 1), axis.text.y = element_text(size=6)) + 
+    coord_flip() +
+    facet_grid(ad~factor(patch, levels=patchOrder))
+  

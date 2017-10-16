@@ -28,7 +28,7 @@ require(scales)
 library(RColorBrewer)
 library(ggiraphExtra)
 require(dplyr)
-require(tibble)
+#require(tibble)
 library(rgl)
 
 coord_radar <- function (theta = "x", start = 0, direction = 1) 
@@ -58,7 +58,7 @@ playerstats <-
 
 champPerformancePatch <- data.table(dbReadTable(connection, "champPerformancePatch"))
 champPerformancePatchRegion <- data.table(dbReadTable(connection, "champPerformancePatchRegion"))
-champPerformancePatchByRegionByWin <- data.table(dbReadTable(connection, "champPerformancePatchRegionWin"))
+champPerformancePatchByWin <- data.table(dbReadTable(connection, "champPerformancePatchWin"))
 
 patchOrder = c("6.23",
                "6.24",
@@ -78,6 +78,7 @@ patchOrder = c("6.23",
                "7.14",
                "7.15")
 
+xpSteps = c(280,380,480,580,680,780,880,980,1080,1180,1280,1380,1480,1580,1680,1780,1880)
 
 ## Items
 itemLookUp <- data.table(dbReadTable(connection, "itemkeys"))
@@ -177,7 +178,7 @@ relchamps.adc <- adc[,list(gamesPlayed = .N), by = championId][order(by = gamesP
 adc.relevant <- adc[championId %in% relchamps.adc]
 adc.performance <- champPerformancePatchRegion[lane=="BOTTOM" & role == "DUO_CARRY" & championId %in% unique(adc.relevant$championId)]
 adc.performance.patch <- champPerformancePatch[lane == "BOTTOM" & role == "DUO_CARRY" & championId %in% unique(adc.relevant$championId)]
-
+adc.performance.patch.win <- champPerformancePatchByWin[lane == "BOTTOM" & role == "DUO_CARRY" & championId %in% unique(adc.relevant$championId)]
 
 
 adc.distribution <- merge(
@@ -245,7 +246,7 @@ relItems.ADC = c("Infinity Edge",
 sup <- playerstats[lane == "BOTTOM" & role == "DUO_SUPPORT"]
 relchamps.sup <- sup[,list(gamesPlayed = .N), by = championId][order(by = gamesPlayed, decreasing = T)][,.SD[1:20]][,championId]
 sup.relevant <- sup[championId %in% relchamps.sup]
-sup.performance <- champPerformancePatchRegion[lane=="BOTTOM" & role == "DUO_SUPPORT" & championId %in% unique(adc.relevant$championId)]
+sup.performance <- champPerformancePatchRegion[lane=="BOTTOM" & role == "DUO_SUPPORT" & championId %in% unique(sup.relevant$championId)]
 
 sup.distribution <- merge(
   data.table(sup[,list(gamesPlayed = .N), by = championId][order(by = gamesPlayed, decreasing = T)]),
@@ -276,4 +277,33 @@ items.sup = rbind(
   sup[championId %in% relchamps.sup,list(championId, platformId, patch, item=item6)]
 )
 
-
+#botlane adc+sup: 
+botlane = data.table(
+  merge(adc.relevant, 
+        sup.relevant, 
+        by = c("gameId", "platformId", "teamId")
+        )
+  ) %>%
+  select(
+      gameId,
+      platformId, 
+      teamId = teamId, 
+      patch = patch.x,
+      gameDuration = gameDuration.x,
+      ad.Id = championId.x,
+      sup.Id = championId.y,
+      win = win.x,
+      ad.DamageToChampions= totalDamageDealtToChampions.x,
+      sup.DamageToChampions = totalDamageDealtToChampions.y,
+      ad.kills = kills.x,
+      ad.assists = assists.x,
+      ad.deaths = deaths.x,
+      sup.kills = kills.y,
+      sup.assists = assists.y,
+      sup.deaths = deaths.y
+    ) %>%
+  mutate(
+    ad.kda = (ad.kills+ad.assists)/ifelse(ad.deaths ==0,1,ad.deaths)
+  ) %>%
+  inner_join(select(champLookUp, championId, ad=name), by=c("ad.Id" = "championId"))  %>%
+  inner_join(select(champLookUp, championId, sup=name), by=c("sup.Id" = "championId"))

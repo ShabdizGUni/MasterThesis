@@ -16,7 +16,7 @@ def main():
     for platform in PLATFORMS:
         #for patch in PATCHES:
         for patch in ["7.14"]:
-            matchDocs = list(db.matchDetails2000.aggregate(MatchDetails2000.playerstats(platform,patch), allowDiskUse=True))
+            matchDocs = list(db.matchDetails2000.aggregate(Pipeline.proplayerstats(platform, patch), allowDiskUse=True))
 
             for match in matchDocs:
                 session.add(PlayerDetail(match))

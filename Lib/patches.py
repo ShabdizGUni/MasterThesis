@@ -12,7 +12,7 @@ class Patch:
         self.end = end
 
 PATCH_LIST = [ # changed the dates to circumvent different patch deployment dates throughout all regions as much as possible
-    Patch(name="Season 6", patch="6.22", start=datetime.date(2016, 11, 10), end=datetime.date(2016, 11, 21)), # start=datetime.date(2016, 11, 10), end=datetime.date(2016, 11, 22)
+    #Patch(name="Season 6", patch="6.22", start=datetime.date(2016, 11, 10), end=datetime.date(2016, 11, 21)), # start=datetime.date(2016, 11, 10), end=datetime.date(2016, 11, 22)
     Patch(name="Season 6", patch="6.23", start=datetime.date(2016, 11, 23), end=datetime.date(2016, 12, 6)), # start=datetime.date(2016, 11, 22), end=datetime.date(2016, 12, 7)
     Patch(name="Season 6", patch="6.24", start=datetime.date(2016, 12, 8), end=datetime.date(2017, 1, 10)), # start=datetime.date(2016, 12, 7), end=datetime.date(2017, 1, 11)
     Patch(name="Season 7", patch="7.1", start=datetime.date(2017, 1, 12), end=datetime.date(2017, 1, 24)), # start=datetime.date(2017, 1, 11), end=datetime.date(2017, 1, 25)
