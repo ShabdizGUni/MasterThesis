@@ -1,7 +1,7 @@
 from data._Constants import *
 from data.Schema.PlayerStats import *
 from sqlalchemy.orm import *
-from data.Piplines import *
+from data.Pipelines import *
 from datetime import datetime
 
 from data.Schema.PlayerStats import PlayerDetail

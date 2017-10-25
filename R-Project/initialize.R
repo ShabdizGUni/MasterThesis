@@ -46,6 +46,7 @@ coord_radar <- function (theta = "x", start = 0, direction = 1)
 connection <-
   dbConnect(RMySQL::MySQL(), user = "root", password = "Milch4321", "leaguestats")
 
+#Soloqueue
 playerstats <- data.table(dbReadTable(connection, "playerdetails"))
 teamstats <- data.table(dbReadTable(connection, "teamdetails"))
 playerstats <- 
@@ -59,6 +60,22 @@ playerstats <-
 champPerformancePatch <- data.table(dbReadTable(connection, "champPerformancePatch"))
 champPerformancePatchRegion <- data.table(dbReadTable(connection, "champPerformancePatchRegion"))
 champPerformancePatchByWin <- data.table(dbReadTable(connection, "champPerformancePatchWin"))
+
+#ProGames
+proplayerstats <- data.table(dbReadTable(connection, "proplayerdetails"))
+proteamstats <- data.table(dbReadTable(connection, "proteamdetails"))
+playerstats <- 
+  merge(
+    proplayerstats,
+    proteamstats,
+    by.x = c("gameId", "platformId", "teamId"),
+    by.y = c("gameId", "platformId", "teamId")
+  )
+
+champPerformancePatchPro <- data.table(dbReadTable(connection, "champPerformancePatchPro"))
+champPerformancePatchRegionPro <- data.table(dbReadTable(connection, "champPerformancePatchRegionPro"))
+champPerformancePatchByWinPro <- data.table(dbReadTable(connection, "champPerformancePatchWinPro"))
+
 
 patchOrder = c("6.23",
                "6.24",
@@ -76,7 +93,10 @@ patchOrder = c("6.23",
                "7.12",
                "7.13",
                "7.14",
-               "7.15")
+               "7.15",
+               "7.16",
+               "7.17",
+               "7.18")
 
 xpSteps = c(280,380,480,580,680,780,880,980,1080,1180,1280,1380,1480,1580,1680,1780,1880)
 
@@ -173,12 +193,17 @@ setnames(mid.distribution,"name", "names")
 
 ### AD CARRIES
 adc <- playerstats[lane == "BOTTOM" & role == "DUO_CARRY"] 
+adc.Pro <- proplayerstats[lane == "BOTTOM" & role == "DUO_CARRY"] 
 relchamps.adc <- adc[,list(gamesPlayed = .N), by = championId][order(by = gamesPlayed, decreasing = T)][,.SD[1:16]][,championId]
 
 adc.relevant <- adc[championId %in% relchamps.adc]
 adc.performance <- champPerformancePatchRegion[lane=="BOTTOM" & role == "DUO_CARRY" & championId %in% unique(adc.relevant$championId)]
 adc.performance.patch <- champPerformancePatch[lane == "BOTTOM" & role == "DUO_CARRY" & championId %in% unique(adc.relevant$championId)]
 adc.performance.patch.win <- champPerformancePatchByWin[lane == "BOTTOM" & role == "DUO_CARRY" & championId %in% unique(adc.relevant$championId)]
+
+adc.pro.performance <- champPerformancePatchRegionPro[lane=="BOTTOM" & role == "DUO_CARRY" & championId %in% unique(adc.relevant$championId)]
+adc.pro.performance.patch <- champPerformancePatchPro[lane == "BOTTOM" & role == "DUO_CARRY" & championId %in% unique(adc.relevant$championId)]
+adc.pro.performance.patch.win <- champPerformancePatchByWinPro[lane == "BOTTOM" & role == "DUO_CARRY" & championId %in% unique(adc.relevant$championId)]
 
 
 adc.distribution <- merge(

@@ -1,7 +1,7 @@
 from data._Constants import *
 from data.Schema.ProPlayerStats import *
 from sqlalchemy.orm import *
-from data.Piplines import *
+from data.Pipelines import *
 from datetime import datetime
 
 from data.Schema.ProPlayerStats import ProPlayerDetail
@@ -20,7 +20,7 @@ def main():
             session.add(ProPlayerDetail(match))
 
         session.commit()
-        print(str(datetime.now()) + ": Inserted "  + str(patch))
+        print(str(datetime.now()) + ": Inserted " + str(patch))
 
 
 if __name__ == "__main__":

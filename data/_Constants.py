@@ -43,7 +43,30 @@ PLATFORMS = ["EUW1", "KR", "NA1", "BR1"]
 ALL_PLATFORMS = ["ru", "pbe1", "br1", "oc1", "jp1", "na1", "eun1", "euw1", "tr1", "la1", "la2"]
 
 
+# CHAMPIONS #
+
+ADC_CHAMPIONS_DICT = {
+    22: "Ashe",
+    51: "Caitlyn",
+    119: "Draven",
+    81: "Ezreal",
+    202: "Jhin",
+    222: "Jinx",
+    429: "Kalista",
+    96: "Kog'Maw",
+    236: "Lucian",
+    21: "Miss Fortune",
+    15: "Sivir",
+    18: "Tristana",
+    29: "Twitch",
+    110: "Varus",
+    67: "Vayne",
+    498: "Xayah"
+}
+
+
 # ITEMS #
+
 ADC_TIER_3_ITEMS_LIST = [3031,  #Infinity Edge
                     3508,  #Essence Reaver
                     3043,  #Muramana
@@ -85,4 +108,6 @@ ADC_TIER_3_ITEMS_DICT = {
     3087: "StS",
     3046: "PD",
     3025: "IBG"
+    # Guardian Angel, Scimitar (QSS), Last Whisper (Lord Dominik's, Mortal Reminder)
+    # Boots, Masteries, Runes
 }

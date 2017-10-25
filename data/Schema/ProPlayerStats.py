@@ -1,6 +1,7 @@
 from sqlalchemy import *
 from sqlalchemy.dialects import mysql
 from sqlalchemy.ext.declarative import declarative_base
+import re
 
 global ProPlayerDetail
 Base = declarative_base()
@@ -18,6 +19,7 @@ class ProPlayerDetail(Base, object):
     gameDuration = Column(Integer)
     participantId = Column(Integer)
     teamId = Column(Integer)
+    team = Column(String(10))
     summonerId = Column(String(30))
     championId = Column(Integer)
     role = Column(String(15))
@@ -126,6 +128,7 @@ class ProPlayerDetail(Base, object):
         self.participantId = dict.get("participantId", 0)
         self.teamId = dict.get("teamId", 0)
         self.summonerId = dict.get("summonerId", "")
+        self.team = re.match("\w+\w+", self.summonerId).group(0)
         self.championId = dict.get("championId", 0)
         self.role = dict.get("role", "")
         self.lane = dict.get("lane", "")
