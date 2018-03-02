@@ -28,7 +28,7 @@ require(scales)
 library(RColorBrewer)
 library(ggiraphExtra)
 require(dplyr)
-#require(tibble)
+require(tibble)
 library(rgl)
 
 coord_radar <- function (theta = "x", start = 0, direction = 1) 
@@ -47,35 +47,36 @@ connection <-
   dbConnect(RMySQL::MySQL(), user = "root", password = "Milch4321", "leaguestats")
 
 #Soloqueue
-playerstats <- data.table(dbReadTable(connection, "playerdetails"))
-teamstats <- data.table(dbReadTable(connection, "teamdetails"))
-playerstats <- 
-  merge(
-    playerstats,
-    teamstats,
-    by.x = c("gameId", "platformId", "teamId"),
-    by.y = c("gameId", "platformId", "teamId")
-  )
+#playerstats <- data.table(dbReadTable(connection, "playerdetails"))
+#teamstats <- data.table(dbReadTable(connection, "teamdetails"))
+# playerstats <- 
+#   merge(
+#     playerstats,
+#     teamstats,
+#     by.x = c("gameId", "platformId", "teamId"),
+#     by.y = c("gameId", "platformId", "teamId")
+#   )
 
-champPerformancePatch <- data.table(dbReadTable(connection, "champPerformancePatch"))
-champPerformancePatchRegion <- data.table(dbReadTable(connection, "champPerformancePatchRegion"))
-champPerformancePatchByWin <- data.table(dbReadTable(connection, "champPerformancePatchWin"))
+champPerformancePatch <- data.table(dbReadTable(connection, "champ_kpi_patch"))
+champPerformancePatchRegion <- data.table(dbReadTable(connection, "champ_kpi_patch_region"))
+#champPerformancePatchByWin <- data.table(dbReadTable(connection, "champPerformancePatchWin"))
 
-#ProGames
-proplayerstats <- data.table(dbReadTable(connection, "proplayerdetails"))
-proteamstats <- data.table(dbReadTable(connection, "proteamdetails"))
-playerstats <- 
-  merge(
-    proplayerstats,
-    proteamstats,
-    by.x = c("gameId", "platformId", "teamId"),
-    by.y = c("gameId", "platformId", "teamId")
-  )
+# #ProGames
+# proplayerstats <- data.table(dbReadTable(connection, "proplayerdetails"))
+# proteamstats <- data.table(dbReadTable(connection, "proteamdetails"))
+# playerstats <- 
+#   merge(
+#     proplayerstats,
+#     proteamstats,
+#     by.x = c("gameId", "platformId", "teamId"),
+#     by.y = c("gameId", "platformId", "teamId")
+#   )
 
 champPerformancePatchPro <- data.table(dbReadTable(connection, "champPerformancePatchPro"))
 champPerformancePatchRegionPro <- data.table(dbReadTable(connection, "champPerformancePatchRegionPro"))
 champPerformancePatchByWinPro <- data.table(dbReadTable(connection, "champPerformancePatchWinPro"))
 
+tiers_stats <- dbGetQuery(connection, "select tier, patch, count(*) as count from playerdetails group by tier, patch")
 
 patchOrder = c("6.23",
                "6.24",
@@ -98,6 +99,9 @@ patchOrder = c("6.23",
                "7.17",
                "7.18")
 
+tiers_order <- factor(c("CHALLENGER", "MASTER", "DIAMOND", "PLATINUM", "GOLD", "SILVER", "BRONZE", "UNRANKED"),
+                      levels=c("CHALLENGER", "MASTER", "DIAMOND", "PLATINUM", "GOLD", "SILVER", "BRONZE", "UNRANKED"))
+
 xpSteps = c(280,380,480,580,680,780,880,980,1080,1180,1280,1380,1480,1580,1680,1780,1880)
 
 ## Items
@@ -105,7 +109,10 @@ itemLookUp <- data.table(dbReadTable(connection, "itemkeys"))
 setkey(itemLookUp, "id")
 
 item <- itemLookUp$name
-names(item) <- itemLookUp$champId
+names(item) <- itemLookUp$id
+itemLookUp[id == 3004]$name = "Manamune/Muramana"
+itemLookUp[id == 3042]$name = "Manamune/Muramana"
+
 
 
 ## Champions
@@ -113,93 +120,28 @@ champLookUp <- data.table(dbReadTable(connection, "championkeys"))
 setkey(champLookUp, "championId")
 
 champ <- champLookUp$name
-names(champ) <- champLookUp$champId
-
-
-### TOP Laner
-top <- playerstats[lane == "TOP"]
-top.distribution <- merge(
-                      data.table(top[,list(gamesPlayed = .N), by = championId][order(by = gamesPlayed, decreasing = T)]),
-                      champLookUp,
-                      by= "championId"
-                      )
-top.distribution.platform <- merge(
-  data.table(top[,list(gamesPlayed = .N), by = list(championId,platformId)][order(by = gamesPlayed, decreasing = T)]),
-  champLookUp,
-  by= "championId"
-)
-top.distribution.patch <- merge(
-  data.table(top[,list(gamesPlayed = .N), by = list(championId,patch)][order(by = gamesPlayed, decreasing = T)]),
-  champLookUp,
-  by= "championId"
-)
-setnames(top.distribution,"name", "names")
-
-relchamps.top <- top[,list(gamesPlayed = .N), by = championId][order(by = gamesPlayed, decreasing = T)][,.SD[1:20]][,championId]
-top.relevant <- top[championId %in% relchamps.top]
-top.performance <- champPerformancePatchRegion[lane=="TOP" & role == "SOLO" & championId %in% unique(top.relevant$championId)]
-
-
-
-### Jungler
-jungle <- playerstats[lane == "JUNGLE"]
-relchamps.jungle <- jungle[,list(gamesPlayed = .N), by = championId][order(by = gamesPlayed, decreasing = T)][,.SD[1:20]][,championId]
-jungle.relevant <- jungle[championId %in% relchamps.jungle]
-jungle.performance <- champPerformancePatchRegion[lane=="JUNGLE" & championId %in% unique(jungle.relevant$championId)]
-
-
-jungle.distribution <- merge(
-  data.table(jungle[,list(gamesPlayed = .N), by = championId][order(by = gamesPlayed, decreasing = T)]),
-  champLookUp,
-  by= "championId"
-)
-jungle.distribution.platform <- merge(
-  data.table(jungle[,list(gamesPlayed = .N), by = list(championId,platformId)][order(by = gamesPlayed, decreasing = T)]),
-  champLookUp,
-  by= "championId"
-)
-jungle.distribution.patch <- merge(
-  data.table(jungle[,list(gamesPlayed = .N), by = list(championId,patch)][order(by = gamesPlayed, decreasing = T)]),
-  champLookUp,
-  by= "championId"
-)
-setnames(jungle.distribution,"name", "names")
-
-
-### Mid laner
-mid <- playerstats[lane == "MIDDLE"]
-relchamps.mid <- mid[,list(gamesPlayed = .N), by = championId][order(by = gamesPlayed, decreasing = T)][,.SD[1:20]][,championId]
-mid.relevant <- mid[championId %in% relchamps.mid]
-mid.performance <- champPerformancePatchRegion[lane=="MIDDLE" & role == "SOLO" & championId %in% unique(mid.relevant$championId)]
-
-mid.distribution <- merge(
-  data.table(mid[,list(gamesPlayed = .N), by = championId][order(by = gamesPlayed, decreasing = T)]),
-  champLookUp,
-  by= "championId"
-)
-mid.distribution.platform <- merge(
-  data.table(mid[,list(gamesPlayed = .N), by = list(championId,platformId)][order(by = gamesPlayed, decreasing = T)]),
-  champLookUp,
-  by= "championId"
-)
-mid.distribution.patch <- merge(
-  data.table(mid[,list(gamesPlayed = .N), by = list(championId,patch)][order(by = gamesPlayed, decreasing = T)]),
-  champLookUp,
-  by= "championId"
-)
-setnames(mid.distribution,"name", "names")
-
+names(champ) <- champLookUp$championId
 
 
 ### AD CARRIES
-adc <- playerstats[lane == "BOTTOM" & role == "DUO_CARRY"] 
-adc.Pro <- proplayerstats[lane == "BOTTOM" & role == "DUO_CARRY"] 
+adc <- data.table(dbGetQuery(conn = connection, "SELECT * FROM playerdetails WHERE lane = 'BOTTOM' AND role = 'DUO_CARRY' AND gameDuration >= 900"))
+#adc.Pro <- proplayerstats[lane == "BOTTOM" & role == "DUO_CARRY"] 
 relchamps.adc <- adc[,list(gamesPlayed = .N), by = championId][order(by = gamesPlayed, decreasing = T)][,.SD[1:16]][,championId]
 
 adc.relevant <- adc[championId %in% relchamps.adc]
 adc.performance <- champPerformancePatchRegion[lane=="BOTTOM" & role == "DUO_CARRY" & championId %in% unique(adc.relevant$championId)]
 adc.performance.patch <- champPerformancePatch[lane == "BOTTOM" & role == "DUO_CARRY" & championId %in% unique(adc.relevant$championId)]
-adc.performance.patch.win <- champPerformancePatchByWin[lane == "BOTTOM" & role == "DUO_CARRY" & championId %in% unique(adc.relevant$championId)]
+#adc.performance.patch.win <- champPerformancePatchByWin[lane == "BOTTOM" & role == "DUO_CARRY" & championId %in% unique(adc.relevant$championId)]
+
+adc.relevant.patchTier <- merge(
+  adc.relevant[, list(gamesPlayed = .N), by= list(championId, tier, patch)],
+  tiers_stats[c("tier","patch","count")],
+  by=c("tier","patch")
+)
+adc.relevant.patchTier$playRate  <- adc.relevant.patchTier$gamesPlayed/adc.relevant.patchTier$count
+adc.relevant.patchTier <- adc.relevant.patchTier %>%
+  merge(champLookUp, by="championId")
+adc.relevant.patchTier$order <- factor(adc.relevant.patchTier$tier, levels=tiers_order)
 
 adc.pro.performance <- champPerformancePatchRegionPro[lane=="BOTTOM" & role == "DUO_CARRY" & championId %in% unique(adc.relevant$championId)]
 adc.pro.performance.patch <- champPerformancePatchPro[lane == "BOTTOM" & role == "DUO_CARRY" & championId %in% unique(adc.relevant$championId)]
@@ -231,7 +173,7 @@ items.adc = rbind(
   adc[championId %in% relchamps.adc,list(championId, platformId, patch, item=item4)],
   adc[championId %in% relchamps.adc,list(championId, platformId, patch, item=item5)],
   adc[championId %in% relchamps.adc,list(championId, platformId, patch, item=item6)]
-  )
+)
 items.adc <- merge(
   items.adc,
   itemLookUp,
@@ -267,8 +209,8 @@ relItems.ADC = c("Infinity Edge",
                  "Phantom Dancer",
                  "Iceborn Gauntlet")
 
-### support
-sup <- playerstats[lane == "BOTTOM" & role == "DUO_SUPPORT"]
+## support
+sup <- data.table(dbGetQuery(conn = connection, "SELECT * FROM playerdetails WHERE lane = 'BOTTOM' AND role = 'DUO_SUPPORT' AND gameDuration >= 900"))
 relchamps.sup <- sup[,list(gamesPlayed = .N), by = championId][order(by = gamesPlayed, decreasing = T)][,.SD[1:20]][,championId]
 sup.relevant <- sup[championId %in% relchamps.sup]
 sup.performance <- champPerformancePatchRegion[lane=="BOTTOM" & role == "DUO_SUPPORT" & championId %in% unique(sup.relevant$championId)]
@@ -302,33 +244,110 @@ items.sup = rbind(
   sup[championId %in% relchamps.sup,list(championId, platformId, patch, item=item6)]
 )
 
-#botlane adc+sup: 
-botlane = data.table(
-  merge(adc.relevant, 
-        sup.relevant, 
-        by = c("gameId", "platformId", "teamId")
-        )
-  ) %>%
-  select(
-      gameId,
-      platformId, 
-      teamId = teamId, 
-      patch = patch.x,
-      gameDuration = gameDuration.x,
-      ad.Id = championId.x,
-      sup.Id = championId.y,
-      win = win.x,
-      ad.DamageToChampions= totalDamageDealtToChampions.x,
-      sup.DamageToChampions = totalDamageDealtToChampions.y,
-      ad.kills = kills.x,
-      ad.assists = assists.x,
-      ad.deaths = deaths.x,
-      sup.kills = kills.y,
-      sup.assists = assists.y,
-      sup.deaths = deaths.y
-    ) %>%
-  mutate(
-    ad.kda = (ad.kills+ad.assists)/ifelse(ad.deaths ==0,1,ad.deaths)
-  ) %>%
-  inner_join(select(champLookUp, championId, ad=name), by=c("ad.Id" = "championId"))  %>%
-  inner_join(select(champLookUp, championId, sup=name), by=c("sup.Id" = "championId"))
+#botlane adc+sup:
+# botlane = data.table(
+#   merge(adc.relevant,
+#         sup.relevant,
+#         by = c("gameId", "platformId", "teamId")
+#   )
+# ) %>%
+#   select(
+#     gameId,
+#     platformId,
+#     teamId = teamId,
+#     patch = patch.x,
+#     gameDuration = gameDuration.x,
+#     ad.Id = championId.x,
+#     sup.Id = championId.y,
+#     win = win.x,
+#     ad.DamageToChampions= totalDamageDealtToChampions.x,
+#     sup.DamageToChampions = totalDamageDealtToChampions.y,
+#     ad.kills = kills.x,
+#     ad.assists = assists.x,
+#     ad.deaths = deaths.x,
+#     sup.kills = kills.y,
+#     sup.assists = assists.y,
+#     sup.deaths = deaths.y
+#   ) %>%
+#   mutate(
+#     ad.kda = (ad.kills+ad.assists)/ifelse(ad.deaths ==0,1,ad.deaths)
+#   ) %>%
+#   inner_join(select(champLookUp, championId, ad=name), by=c("ad.Id" = "championId"))  %>%
+#   inner_join(select(champLookUp, championId, sup=name), by=c("sup.Id" = "championId"))
+
+
+# 
+# ### TOP Laner
+# #top <- playerstats[lane == "TOP"]
+# top <- data.table(dbGetQuery(conn = connection, "SELECT * FROM playerdetails WHERE lane = 'TOP'"))
+# top.distribution <- merge(
+#                       data.table(top[,list(gamesPlayed = .N), by = championId][order(by = gamesPlayed, decreasing = T)]),
+#                       champLookUp,
+#                       by= "championId"
+#                       )
+# top.distribution.platform <- merge(
+#   data.table(top[,list(gamesPlayed = .N), by = list(championId,platformId)][order(by = gamesPlayed, decreasing = T)]),
+#   champLookUp,
+#   by= "championId"
+# )
+# top.distribution.patch <- merge(
+#   data.table(top[,list(gamesPlayed = .N), by = list(championId,patch)][order(by = gamesPlayed, decreasing = T)]),
+#   champLookUp,
+#   by= "championId"
+# )
+# setnames(top.distribution,"name", "names")
+# 
+# relchamps.top <- top[,list(gamesPlayed = .N), by = championId][order(by = gamesPlayed, decreasing = T)][,.SD[1:20]][,championId]
+# top.relevant <- top[championId %in% relchamps.top]
+# top.performance <- champPerformancePatchRegion[lane=="TOP" & role == "SOLO" & championId %in% unique(top.relevant$championId)]
+# 
+# 
+# 
+# ### Jungler
+# jungle <- playerstats[lane == "JUNGLE"]
+# relchamps.jungle <- jungle[,list(gamesPlayed = .N), by = championId][order(by = gamesPlayed, decreasing = T)][,.SD[1:20]][,championId]
+# jungle.relevant <- jungle[championId %in% relchamps.jungle]
+# jungle.performance <- champPerformancePatchRegion[lane=="JUNGLE" & championId %in% unique(jungle.relevant$championId)]
+# 
+# 
+# jungle.distribution <- merge(
+#   data.table(jungle[,list(gamesPlayed = .N), by = championId][order(by = gamesPlayed, decreasing = T)]),
+#   champLookUp,
+#   by= "championId"
+# )
+# jungle.distribution.platform <- merge(
+#   data.table(jungle[,list(gamesPlayed = .N), by = list(championId,platformId)][order(by = gamesPlayed, decreasing = T)]),
+#   champLookUp,
+#   by= "championId"
+# )
+# jungle.distribution.patch <- merge(
+#   data.table(jungle[,list(gamesPlayed = .N), by = list(championId,patch)][order(by = gamesPlayed, decreasing = T)]),
+#   champLookUp,
+#   by= "championId"
+# )
+# setnames(jungle.distribution,"name", "names")
+# 
+# 
+# ### Mid laner
+# mid <- playerstats[lane == "MIDDLE"]
+# relchamps.mid <- mid[,list(gamesPlayed = .N), by = championId][order(by = gamesPlayed, decreasing = T)][,.SD[1:20]][,championId]
+# mid.relevant <- mid[championId %in% relchamps.mid]
+# mid.performance <- champPerformancePatchRegion[lane=="MIDDLE" & role == "SOLO" & championId %in% unique(mid.relevant$championId)]
+# 
+# mid.distribution <- merge(
+#   data.table(mid[,list(gamesPlayed = .N), by = championId][order(by = gamesPlayed, decreasing = T)]),
+#   champLookUp,
+#   by= "championId"
+# )
+# mid.distribution.platform <- merge(
+#   data.table(mid[,list(gamesPlayed = .N), by = list(championId,platformId)][order(by = gamesPlayed, decreasing = T)]),
+#   champLookUp,
+#   by= "championId"
+# )
+# mid.distribution.patch <- merge(
+#   data.table(mid[,list(gamesPlayed = .N), by = list(championId,patch)][order(by = gamesPlayed, decreasing = T)]),
+#   champLookUp,
+#   by= "championId"
+# )
+# setnames(mid.distribution,"name", "names")
+# 

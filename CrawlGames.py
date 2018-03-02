@@ -1,7 +1,7 @@
 from Lib.Crawler import Crawler
 
 def main():
-    matches = 10000
+    matches = 2000
 
     naCrawler = Crawler(region="na1", matchesPerPatch=matches)
     brCrawler = Crawler(region="br1", matchesPerPatch=matches)

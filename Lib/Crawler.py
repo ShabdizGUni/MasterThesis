@@ -12,7 +12,7 @@ from Lib.patches import *
 from pprint import pprint
 
 class EntrySummoner(enum.Enum):
-    KR = "SSG Ambiton"
+    KR = "KSV AMBITlON"
     EUW1 = "lur1keen"
     NA1 = "Pobelter"
     BR1 = "4LaN"
@@ -26,7 +26,7 @@ class Crawler(threading.Thread):
         self.matchesPerPatch = matchesPerPatch
         self.req: APIRequester = APIRequester(os.environ.get("DEV_KEY"), region=self.region)
         self.client = MongoClient('mongodb://localhost:27017/')
-        self.db = self.client.LeagueCrawler.matchDetails
+        self.db = self.client.LeagueCrawler['matchDetails2000']
         self.start_time = datetime.datetime.now()
 
 
@@ -57,19 +57,18 @@ class Crawler(threading.Thread):
         patchCycles = {p.patch: 0 for p in PATCH_LIST}
         for k, v in detailedPatches.items():
             patchCycles[re.match("\d.\d+", k, flags=0).group(0)] += v
-        #del patchCycles["6.22"]
         print(str(self.region) + ": " + str(patchCycles))
         return patchCycles
 
 
     def fetch(self):
         req = self.req
-        fetchedMatches = self.get_matches()
+        #fetchedMatches = self.get_matches()
         strdSum = self.get_summoners() # stored summoners in matchDetails collection
         unfetchedSummoners = deque()
         fetchedSummoners = self.get_fetched_summoners()
         versions = self.get_versions()
-        pprint(versions)
+        print(self.region+": "+ str(versions))
         iteration = 0
         if not strdSum: #first run
             unfetchedSummoners.append(
@@ -79,9 +78,6 @@ class Crawler(threading.Thread):
         print("Number of Summoners in MatchDetails:" +"\t"+ str(len(strdSum)) + "\n" +
               "Number of Summoners already completely processed:" +"\t" + str(len(fetchedSummoners)) + "\n" +
               "Number of Summoners to process:" +"\t" + str(len(unfetchedSummoners)))
-        #for s in random.sample(strdSum, len(strdSum)): #random order of summoners
-        #     if s not in fetchedSummoners: unfetchedSummoners.append(s)
-
 
         # AS LONG AS THERE ARE SUMMONERS TO PROCESS:
         while len(unfetchedSummoners) > 0:
@@ -105,10 +101,12 @@ class Crawler(threading.Thread):
                 pprint("Exceeded 10 attempts. Going to next Summoner")
                 continue
 
-            # ITERATE THROUGH ALL HIS RANKED GAMES IN SEASON 7
+            # ITERATE THROUGH ALL HIS RANKED GAMES IN (PRE-)SEASON 7
             for match in currentMatchlist:
                 patch = getPatchFromTimestamp(match['timestamp'])
-                if match['gameId'] not in fetchedMatches and patch in versions.keys() and versions[patch] < self.matchesPerPatch and self.region == match['platformId']:
+                #match['gameId'] not in fetchedMatches
+                if not list(self.db.find({"platformId" : self.region, "gameId": match['gameId']})) and patch in versions.keys() and versions[patch] < self.matchesPerPatch and self.region == match['platformId']:
+                    startfetch = datetime.datetime.now()
                     for attempt in range(1, 10):
                         try:
                             details = req.requestMatchData(self.region, match['gameId'])
@@ -129,22 +127,39 @@ class Crawler(threading.Thread):
                     else:
                         pprint("Exceeded 10 attempts. Going to next Match")
                         continue
-                    ids = details["participantIdentities"]
-                    for id in ids:
+
+                    idents = details["participantIdentities"]
+                    part = details["participants"]
+
+
+                    # STORE RELEVANT SUMMONERS
+                    for id in idents:
+                        #partId = id["participantId"]
                         if id["player"]["currentAccountId"] not in fetchedSummoners:
                             unfetchedSummoners.append(id["player"]["currentAccountId"])
-                    fetchedMatches.append(details['gameId'])
+
+                    details["patch"] = re.match("\d.\d+", details["gameVersion"], flags=0).group(0)
+                    #fetchedMatches.append(details['gameId'])
                     versions[patch] += 1
-                    self.db.insert_one(details)
-                    print(self.region+": "+ str(versions))
+
+                    objId = self.db.insert_one(details)
+
+                    pprint(self.region +": Stored Game " + str(details["gameId"]) + " from Patch " + str(details["patch"]) + " into MongoDB Collection with _id:" +
+                           str(objId.inserted_id) + "after " + str((datetime.datetime.now() - startfetch).seconds) + " seconds")
+                #elif len(list(self.db.find({"platformId" : self.region, "gameId": match['gameId']}))) > 0:
+                    #pprint(self.region + ": GameId " + str(match['gameId']) + " already fetched! Skip..")
 
             #after processing summmoner:
+
             fetchedSummoners.append(summoner)
-            blub = self.db.fetchedSummoners.insert_one({"id": summoner, "platformId": self.region})
-            print("Completed processing Summoner " +str(summoner)+ "! Stored him into the MongoDB collection with the _id: " + str(blub.inserted_id))
+            strdSum = self.db.fetchedSummoners.insert_one({"id": summoner, "platformId": self.region})
+
+            print(self.region + ": Completed processing Summoner " +str(summoner)+ "! Stored him into the MongoDB collection with the _id: " + str(strdSum.inserted_id))
+            print(self.region + ": "+ str(versions))
             iteration += 1
-            if  iteration % 10 == 0: # update every 10 summoners
+            if  iteration % 15 == 0: # update every 15 summoners
                 versions = self.get_versions() #update Versions in case something halfway still went wrong
             if all(v >= self.matchesPerPatch for v in versions.values()):
+                print(self.region + ": " + str(versions))
                 print(self.region + ": Completed crawling!")
                 break

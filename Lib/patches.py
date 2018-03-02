@@ -32,7 +32,10 @@ PATCH_LIST = [ # changed the dates to circumvent different patch deployment date
     Patch(name="Season 7", patch="7.15", start=datetime.date(2017, 7, 27), end=datetime.date(2017, 8, 8)), # start=datetime.date(2017, 7, 26), end=datetime.date(2017, 8, 9)
     Patch(name="Season 7", patch="7.16", start=datetime.date(2017, 8, 10), end=datetime.date(2017, 8, 22)),# start=datetime.date(2017, 8, 9), end=datetime.date(2017, 8, 23)
     Patch(name="Season 7", patch="7.17", start=datetime.date(2017, 8, 24), end=datetime.date(2017, 9, 12)), #start=datetime.date(2017, 8, 23), end=datetime.date(2017, 9, 13)
-    Patch(name="Season 7", patch="7.18", start=datetime.date(2017, 9, 14), end=datetime.date(2017, 9, 26)) # start=datetime.date(2017, 9, 13), end=datetime.date(2017, 9, 27)
+    Patch(name="Season 7", patch="7.18", start=datetime.date(2017, 9, 14), end=datetime.date(2017, 9, 26)), # start=datetime.date(2017, 9, 13), end=datetime.date(2017, 9, 27)
+    Patch(name="Season 7", patch="7.19", start=datetime.date(2017, 9, 28), end=datetime.date(2017, 10, 11)),
+    Patch(name="Season 7", patch="7.20", start=datetime.date(2017, 10, 13), end=datetime.date(2017, 10, 24)),
+    Patch(name="Season 7", patch="7.21", start=datetime.date(2017, 10, 26), end=datetime.date(2017, 11, 7))
 ]
 
 

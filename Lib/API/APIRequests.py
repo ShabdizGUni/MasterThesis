@@ -114,7 +114,7 @@ class APIRequester(Requester):
         if version is None: version = self.currentVersion
         #https://euw1.api.riotgames.com/lol/static-data/v3/champions?locale=en_GB&tags=all&dataById=true&api_key=RGAPI-3f33e490-afd7-450b-81d3-94abd670cc58
         url = "https://"+region+self.root+"static-data/v3/champions?locale=en_GB&tags=all&dataById=true&version="+version+"&api_key=" + self.__apiKey
-        print(url)
+        #print(url)
         try:
             return self.sendRequest(url)
         except requests.HTTPError as e:
@@ -125,7 +125,7 @@ class APIRequester(Requester):
         #https://euw1.api.riotgames.com/lol/static-data/v3/items?api_key=d0e89ead-8392-4faf-b6f8-d10c24b2cef7
         #https://ru.api.riotgames.com/lol/static-data/v3/items?locale=en_GB&version=7.15.1&tags=all&api_key=RGAPI-2b8652c3-163a-4077-8fa7-846d1c11990e
         url = "https://"+region+self.root+"static-data/v3/items?locale=en_GB&tags=all&version="+version+"&api_key=" + self.__apiKey
-        print(url)
+        #print(url)
         try:
             return self.sendRequest(url)
         except requests.HTTPError as e:
@@ -137,7 +137,7 @@ class APIRequester(Requester):
         summonerName = summonerName.replace(" ","%20")
         url = "https://" + region + self.root + "summoner" + \
               "/v3/summoners/by-name/" + summonerName + "?api_key=" + self.__apiKey
-        print(url)
+        #print(url)
         try:
             return self.sendRequest(url)
         except requests.HTTPError as e:
@@ -147,7 +147,7 @@ class APIRequester(Requester):
     def requestRankedData(self, region, _id):
         url = "https://" + region + self.root + region + \
               "/v2.5/league/by-summoner/" + _id + "/entry?api_key=" + self.__apiKey
-        print(url)
+        #print(url)
         try:
             return self.sendRequest(url)
         except requests.HTTPError as e:
@@ -157,7 +157,7 @@ class APIRequester(Requester):
     def requestMatchData(self, region: str, matchId):
         url = "https://" + region + self.root + \
             "match/v3/matches/" + str(matchId) + "?api_key=" + self.__apiKey
-        print(url)
+        #print(url)
         try:
             return self.sendRequest(url)
         except requests.HTTPError as e:
@@ -167,7 +167,7 @@ class APIRequester(Requester):
     def requestMatchTimelineData(self, region, matchId):
         url = "https://" + region + self.root + \
             "match/v3/timelines/by-match/" + str(matchId) + "?api_key=" + self.__apiKey
-        print(url)
+        #print(url)
         try:
             return self.sendRequest(url)
         except requests.HTTPError as e:
@@ -204,8 +204,9 @@ class APIRequester(Requester):
         response =  self.sendRequest(url)
         matchlist = response['matches']
         numgames = response["totalGames"]
-        pprint("beginIndex: " + str(beginIndex) + " endIndex: " + str(endIndex) + "  totalGames: "+ str(numgames))
+        #pprint("beginIndex: " + str(beginIndex) + " endIndex: " + str(endIndex) + "  totalGames: "+ str(numgames))
         if numgames < endIndex:
+            pprint("SummonerID: "+ str(_id) + " Games: " + str(numgames))
             return matchlist
         else :
             while endIndex < numgames:
@@ -218,7 +219,8 @@ class APIRequester(Requester):
                 response = self.sendRequest(url)
                 matchlist += response['matches']
                 numgames = response['totalGames']
-                pprint(str(self.region) + ": beginIndex: " + str(beginIndex) + " endIndex: " + str(endIndex) + "  totalGames: " + str(numgames))
+                #pprint(str(self.region) + ": beginIndex: " + str(beginIndex) + " endIndex: " + str(endIndex) + "  totalGames: " + str(numgames))
+        print(region + ": SummonerID: "+ str(_id) + " Games: " + str(numgames))
         return matchlist
 
 class ProGameRequester(Requester):
@@ -226,7 +228,7 @@ class ProGameRequester(Requester):
     def __init__(self):
         self.root = "https://acs.leagueoflegends.com/v1/stats/game/"
 
-    @RateLimited(5)
+    @RateLimited(50)
     def sendRequest(self, url):
         return super().sendRequest(url)
 

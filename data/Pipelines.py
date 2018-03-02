@@ -1,12 +1,32 @@
-def playerstats(platformId, patch):
-    return [
+def playerstats(platformId, patch, testset:int=None):
+    pipeline = [
         {"$match": {
             "platformId": platformId,
-            "patch": patch
-        }
+            "patch" : patch
+            }
         },
         {"$unwind": "$participants"},
         {"$unwind": "$participantIdentities"},
+        {"$addFields": {
+            "bans" : {
+                "$concatArrays": [
+                    {
+                        "$let": {
+                            "vars": {"t1": {"$arrayElemAt": ["$teams", 0] } },
+                            "in": "$$t1.bans"
+                            }
+                    },
+                    {
+                        "$let": {
+                            "vars": {"t2": {"$arrayElemAt": ["$teams", 1] } },
+                            "in": "$$t2.bans"
+
+                        }
+                    }
+                ]
+            }
+        }
+        },
         {"$unwind": "$teams"},
         {"$redact":
              {"$cond": {"if": {"$eq": ["$participants.participantId", "$participantIdentities.participantId"]},
@@ -32,6 +52,8 @@ def playerstats(platformId, patch):
             "participantId": "$participants.participantId",
             "teamId": "$participants.teamId",
             "summonerId": "$participantIdentities.player.summonerId",
+            "tier": "$participants.highestAchievedSeasonTier",
+            "bans": "$bans",
             "championId": "$participants.championId",
             "lane": "$participants.timeline.lane",
             "role": "$participants.timeline.role",
@@ -110,63 +132,11 @@ def playerstats(platformId, patch):
             "teamInhibitorKills": "$teams.inhibitorKills",
             "teamBaronKills": "$teams.baronKills",
             "teamDragonKills": "$teams.dragonKills",
-            "teamRiftHeraldKills": "$teams.RiftHeraldKills",
-            "bans": "$teams.bans"
-        }},
-        {"$addFields": {
-            "ban1": {
-                "$let": {
-                    "vars": {
-                        "ban": {
-                            "$arrayElemAt": ["$bans", 0]
-                        }
-                    },
-                    "in": "$$ban.championId"
-                }
-            },
-            "ban2": {
-                "$let": {
-                    "vars": {
-                        "ban": {
-                            "$arrayElemAt": ["$bans", 1]
-                        }
-                    },
-                    "in": "$$ban.championId"
-                }
-            },
-            "ban3": {
-                "$let": {
-                    "vars": {
-                        "ban": {
-                            "$arrayElemAt": ["$bans", 2]
-                        }
-                    },
-                    "in": "$$ban.championId"
-                }
-            },
-            "ban4 ": {
-                "$let": {
-                    "vars": {
-                        "ban": {
-                            "$arrayElemAt": ["$bans", 3]
-                        }
-                    },
-                    "in": "$$ban.championId"
-                }
-            },
-            "ban5": {
-                "$let": {
-                    "vars": {
-                        "ban": {
-                            "$arrayElemAt": ["$bans", 4]
-                        }
-                    },
-                    "in": "$$ban.championId"
-                }
-            }
-        }
-        }
+            "teamRiftHeraldKills": "$teams.RiftHeraldKills"
+        }}
     ]
+    if testset: pipeline.insert(0,{"$limit": testset})
+    return pipeline
 
 def proplayerstats(patch):
     return [
@@ -342,6 +312,8 @@ def proplayerstats(patch):
         }
         }
     ]
+    if test: pipeline[0] = {"$limit": 2000}
+    return pipeline
 
 def itemsets_adc():
     return \
@@ -442,3 +414,91 @@ def itemsets(championId, export:False):
     if export: pipline.append({"$out": "aggregationTest"})
     return pipline
 
+
+def get_summoners(region:str, tiers:list):
+    return \
+    [
+    {"$match": {
+        "platformId": region
+        }
+    },
+    {"$unwind": "$participants"},
+    {"$unwind": "$participantIdentities"},
+    {"$redact":
+        {"$cond":{ "if": { "$eq": [ "$participants.participantId", "$participantIdentities.participantId" ] },
+              "then": "$$DESCEND",
+              "else": "$$PRUNE"
+                  }}
+    },
+    {"$match": {
+        "participants.highestAchievedSeasonTier": {
+            "$in": tiers
+            },
+        "participantIdentities.player.currentPlatformId" : region
+        }
+    },
+    {"$group": {
+        "_id" : 0,
+        "summonerIds": {"$addToSet": "$participantIdentities.player.currentAccountId"}
+        }
+    }
+    ]
+
+def get_events(championId:int, sample_size:int):
+    return \
+    [
+        {"$limit": 200},
+    {"$unwind": "$participants"},
+    {"$match": {
+        "participants.championId": 202
+    }
+    },
+    {"$unwind": "$timeline.frames"},
+    {"$unwind": "$timeline.frames.events"},
+    {"$redact":
+    {"$cond": {
+        "if": {
+            "$eq": [
+                "$participants.participantId",
+                "$timeline.frames.events.participantId"
+            ]}
+        ,
+        "then": "$$KEEP",
+        "else": "$$PRUNE"
+    }}
+    },
+    {"$addFields": {
+        "frames": {
+            "$let": {
+                "vars": {
+                    "frame": {
+                        "$arrayElemAt": [
+                            {"$filter": {
+                            "input": { "$objectToArray": "$timeline.frames.participantFrames"},
+                        "as": "frame",
+                            "cond": {
+                            "$eq": ["$$frame.v.participantId", "$participants.participantId"]
+                            }
+                            }},
+                        0]
+                    }
+                },
+                "in": "$$frame.v"
+            }
+        }
+    }},
+    {"$project": {
+        "gameId": "$gameId",
+        "platformId": "$platformId",
+        "patch": "$patch",
+        "participantId": "$participants.participantId",
+        "championId": "$participants.championId",
+        "type": "$timeline.frames.events.type",
+        "itemId": "$timeline.frames.events.itemId",
+        "beforeId": "$timeline.frames.events.beforeId",
+        "afterid": "$timeline.frames.events.afterId",
+        "timestamp": "$timeline.frames.events.timestamp",
+        "currentGold": "$frames.currentGold",
+        "skillSlot": "$timeline.frames.events.skillSlot"
+    }}
+    ]

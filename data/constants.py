@@ -67,25 +67,26 @@ ADC_CHAMPIONS_DICT = {
 
 # ITEMS #
 
-ADC_TIER_3_ITEMS_LIST = [3031,  #Infinity Edge
-                    3508,  #Essence Reaver
-                    3043,  #Muramana
-                    3004,  #Manamune
-                    3124,  #Guinsoo's Rageblade
-                    3153,  #BORK
-                    3072,  #Bloodthirster
-                    3814,  #Edge of Night
-                    3156,  #Maw of Malmortius
-                    3091,  #Wit's End
-                    3071,  #Black Cleaver
-                    3147,  #Duskblade
-                    3142,  #Ghostblade
-                    3078,  #Trinity Force
-                    3085,  #Runaan's
-                    3094,  #Rapid Firecannon
-                    3087,  #Statikk Shiv
-                    3046,  #Phantom Dancer
-                    3025  #Iceborn Gauntlet
+ADC_TIER_3_ITEMS_LIST = [
+                        3031,  #Infinity Edge
+                        3508,  #Essence Reaver
+                        3043,  #Muramana
+                        3004,  #Manamune
+                        3124,  #Guinsoo's Rageblade
+                        3153,  #BORK
+                        3072,  #Bloodthirster
+                        3814,  #Edge of Night
+                        3156,  #Maw of Malmortius
+                        3091,  #Wit's End
+                        3071,  #Black Cleaver
+                        3147,  #Duskblade
+                        3142,  #Ghostblade
+                        3078,  #Trinity Force
+                        3085,  #Runaan's
+                        3094,  #Rapid Firecannon
+                        3087,  #Statikk Shiv
+                        3046,  #Phantom Dancer
+                        3025  #Iceborn Gauntlet
                          ]
 
 ADC_TIER_3_ITEMS_DICT = {

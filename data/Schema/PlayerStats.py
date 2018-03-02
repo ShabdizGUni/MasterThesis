@@ -1,28 +1,35 @@
 from sqlalchemy import *
 from sqlalchemy.dialects import mysql
 from sqlalchemy.ext.declarative import declarative_base
+import re
 
 global PlayerDetail
 Base = declarative_base()
 
 
 class PlayerDetail(Base, object):
-    __tablename__ = 'playerdetails'
+    __tablename__ = 'playerdetails10k'
 
     _id = Column(BigInteger, primary_key=True)
-    gameId = Column(mysql.BIGINT)
+    gameId = Column(mysql.BIGINT, index=True)
     platformId = Column(String(5))
     patch = Column(String(10))
     gameVersion = Column(String(20))
     gameCreation = Column(mysql.BIGINT)
     gameDuration = Column(Integer)
     participantId = Column(Integer)
-    teamId = Column(Integer)
+    teamId = Column(Integer, index=True)
     summonerId = Column(Integer)
+    tier = Column(String(20))
     championId = Column(Integer)
     role = Column(String(15))
-    lane = Column(String(15))
+    lane = Column(String(15), index=True)
     win = Column(Boolean)
+    ban1 = Column(Integer)
+    ban2 = Column(Integer)
+    ban3 = Column(Integer)
+    ban4 = Column(Integer)
+    ban5 = Column(Integer)
     item0 = Column(Integer)
     item1 = Column(Integer)
     item2 = Column(Integer)
@@ -110,21 +117,37 @@ class PlayerDetail(Base, object):
     teamInhibitorKills = Column(Integer)
     teamBaronKills = Column(Integer)
     teamDragonKills = Column(Integer)
+    ban0 = Column(Integer)
+    ban1 = Column(Integer)
+    ban2 = Column(Integer)
+    ban3 = Column(Integer)
+    ban4 = Column(Integer)
+    ban5 = Column(Integer)
+    ban6 = Column(Integer)
+    ban7 = Column(Integer)
+    ban8 = Column(Integer)
+    ban9 = Column(Integer)
 
     def __init__(self, dict: dict):
         self.gameId = int(dict.get("gameId", 0))
         self.platformId = dict.get("platformId", "")
-        self.patch = dict.get("patch", "")
         self.gameVersion = dict.get("gameVersion", "")
+        self.patch = dict.get("patch", "")
         self.gameCreation = int(dict.get("gameCreation", 0))
         self.gameDuration = dict.get("gameDuration", 0)
         self.participantId = dict.get("participantId", 0)
         self.teamId = dict.get("teamId", 0)
         self.summonerId = dict.get("summonerId", 0)
+        self.tier = dict.get("tier", "")
         self.championId = dict.get("championId", 0)
         self.role = dict.get("role", "")
         self.lane = dict.get("lane", "")
         self.win = dict.get("win", False)
+        self.ban1 = dict.get("ban1",0)
+        self.ban2 = dict.get("ban2",0)
+        self.ban3 = dict.get("ban3",0)
+        self.ban4 = dict.get("ban4",0)
+        self.ban5 = dict.get("ban5",0)
         self.item0 = dict.get("item0", 0)
         self.item1 = dict.get("item1", 0)
         self.item2 = dict.get("item2", 0)
@@ -219,4 +242,18 @@ class PlayerDetail(Base, object):
         self.teamInhibitorKills = dict.get("teamInhibitorKills", 0)
         self.teamBaronKills = dict.get("teamBaronKills", 0)
         self.teamDragonKills = dict.get("teamDragonKills", 0)
+        val = dict.get("bans", [])
+        l = len(val)
+        self.ban0 = val[0].get("championId")
+        self.ban1 = val[1].get("championId")
+        self.ban2 = val[2].get("championId")
+        self.ban3 = val[3].get("championId")
+        self.ban4 = val[4].get("championId")
+        self.ban5 = val[5].get("championId")
+        if l > 6:
+            self.ban6 = val[6].get("championId")
+            self.ban7 = val[7].get("championId")
+            self.ban8 = val[8].get("championId")
+            self.ban9 = val[9].get("championId")
+
 

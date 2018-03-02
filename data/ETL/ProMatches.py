@@ -1,4 +1,4 @@
-from data._Constants import *
+from data.constants import *
 from data.Schema.ProPlayerStats import *
 from sqlalchemy.orm import *
 from data.Pipelines import *
@@ -14,7 +14,7 @@ def main():
     md: MetaData = Base.metadata
     md.create_all(engine, checkfirst=True)
     for patch in PATCHES:
-        matchDocs = list(db.matchDetailsPro.aggregate(Pipeline.proplayerstats(patch), allowDiskUse=True))
+        matchDocs = list(db.matchDetailsPro.aggregate(proplayerstats(patch), allowDiskUse=True))
 
         for match in matchDocs:
             session.add(ProPlayerDetail(match))
