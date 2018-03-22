@@ -211,7 +211,7 @@ relItems.ADC = c("Infinity Edge",
 
 ## support
 sup <- data.table(dbGetQuery(conn = connection, "SELECT * FROM playerdetails WHERE lane = 'BOTTOM' AND role = 'DUO_SUPPORT' AND gameDuration >= 900"))
-relchamps.sup <- sup[,list(gamesPlayed = .N), by = championId][order(by = gamesPlayed, decreasing = T)][,.SD[1:20]][,championId]
+relchamps.sup <- sup[,list(gamesPlayed = .N), by = championId][order(by = gamesPlayed, decreasing = T)][,.SD[1:24]][,championId]
 sup.relevant <- sup[championId %in% relchamps.sup]
 sup.performance <- champPerformancePatchRegion[lane=="BOTTOM" & role == "DUO_SUPPORT" & championId %in% unique(sup.relevant$championId)]
 
@@ -244,7 +244,7 @@ items.sup = rbind(
   sup[championId %in% relchamps.sup,list(championId, platformId, patch, item=item6)]
 )
 
-#botlane adc+sup:
+# botlane adc+sup:
 # botlane = data.table(
 #   merge(adc.relevant,
 #         sup.relevant,

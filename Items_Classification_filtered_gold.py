@@ -18,13 +18,20 @@ from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
 
+
+def get_data(col) -> pd.DataFrame:
+    data = list(col.find())
+    keys = data[1].keys()
+    return pd.DataFrame(data, columns=keys)
+
+
 names = ["Nearest Neighbors",
          # "Linear SVM",
          # "RBF SVM",
          # "Gaussian Process",
          "Decision Tree", "Random Forest", "Neural Net", "AdaBoost",
          "Naive Bayes"
-         #"QDA"
+         # "QDA"
          ]
 
 classifiers = [
@@ -32,9 +39,10 @@ classifiers = [
     # SVC(kernel="linear", C=0.025), takes too long
     # SVC(gamma=2, C=1), takes too long
     # GaussianProcessClassifier(1.0 * RBF(1.0), n_jobs=-1), # needs too much memory
-    DecisionTreeClassifier(),   # max_depth=5
+    DecisionTreeClassifier(),  # max_depth=5
     # n_jobs = -1 : number of processor cores
     RandomForestClassifier(n_jobs=-1),  # max_depth=5, n_estimators=10, max_features=1,
+    # MLPClassifier(alpha=1, warm_start=True),
     MLPClassifier(activation='relu', alpha=0.0001, batch_size='auto', beta_1=0.9,
                   beta_2=0.999, early_stopping=False, epsilon=1e-08,
                   hidden_layer_sizes=(30, 30, 30), learning_rate='constant',
@@ -51,33 +59,38 @@ engine = create_engine('mysql+pymysql://root:Milch4321@localhost:3306/leaguestat
                        echo=False)
 item_names = {key: value for (key, value) in list(engine.execute('SELECT * FROM itemkeys'))}
 
-collection = db.jhin_training_set
-data = list(collection.find())
-keys = data[1].keys()
-frame = pd.DataFrame(data, columns=keys)
+events = get_data(db.jhin_training_set)
+frames = get_data(db.jhin_frames_test).drop(['_id'], axis=1)
 
-platform_fact, platform_keys = pd.factorize(frame.platformId)
-frame['platform_fact'] = platform_fact
+events.loc[events['itemId'] == 2010, ['itemId']] = 2003  # Health Potions and Biscuits
+events = events.loc[events['itemId'] != 2055]  # Control Wards
+events = events.loc[~events['itemId'].isin([3340, 3363, 3341])]  # Warding Totem, Farsight Aleration, Sweeping Lens
 
-item_fact, item_keys = pd.factorize(frame.itemId)
-frame['item_fact'] = item_fact
+platform_fact, platform_keys = pd.factorize(events.platformId)
+events['platform_fact'] = platform_fact
 
-type_fact, type_key = pd.factorize(frame.type)
-frame['type_fact'] = type_fact
+item_fact, item_keys = pd.factorize(events.itemId)
+events['item_fact'] = item_fact
 
-frame['is_train'] = np.random.uniform(0, 1, len(frame)) <= .9
-train, test = frame[frame['is_train']], frame[~frame['is_train']]
+type_fact, type_key = pd.factorize(events.type)
+events['type_fact'] = type_fact
 
-features = frame.columns.difference(['_id', 'gameId', 'itemId', 'is_train', 'platformId', 'type', 'item_fact'])
-# pprint(train[[x for x in frame.columns if x in features]].head())
+events = pd.merge(events, frames, how='inner', left_on=['gameId', 'participantId', 'platformId', 'frameNo'],
+                  right_on=['gameId', 'participantId', 'platformId', 'frameNo'], copy=False)
+
+events['is_train'] = np.random.uniform(0, 1, len(events)) <= .90
+train, test = events[events['is_train']], events[~events['is_train']]
+
+features = events.columns.difference(['_id', 'gameId', 'itemId', 'is_train', 'platformId', 'type', 'item_fact'])
+# pprint(train[[x for x in events.columns if x in features]].head())
 
 for name, clf in zip(names, classifiers):
     start = datetime.now()
     pprint("Start Processing: " + name)
 
-    clf.fit(train[[x for x in frame.columns if x in features]], train['item_fact'])
+    clf.fit(train[[x for x in events.columns if x in features]], train['item_fact'])
 
-    preds = item_keys[clf.predict(test[[x for x in frame.columns if x in features]])]
+    preds = item_keys[clf.predict(test[[x for x in events.columns if x in features]])]
 
     precision = metrics.accuracy_score(test['itemId'], preds)
     pprint("Accuracy: " + str(precision))
@@ -86,17 +99,17 @@ for name, clf in zip(names, classifiers):
     predicted = pd.Series([item_names[p] for p in preds])
 
     crosstab = pd.crosstab(actual, predicted, rownames=['actual'], colnames=['predicted'])
-    crosstab.to_csv("output/" + name + "_crosstab.csv", sep=";")
+    crosstab.to_csv("output_filtered/" + name + "_crosstab.csv", sep=";")
     cnf_matrix = metrics.confusion_matrix(actual, predicted, labels=[item_names[i] for i in item_keys])
 
     # Plot non-normalized confusion matrix
     df_cm = pd.DataFrame(cnf_matrix, index=[item_names[i] for i in item_keys],
                          columns=[item_names[i] for i in item_keys])
-    df_cm.to_csv("output/" + name + "_confusion_matrix.csv", sep=";")
+    df_cm.to_csv("output_filtered_gold/" + name + "_confusion_matrix.csv", sep=";")
     plt.figure(figsize=(10, 7))
     sns.set(font_scale=0.25)
     sns_plot = sns.heatmap(df_cm).get_figure()
-    sns_plot.savefig("output/confusion_matrix_" + name + ".pdf", format='pdf')
+    sns_plot.savefig("output_filtered_gold/confusion_matrix_" + name + ".pdf", format='pdf')
     # plt.savefig("output/confusion_matrix_" + name + ".pdf", format='pdf')
 
     time = (datetime.now() - start).seconds

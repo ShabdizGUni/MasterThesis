@@ -4,10 +4,17 @@ source("initialize.R")
 ####DISTRIBUTIONS OF CHAMPIONS
 #overall distribution in season 7
 p <- ggplot(data=adc.distribution,aes(x=names, y=gamesPlayed)) + 
-  geom_bar(stat='identity') +
-  scale_x_discrete(limits=adc.distribution[order(by=gamesPlayed,decreasing = T)]$names) +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1), axis.text.y = element_text(size=6))
+  geom_bar(stat='identity', fill="#56B4E9") +
+  scale_x_discrete(limits=adc.distribution[order(by=gamesPlayed,decreasing = T)][1:30]$names) +
+  labs(x = "Champion", y = "#matches", title="Distribution of Top 30 ADCs played in Season 7") +
+  theme_bw() + 
+  theme(axis.text.x = element_text(size=16,angle = 90, hjust = 1), 
+        axis.text.y = element_text(size=6),
+        title = element_text(size=40),
+        axis.title = element_text(size=24)) 
 p
+
+
 
 #Barchart 
 p <- ggplot(data = adc.performance, aes(x=name, y=games/10000 *100, fill = name)) + 
@@ -18,6 +25,7 @@ p <- ggplot(data = adc.performance, aes(x=name, y=games/10000 *100, fill = name)
   coord_flip() + 
   guides(fill=F)
 p+ ggtitle("ADC Picks per Patch and Region")
+p
 
 #Linechart
 p <- ggplot(data = adc.performance[championId %in% relchamps.adc], aes(x = patch, y=games/10000 * 100, group=platformId, color=platformId)) + 
@@ -45,7 +53,7 @@ p <- list()
 for(i in 1:length(patchOrder)){
   df= adc.distribution.patch[patch==patchOrder[i]][order(by=gamesPlayed,decreasing = T)][1:20]
   p[[i]] <- ggplot(df, aes(x=name, y=gamesPlayed)) +
-    geom_bar(stat = "identity") +
+    geom_bar(stat = "identity",fill="#56B4E9") +
     scale_x_discrete(limits=df[order(by=gamesPlayed,decreasing = T)]$name) +
     scale_y_continuous(limits=c(0,20000)) +
     theme(axis.text.x = element_text(angle = 90, hjust = 1), axis.text.y = element_text(size=6)) + 
@@ -57,11 +65,11 @@ adc.set1 <- c("Ashe","Caitlyn", "Draven", "Ezreal", "Kog'Maw", "Lucian", "Jhin",
 adc.set2 <- c("Kog'Maw", "Lucian", "Jhin")
 adc.set3 <- c("Tristana", "Vayne", "Varus", "Xayah")
 adc.set4 <- c("Ashe", "Jhin", "Varus")
-adc.set <- adc.set3
+adc.set <- adc.set4
 
 df <- items.adc[championName %in% adc.set[1:4]][, list(count=.N), by = c("championName", "patch", "itemName")]
 setkeyv(df, c("championName", "patch"))
-championCount <- items.adc[championName %in% adc.set,list(championName, patch)][,list(gamesPlayed = .N), by = c("championName", "patch")]
+championCount <- items.adc[championName %in% adc.set4,list(championName, patch)][,list(gamesPlayed = .N), by = c("championName", "patch")]
 setkeyv(championCount, c("championName", "patch"))
 df <- merge(df, championCount, by= c("championName","patch"))
 df$perc <- df$count/df$gamesPlayed
@@ -70,10 +78,23 @@ df$perc <- df$count/df$gamesPlayed
 p <- ggplot(data = df) + 
   geom_bar(stat= "identity", aes(x=itemName, y=perc, fill= itemName)) + 
   facet_grid(championName ~ factor(patch, levels = patchOrder)) + 
-  theme(axis.text.x = element_text(angle = 90, hjust = 1, size = 6), axis.text.y = element_text(size=6)) + 
+  labs(title="Percentages of Item Purchases for Tier 2 to Tier 4 Items along the Patches") + 
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, size = 6), 
+        axis.text.y = element_text(size=6)) + 
   scale_x_discrete(limits=relItems.ADC) +
   coord_flip() +
   guides(fill=FALSE)
+p
+
+
+p <- ggplot(data = df, aes(x=itemName, y=perc, fill=championName, group=championName)) + 
+  geom_bar(stat= "identity") +  
+  facet_grid(championName~factor(patch, levels = patchOrder)) + 
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, size = 6), axis.text.y = element_text(size=6)) + 
+  scale_x_discrete(limits=relItems.ADC) +
+  coord_flip() +
+  guides(fill=FALSE) +
+  scale_fill_manual(values = c("Varus" = "#9370DB", "Jhin" = "#c0c0c0", "Ashe" = "lightblue"))
 p
 
 #nur ne Idee, aber da erkennt leider keiner etwas.
@@ -87,40 +108,77 @@ p <- ggplot(data = df[itemName %in% relItems.ADC],aes(x=factor(patch, levels = p
 p + coord_polar(theta = "y")
 
 
+##items only
+df %>%
+  group_by(itemName, patch) %>%
+  summarise(count = sum(count)) %>%
+  filter(itemName %in% relItems.ADC) -> df2
+
+p <- ggplot(data = df2, aes(x=itemName,y = count, fill=itemName)) +
+  geom_bar(stat='Identity') +
+  coord_flip() +
+  theme(legend.position = "None") +
+  facet_wrap(~ factor(patch, levels = patchOrder))
+p  
+
 ### attempt to illustrate specific traits of adcs
 # OVERALL
 dfprep = adc.performance.patch %>%
   mutate(DPS = totalDamageToChampions/gameDuration) %>%
-  select(
-    name, patch,
-    games,
-    summoners,
-    winrate,
-    DPS,
-    DmgDealt = totalDamageToChampions,
-    kills,
-    assists, 
-    deaths,
-    DmgTaken = totalDamageTaken,
-    cs = csPerGame,
-    gold = goldEarned
+  mutate(patch2 = 
+           dplyr::case_when(patch %in% c("6.23", "6.24") ~ "Pre-Season",
+                            patch %in% c("7.1", "7.2", "7.3") ~ "7.1-7.3",
+                            patch == "7.4" ~ "7.4",
+                            patch == "7.5" ~ "7.5",
+                            patch %in% c("7.6", "7.7", "7.8") ~ "7.6-7.8",
+                            patch %in% c("7.9", "7.10") ~ "7.9-7.10",
+                            patch %in% c("7.11", "7.12", "7.13") ~ "7.11-7.13",
+                            patch %in% c("7.14", "7.15", "7.16", "7.17", "7.18") ~ "7.14-7.18",
+                            TRUE                     ~ "undefined")) %>%
+  group_by(name,patch2) %>%
+  summarise(
+    games = sum(games),
+    #summoners,
+    winrate = mean(winrate),
+    #DPS,
+    DmgDealt = mean(totalDamageToChampions),
+    kills = mean(kills),
+    assists = mean(assists), 
+    deaths = mean(deaths),
+    DmgTaken = mean(totalDamageTaken),
+    cs = mean(csPerGame),
+    gold = mean(goldEarned)
   )
 dfprep = data.table(dfprep)
 
 df = dfprep %>%
   rownames_to_column( var = "champ" ) %>%
-  mutate_each(funs(rescale), -c(champ,name,patch)) %>%
-  melt(id.vars=c('champ','name','patch'), measure.vars=colnames(dfprep[,-c("name","patch")])) %>%
+  mutate_each(funs(rescale), -c(champ,name,patch2)) %>%
+  melt(id.vars=c('champ','name','patch2'), measure.vars=colnames(dfprep[,-c("name","patch2")])) %>%
   arrange(champ)
 df = data.table(df)
 
 #radar charts: better filter out some champs
-df[name %in% c(adc.set1,adc.set2)] %>%
-  ggplot(aes(x=variable, y=value, group=name, color=name)) + 
-  geom_polygon() +
-  coord_radar() + theme_bw() + facet_grid(name~factor(patch, levels=patchOrder)) + 
-  scale_x_discrete(labels = abbreviate) + 
-  theme(axis.text.x = element_text(size = 5), legend.position="none")
+radarChart <- function(adc.set) {
+  p <- df[name %in% c(adc.set)] %>%
+        ggplot(aes(x=variable, y=value, group=name, color=name)) + 
+        geom_polygon() +
+        labs(title="Radar Charts describing KPIs for Champions through Season 7") +
+        coord_radar() + theme_bw() + facet_grid(name~factor(patch2, levels=c("Pre-Season", "7.1-7.3","7.4","7.5","7.6-7.8","7.9-7.10","7.11-7.13","7.14-7.18"))) + 
+        scale_x_discrete(labels = abbreviate) + 
+        theme(legend.position="none", 
+              title = element_text(size = 20),
+              axis.text.x = element_text(size = 8), 
+              axis.ticks.x = element_line(size = 8),
+              axis.ticks.y = element_line(size = 8),
+              axis.text.y = element_blank(),
+              axis.title.x = element_blank(),
+              axis.title.y = element_blank())
+  return(p)
+}
+radarChart(c("Ashe", "Ezreal",  "Jhin", "Varus"))
+
+
 
 #bar chart perspective
 df %>%
@@ -195,6 +253,13 @@ adc.performance.patch[championId %in% relchamps.adc] %>%
   geom_line() + 
   scale_x_discrete(limits=patchOrder) + 
   facet_wrap(~name, ncol = 4)
+
+adc.performance.patch[championId %in% relchamps.adc] %>%
+  ggplot(aes(y = totalDamageToChampions, x = patch, group=name)) + 
+  geom_line() + 
+  scale_x_discrete(limits=patchOrder) + 
+  facet_wrap(~name, ncol = 4)
+
 
 
 # dps
@@ -322,11 +387,25 @@ p
 p <- ggplot(data=sup.distribution,aes(x=names, y=gamesPlayed)) + 
   geom_bar(stat='identity') +
   scale_x_discrete(limits=sup.distribution[order(by=gamesPlayed,decreasing = T)]$names) +
+  theme_bw() +
   theme(axis.text.x = element_text(angle = 90, hjust = 1), axis.text.y = element_text(size=6))
 p
 
+p <- ggplot(data=sup.distribution,aes(x=names, y=gamesPlayed)) + 
+  geom_bar(stat='identity', fill="#56B4E9") +
+  scale_x_discrete(limits=sup.distribution[order(by=gamesPlayed,decreasing = T)][1:30]$names) +
+  labs(x = "Champion", y = "#matches", title="Distribution of Top 30 Supports played in Season 7") +
+  theme_bw() + 
+  theme(axis.text.x = element_text(size=16,angle = 90, hjust = 1), 
+        axis.text.y = element_text(size=6),
+        title = element_text(size=40),
+        axis.title = element_text(size=24)) 
+p
+
+
+
 #Barchart 
-p <- ggplot(data = sup.performance, aes(x=name, y=games/2000 *100, fill = name)) + 
+p <- ggplot(data = sup.performance, aes(x=name, y=games/10000 *100, fill = name)) + 
   geom_bar(stat="Identity") + 
   facet_wrap( ~ platformId+factor(patch, levels = patchOrder), nrow=4) + 
   theme(axis.text.x = element_text(angle = 90, hjust = 1), axis.text.y = element_text(size=6)) + 
@@ -334,11 +413,11 @@ p <- ggplot(data = sup.performance, aes(x=name, y=games/2000 *100, fill = name))
   coord_flip() + 
   guides(fill=F)
 p+ ggtitle("Support Picks per Patch and Region")
+p
 
 #Linechart
-p <- ggplot(data = sup.performance[championId %in% relchamps.sup], aes(x = patch, y=games/2000 * 100, group=platformId, color=platformId)) + 
+p <- ggplot(data = sup.performance[championId %in% relchamps.sup], aes(x = patch, y=games/10000 * 100, group=platformId, color=platformId)) + 
   geom_line(linetype = 1) + 
-  #geom_line(data = adc.performance , aes(y = winrate), linetype = 2) + 
   scale_x_discrete(limits=patchOrder) +
   theme(axis.text.x = element_text(size=5)) +
   labs(x = "Patch", y = "Playrate in Percentage") +
@@ -385,7 +464,7 @@ p <- ggplot(data = adc.pro.performance[platformId %in% majorRegions], aes(x=name
   labs(x = "Champion", y = "Playrate in Percentages") +
   coord_flip() + 
   guides(fill=F)
-p+ ggtitle("ADC Picks per Patch and Region")
+p + ggtitle("ADC Picks per Patch and Region")
 
 #Linechart
 p <- ggplot(data = adc.pro.performance[platformId %in% majorRegions], aes(x = patch, y=playrate * 100, group=platformId, color=platformId)) + 

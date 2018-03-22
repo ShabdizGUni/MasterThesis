@@ -15,9 +15,11 @@ def ensure_dir(file_path):
 
 pd.set_option('display.width', 1000)
 db = MongoClient('mongodb://localhost:27017/').LeagueCrawler
+threshold = 0.08
+
 
 for _id in con.ADC_CHAMPIONS_DICT.keys():
-    itemsets = db.itemsets_adc.find({"championId": _id})  # Jhin
+    itemsets = db.itemsets_adc.find({"championId": _id})
     champion = con.ADC_CHAMPIONS_DICT[_id]
     path = "Viz/" + champion + "/"
 
@@ -42,9 +44,6 @@ for _id in con.ADC_CHAMPIONS_DICT.keys():
     itemsets["four_core_items"] = itemsets["core_items"].apply(lambda x: True if len(x) >= 4 else False)
     itemsets["core_items_4"] = itemsets["core_items"].apply(lambda x: x[:4] if len(x) >= 4 else None)
 
-    # itemsetsJhin["core_items"] = \
-    #     itemsetsJhin.apply(lambda row: tuple(map(lambda x: con.ADC_TIER_3_ITEMS_DICT[x], row['core_items'])), axis=1)
-
     df = itemsets
 
     gamesCount_2_items = df[df['two_core_items']].groupby(['championId', 'platformId', 'patch']).size().reset_index(
@@ -62,16 +61,17 @@ for _id in con.ADC_CHAMPIONS_DICT.keys():
 
     result_2 = pd.merge(result_2_items, gamesCount_2_items, on=['championId', 'platformId', 'patch'])
     result_2['freq'] = result_2['2_items_count'] / result_2['gamesPlayed_2']
+    num_games_2 = sum(itemsets["two_core_items"])
 
     sns.set(font_scale=1)
-    df2 = result_2[(result_2['freq'] > 0.05)][['platformId', 'patch', 'core_items_2', 'freq']]
+    df2 = result_2[(result_2['freq'] > threshold)][['platformId', 'patch', 'core_items_2', 'freq']]
     g2 = sns.FacetGrid(df2,
                        col='patch', col_wrap=5, col_order=con.PATCHES)
     g2 = (g2.map(sns.barplot, 'freq', 'core_items_2', 'platformId', hue_order=["EUW1", "NA1", "BR1", "KR"],
                  palette=sns.color_palette("pastel"),
                  order=sorted(df2.core_items_2.unique(), key=operator.itemgetter(0))).add_legend())
     g2.fig.subplots_adjust(top=0.9)
-    g2.fig.suptitle(champion + "'s Itemsets")
+    g2.fig.suptitle(champion + "'s Itemsets - Games: " + str(num_games_2)+", Threshold:" + str(threshold), fontsize=20)
     g2.savefig(path+"2_items.pdf")
 
     # alternatively:
@@ -91,10 +91,10 @@ for _id in con.ADC_CHAMPIONS_DICT.keys():
 
     result_3 = pd.merge(result_3_items, gamesCount_3_items, on=['championId', 'platformId', 'patch'])
     result_3['freq'] = result_3['2_items_count'] / result_3['gamesPlayed_3']
-
+    num_games_3 = sum(itemsets["three_core_items"])
 
     sns.set(font_scale=0.7)
-    df3 = result_3[(result_3['freq'] > 0.05)][['platformId', 'patch', 'core_items_3', 'freq']]
+    df3 = result_3[(result_3['freq'] > threshold)][['platformId', 'patch', 'core_items_3', 'freq']]
     g3 = sns.FacetGrid(df3,
                        col='patch', col_wrap=5, col_order=con.PATCHES)
     g3 = (g3.map(sns.barplot, 'freq', 'core_items_3', 'platformId', hue_order=["EUW1", "NA1", "BR1", "KR"],
@@ -102,7 +102,7 @@ for _id in con.ADC_CHAMPIONS_DICT.keys():
                  order=sorted(df3.core_items_3.unique(), key=operator.itemgetter(0))
                  ).add_legend())
     g3.fig.subplots_adjust(top=0.9)
-    g3.fig.suptitle(champion + " Itemsets")
+    g3.fig.suptitle(champion + " Itemsets - Games: " + str(num_games_3)+", Threshold:" + str(threshold), fontsize=20)
     g3.savefig(path+"3_items.pdf")
 
     # First four items
@@ -113,14 +113,15 @@ for _id in con.ADC_CHAMPIONS_DICT.keys():
 
     result_4 = pd.merge(result_4_items, gamesCount_4_items, on=['championId', 'platformId', 'patch'])
     result_4['freq'] = result_4['4_items_count'] / result_4['gamesPlayed_4']
+    num_games_4 = sum(itemsets["four_core_items"])
 
     sns.set(font_scale=0.5)
-    df4 = result_4[(result_4['freq'] > 0.05)][['platformId', 'patch', 'core_items_4', 'freq']]
+    df4 = result_4[(result_4['freq'] > threshold)][['platformId', 'patch', 'core_items_4', 'freq']]
     g4 = sns.FacetGrid(df4,
                        col='patch', col_wrap=5, col_order=con.PATCHES)
     g4 = (g4.map(sns.barplot, 'freq', 'core_items_4', 'platformId', hue_order=["EUW1", "NA1", "BR1", "KR"],
                  palette=sns.color_palette("pastel"),
                  order=sorted(df4.core_items_4.unique(), key=operator.itemgetter(0))).add_legend())
     g4.fig.subplots_adjust(top=0.9)
-    g4.fig.suptitle(champion + "'s Itemsets")
+    g4.fig.suptitle(champion + "'s Itemsets - Games: " + str(num_games_4)+", Threshold:" + str(threshold), fontsize=20)
     g4.savefig(path+"4_items.pdf")
