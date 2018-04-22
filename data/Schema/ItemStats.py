@@ -1,3 +1,4 @@
+import re
 from sqlalchemy import *
 from sqlalchemy.dialects import mysql
 from sqlalchemy.ext.declarative import declarative_base
@@ -12,6 +13,7 @@ class ItemStats(Base, object):
     __tablename__ = "ItemStats"
     _id = Column(BigInteger, primary_key=True)
     version = Column(String(20))
+    patch = Column(String(20))
     key = Column(Integer)
     name = Column(String(50))
     goldTotal = Column(Integer)
@@ -92,12 +94,17 @@ class ItemStats(Base, object):
     e6 = Column(Float)
     e7 = Column(Float)
     e8 = Column(Float)
+    e9 = Column(Float)
+    e10 = Column(Float)
+    e11 = Column(Float)
+    e12 = Column(Float)
 
     def __init__(self, dict:dict):
         self.key = dict.get("id", 0)
         self.name = dict.get("name", "")
         self.depth = dict.get("depth", 0)
         self.version = dict.get("version", "")
+        self.patch = re.match("\d.\d+", dict.get("version", "")).group(0)
         gold = dict.get("gold")
         self.goldTotal = gold.get("total", 0)
         self.goldBase = gold.get("base", 0)
@@ -177,3 +184,7 @@ class ItemStats(Base, object):
         self.e6 = effects.get("Effect6Amount", 0)
         self.e7 = effects.get("Effect7Amount", 0)
         self.e8 = effects.get("Effect8Amount", 0)
+        self.e9 = effects.get("Effect9Amount", 0)
+        self.e10 = effects.get("Effect10Amount", 0)
+        self.e11 = effects.get("Effect11Amount", 0)
+        self.e12 = effects.get("Effect12Amount", 0)

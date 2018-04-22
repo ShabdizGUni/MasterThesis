@@ -1,5 +1,7 @@
 import itertools
+import seaborn as sns
 import numpy as np
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 
 
@@ -36,3 +38,47 @@ def plot_confusion_matrix(cm, classes,
     plt.tight_layout()
     plt.ylabel('True label')
     plt.xlabel('Predicted label')
+
+
+# def plot_confusion_matrix(cm, names, title='Confusion matrix', cmap=plt.cm.Blues):
+#     plt.clf()
+#     mpl.rcParams.update(mpl.rcParamsDefault)
+#     plt.imshow(cm, interpolation='nearest', cmap=cmap)
+#     plt.title(title)
+#     plt.colorbar()
+#     tick_marks = np.arange(len(names))
+#     plt.xticks(tick_marks, names, rotation=45)
+#     plt.yticks(tick_marks, names)
+#     plt.tight_layout()
+#     plt.ylabel('True label')
+#     plt.xlabel('Predicted label')
+
+
+def plot_accuracy_dev(acc, val_acc, filepath, title=None):
+    plt.clf()
+    mpl.rcParams.update(mpl.rcParamsDefault)
+    plt.figure()
+    sns.set_style('darkgrid')
+    plt.plot(acc)
+    plt.plot(val_acc)
+    plt.ylabel('accuray')
+    plt.xlabel('epochs')
+    title_label = 'Accuracy over Epochs' if title is None else 'Accuracy over Epochs :' + title
+    plt.title(title_label)
+    plt.legend(['train', 'test'], loc='upper left')
+    plt.savefig(filepath)
+
+
+def plot_loss_dev(loss, val_loss, filepath, title=None):
+    plt.clf()
+    plt.figure()
+    sns.set_style('darkgrid')
+    plt.plot(loss)
+    plt.plot(val_loss)
+    plt.xlabel('epochs')
+    plt.ylabel('loss')
+    title_label = 'Loss over Epochs' if title is None else 'Loss over Epochs: ' + title
+    plt.title(title_label)
+    plt.legend(['train', 'test'], loc='lower left')
+    plt.savefig(filepath)
+

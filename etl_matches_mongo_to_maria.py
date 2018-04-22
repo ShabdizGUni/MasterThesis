@@ -35,7 +35,7 @@ class DBWorker(threading.Thread):
                 i += 1
                 if (i % 1000) == 0: self.session.flush()  # flush every 1000 rows
             self.session.commit()
-            matchDocs = None
+            del matchDocs
             print(str(datetime.now()) + ": inserted " + self.platform + " " + patch + " in " + str(
                 datetime.now()-startInsert))
         print(str(datetime.now()) + " Worker " + self.platform + " finished after " + str(datetime.now() - start))

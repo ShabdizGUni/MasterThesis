@@ -3,9 +3,11 @@ from data.Schema.ProPlayerStats import *
 from sqlalchemy.orm import *
 from data.Pipelines import *
 from datetime import datetime
-
 from data.Schema.ProPlayerStats import ProPlayerDetail
+from pathlib import Path
 
+p = Path(__file__).parents[1]
+# /absolute/path/to/two/levels/up
 
 def main():
     engine = create_engine('mysql+pymysql://root:Milch4321@localhost:3306/leaguestats', encoding='latin1', echo=False)

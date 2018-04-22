@@ -114,7 +114,7 @@ class APIRequester(Requester):
         if version is None: version = self.currentVersion
         #https://euw1.api.riotgames.com/lol/static-data/v3/champions?locale=en_GB&tags=all&dataById=true&api_key=RGAPI-3f33e490-afd7-450b-81d3-94abd670cc58
         url = "https://"+region+self.root+"static-data/v3/champions?locale=en_GB&tags=all&dataById=true&version="+version+"&api_key=" + self.__apiKey
-        #print(url)
+        print(url)
         try:
             return self.sendRequest(url)
         except requests.HTTPError as e:
@@ -123,9 +123,10 @@ class APIRequester(Requester):
     def requestItemData(self, region:str, version = None):
         if version is None: version = self.currentVersion
         #https://euw1.api.riotgames.com/lol/static-data/v3/items?api_key=d0e89ead-8392-4faf-b6f8-d10c24b2cef7
+        #https://euw1.api.riotgames.com/lol/static-data/v3/items?locale=en_US&api_key=RGAPI-296a0423-8e3e-41a6-8cb6-60faae74220b
         #https://ru.api.riotgames.com/lol/static-data/v3/items?locale=en_GB&version=7.15.1&tags=all&api_key=RGAPI-2b8652c3-163a-4077-8fa7-846d1c11990e
         url = "https://"+region+self.root+"static-data/v3/items?locale=en_GB&tags=all&version="+version+"&api_key=" + self.__apiKey
-        #print(url)
+        print(url)
         try:
             return self.sendRequest(url)
         except requests.HTTPError as e:

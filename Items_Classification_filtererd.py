@@ -60,11 +60,11 @@ frame.loc[frame['itemId'] == 2010, ['itemId']] = 2003  # Health Potions and Bisc
 frame = frame.loc[frame['itemId'] != 2055]  # Control Wards
 frame = frame.loc[~frame['itemId'].isin([3340, 3363, 3341])]  # Warding Totem, Farsight Aleration, Sweeping Lens
 
-platform_fact, platform_keys = pd.factorize(frame.platformId)
-frame['platform_fact'] = platform_fact
+platformId_fact, platform_keys = pd.factorize(frame.platformId)
+frame['platformId_fact'] = platformId_fact
 
-item_fact, item_keys = pd.factorize(frame.itemId)
-frame['item_fact'] = item_fact
+itemId_fact, item_keys = pd.factorize(frame.itemId)
+frame['itemId_fact'] = itemId_fact
 
 type_fact, type_key = pd.factorize(frame.type)
 frame['type_fact'] = type_fact
@@ -72,14 +72,14 @@ frame['type_fact'] = type_fact
 frame['is_train'] = np.random.uniform(0, 1, len(frame)) <= .9
 train, test = frame[frame['is_train']], frame[~frame['is_train']]
 
-features = frame.columns.difference(['_id', 'gameId', 'itemId', 'is_train', 'platformId', 'type', 'item_fact'])
+features = frame.columns.difference(['_id', 'gameId', 'itemId', 'is_train', 'platformId', 'type', 'itemId_fact'])
 # pprint(train[[x for x in frame.columns if x in features]].head())
 
 for name, clf in zip(names, classifiers):
     start = datetime.now()
     pprint("Start Processing: " + name)
 
-    clf.fit(train[[x for x in frame.columns if x in features]], train['item_fact'])
+    clf.fit(train[[x for x in frame.columns if x in features]], train['itemId_fact'])
 
     preds = item_keys[clf.predict(test[[x for x in frame.columns if x in features]])]
 

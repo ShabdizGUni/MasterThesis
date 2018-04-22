@@ -6,6 +6,7 @@
         <list>
           <option value="E124" />
           <option value="E701" />
+          <option value="E501" />
         </list>
       </option>
     </inspection_tool>
@@ -15,6 +16,14 @@
           <option value="N803" />
           <option value="N813" />
           <option value="N806" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredIdentifiers">
+        <list>
+          <option value="Lib.Classification.Classifiers.KFold" />
+          <option value="Lib.Classification.Classifiers.cross_val_score" />
         </list>
       </option>
     </inspection_tool>
