@@ -1,46 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="4e29aa07-948d-4c5f-b43a-151662fe8a96" name="Default" comment="- Classification advanced&#10;- ModelBuilder for Classification Experiments&#10;- LSTM integrated">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Classification TimeSeries test.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Classifier_Tuning.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Deep_Neural_Network_Test.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Deep_learninig_classification.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Lib/Classification/DataHandling.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Lib/Classification/ModelBuilder.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Lib/Classification/common.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/fetchMasteries.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/prepare_purchases.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/run_classification.py" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/data/logRegTest.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/output/AdaBoost_confusion_matrix.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/output/Decision Tree_confusion_matrix.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/output/Decision Tree_crosstab.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/output/Naive Bayes_confusion_matrix.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/output/Nearest Neighbors_confusion_matrix.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/output/Nearest Neighbors_crosstab.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/output/Neural Net_confusion_matrix.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/output/Random Forest_confusion_matrix.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/output/Random Forest_crosstab.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/output/confusion_matrix_Random Forest.pdf" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Lib/Classification/classifiers.py" afterPath="$PROJECT_DIR$/Lib/Classification/Classifiers.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" />
+    <list default="true" id="4e29aa07-948d-4c5f-b43a-151662fe8a96" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/FetchStaticData.py" afterPath="$PROJECT_DIR$/FetchStaticData.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Items_Classification.py" afterPath="$PROJECT_DIR$/Items_Classification.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Items_Classification_Gold.py" afterPath="$PROJECT_DIR$/Items_Classification_Gold.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Items_Classification_availableGold.py" afterPath="$PROJECT_DIR$/Items_Classification_availableGold.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Items_Classification_filtered_gold.py" afterPath="$PROJECT_DIR$/Items_Classification_filtered_gold.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Items_Classification_filtererd.py" afterPath="$PROJECT_DIR$/Items_Classification_filtererd.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/API/APIRequests.py" afterPath="$PROJECT_DIR$/Lib/API/APIRequests.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Classification TimeSeries test.py" afterPath="$PROJECT_DIR$/Classification TimeSeries test.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/Classification/Classifiers.py" afterPath="$PROJECT_DIR$/Lib/Classification/Classifiers.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/Classification/DataHandling.py" afterPath="$PROJECT_DIR$/Lib/Classification/DataHandling.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/Classification/common.py" afterPath="$PROJECT_DIR$/Lib/Classification/common.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/Viz.py" afterPath="$PROJECT_DIR$/Lib/Viz.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/ETL/ChampionStats.py" afterPath="$PROJECT_DIR$/data/ETL/ChampionStats.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/ETL/ItemStats.py" afterPath="$PROJECT_DIR$/data/ETL/ItemStats.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/ETL/ProMatches.py" afterPath="$PROJECT_DIR$/data/ETL/ProMatches.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/R-Project/.Rhistory" afterPath="$PROJECT_DIR$/R-Project/.Rhistory" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/R-Project/.Rproj.user/3A2C61EF/pcs/source-pane.pper" afterPath="$PROJECT_DIR$/R-Project/.Rproj.user/3A2C61EF/pcs/source-pane.pper" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/R-Project/.Rproj.user/3A2C61EF/pcs/windowlayoutstate.pper" afterPath="$PROJECT_DIR$/R-Project/.Rproj.user/3A2C61EF/pcs/windowlayoutstate.pper" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/R-Project/.Rproj.user/3A2C61EF/sdb/prop/INDEX" afterPath="$PROJECT_DIR$/R-Project/.Rproj.user/3A2C61EF/sdb/prop/INDEX" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/R-Project/.Rproj.user/shared/notebooks/paths" afterPath="$PROJECT_DIR$/R-Project/.Rproj.user/shared/notebooks/paths" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/R-Project/adc_sup_viz.R" afterPath="$PROJECT_DIR$/R-Project/adc_sup_viz.R" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/R-Project/initialize.R" afterPath="$PROJECT_DIR$/R-Project/initialize.R" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/R-Project/viz.R" afterPath="$PROJECT_DIR$/R-Project/viz.R" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/Pipelines.py" afterPath="$PROJECT_DIR$/data/Pipelines.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/Schema/ItemStats.py" afterPath="$PROJECT_DIR$/data/Schema/ItemStats.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/Schema/PlayerStats.py" afterPath="$PROJECT_DIR$/data/Schema/PlayerStats.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/constants.py" afterPath="$PROJECT_DIR$/data/constants.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/etl_matches_mongo_to_maria.py" afterPath="$PROJECT_DIR$/etl_matches_mongo_to_maria.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/prepare_purchases.py" afterPath="$PROJECT_DIR$/prepare_purchases.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/run_classification.py" afterPath="$PROJECT_DIR$/run_classification.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -52,25 +32,35 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Classification TimeSeries test.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Classification TimeSeries test.py">
+      <file leaf-file-name="prepare_purchases.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/prepare_purchases.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="374">
-              <caret line="292" column="58" lean-forward="false" selection-start-line="292" selection-start-column="58" selection-end-line="292" selection-end-column="58" />
+            <state relative-caret-position="527">
+              <caret line="34" column="65" lean-forward="false" selection-start-line="34" selection-start-column="65" selection-end-line="34" selection-end-column="65" />
               <folding>
-                <element signature="e#0#14#0" expanded="true" />
+                <element signature="e#0#42#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Items_Classification_availableGold.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Items_Classification_availableGold.py">
+      <file leaf-file-name="PlayerStats.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/data/Schema/PlayerStats.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1362">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state relative-caret-position="1177">
+              <caret line="129" column="41" lean-forward="false" selection-start-line="129" selection-start-column="41" selection-end-line="129" selection-end-column="41" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="constants.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/data/constants.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1717">
+              <caret line="118" column="0" lean-forward="false" selection-start-line="118" selection-start-column="0" selection-end-line="118" selection-end-column="0" />
               <folding>
-                <element signature="e#0#19#0" expanded="true" />
+                <element signature="e#3210#3508#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -79,56 +69,10 @@
       <file leaf-file-name="etl_matches_mongo_to_maria.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/etl_matches_mongo_to_maria.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="1" column="26" lean-forward="false" selection-start-line="1" selection-start-column="26" selection-end-line="1" selection-end-column="26" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PlayerStats.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/data/Schema/PlayerStats.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="11" column="0" lean-forward="true" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+            <state relative-caret-position="663">
+              <caret line="39" column="44" lean-forward="true" selection-start-line="39" selection-start-column="44" selection-end-line="39" selection-end-column="44" />
               <folding>
-                <element signature="e#0#24#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ModelBuilder.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Lib/Classification/ModelBuilder.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2040">
-              <caret line="27" column="52" lean-forward="true" selection-start-line="27" selection-start-column="52" selection-end-line="27" selection-end-column="52" />
-              <folding>
-                <element signature="e#0#18#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="FetchStaticData.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/FetchStaticData.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="340">
-              <caret line="20" column="10" lean-forward="true" selection-start-line="20" selection-start-column="10" selection-end-line="20" selection-end-column="10" />
-              <folding>
-                <element signature="e#0#33#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CreateItemsetDocs.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/CreateItemsetDocs.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding>
-                <element signature="e#0#30#0" expanded="true" />
+                <element signature="e#0#28#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -137,35 +81,49 @@
       <file leaf-file-name="ItemStats.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/data/ETL/ItemStats.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="7" column="0" lean-forward="true" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
-              <folding>
-                <element signature="e#0#21#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="187">
+              <caret line="17" column="33" lean-forward="true" selection-start-line="17" selection-start-column="33" selection-end-line="17" selection-end-column="33" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ProMatches.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/data/ETL/ProMatches.py">
+      <file leaf-file-name="FetchStaticData.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/FetchStaticData.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="6" column="24" lean-forward="false" selection-start-line="6" selection-start-column="24" selection-end-line="6" selection-end-column="24" />
-              <folding>
-                <element signature="e#0#28#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="306">
+              <caret line="20" column="10" lean-forward="true" selection-start-line="20" selection-start-column="10" selection-end-line="20" selection-end-column="10" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ChampionStats.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ChampionStats.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/data/ETL/ChampionStats.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="219">
+            <state relative-caret-position="221">
               <caret line="19" column="32" lean-forward="true" selection-start-line="19" selection-start-column="32" selection-end-line="19" selection-end-column="32" />
-              <folding>
-                <element signature="e#0#21#0" expanded="true" />
-              </folding>
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="patches.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Lib/patches.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="225">
+              <caret line="17" column="66" lean-forward="false" selection-start-line="17" selection-start-column="66" selection-end-line="17" selection-end-column="66" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Crawler.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Lib/Crawler.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1020">
+              <caret line="71" column="21" lean-forward="false" selection-start-line="71" selection-start-column="21" selection-end-line="71" selection-end-column="21" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -181,36 +139,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>DRAGO</find>
-      <find>get_acco</find>
-      <find>goldSell</find>
-      <find>5000000</find>
-      <find>Decisi</find>
-      <find>run_deci</find>
-      <find>train_test_split</find>
-      <find>Decision</find>
-      <find>deep_learning_2</find>
-      <find>build_model_2</find>
-      <find>model2</find>
-      <find>train_test</find>
-      <find>build_model2</find>
-      <find>build_mode</find>
-      <find>ninja_tabi</find>
-      <find>bers</find>
-      <find>ninja</find>
-      <find>confusi</find>
-      <find>item_names</find>
-      <find>filter</find>
-      <find>filter_events</find>
-      <find>get_regul</find>
-      <find>count</find>
-      <find>setup</find>
-      <find>path</find>
-      <find>get_regu</find>
-      <find>dev</find>
-      <find>build</find>
-      <find>start</find>
-      <find>build_param_model_2a</find>
+      <find>tri_force</find>
+      <find>&quot;ie&quot;</find>
+      <find>&quot;er&quot;</find>
+      <find>gb</find>
+      <find>duskblade</find>
+      <find>mana</find>
+      <find>mm</find>
+      <find>3085</find>
+      <find>ibg</find>
+      <find>wits_end</find>
+      <find>g_rageblade</find>
+      <find>guard_angel</find>
+      <find>hexdrinker</find>
+      <find>maw</find>
+      <find>last_whisper</find>
+      <find>giant_slayer</find>
+      <find>exec_calling</find>
+      <find>black_cleaver</find>
+      <find>lord_dom</find>
+      <find>mortal_rem</find>
+      <find>teamElder</find>
+      <find>muramana</find>
+      <find>eon</find>
+      <find>blood</find>
+      <find>3072</find>
+      <find>merc_scimitar</find>
+      <find>bt</find>
+      <find>cull</find>
+      <find>$$</find>
+      <find>: 0</find>
     </findStrings>
     <replaceStrings>
       <replace>dict.get(&quot;gameId&quot;, false)</replace>
@@ -273,7 +231,6 @@
         <option value="$PROJECT_DIR$/data/ETL/Matches.py" />
         <option value="$PROJECT_DIR$/Lib/patches.py" />
         <option value="$PROJECT_DIR$/CrawlGames.py" />
-        <option value="$PROJECT_DIR$/Lib/Crawler.py" />
         <option value="$PROJECT_DIR$/data/ETL/PlayerEvents.py" />
         <option value="$PROJECT_DIR$/data/Schema/PlayerEvents.py" />
         <option value="$PROJECT_DIR$/Lib/Vizualisations.py" />
@@ -296,26 +253,27 @@
         <option value="$PROJECT_DIR$/fetchMasteries.py" />
         <option value="$PROJECT_DIR$/Deep_learninig_classification.py" />
         <option value="$PROJECT_DIR$/Lib/API/APIRequests.py" />
-        <option value="$PROJECT_DIR$/data/constants.py" />
         <option value="$PROJECT_DIR$/data/Schema/ItemStats.py" />
         <option value="$PROJECT_DIR$/Lib/Classification/Metrics.py" />
         <option value="$PROJECT_DIR$/Classifier_Tuning.py" />
-        <option value="$PROJECT_DIR$/run_classification.py" />
         <option value="$PROJECT_DIR$/imdb_example.py" />
-        <option value="$PROJECT_DIR$/data/Pipelines.py" />
-        <option value="$PROJECT_DIR$/Lib/Viz.py" />
-        <option value="$PROJECT_DIR$/prepare_purchases.py" />
         <option value="$PROJECT_DIR$/etl_matches_mongo_to_maria.py" />
-        <option value="$PROJECT_DIR$/Lib/Classification/DataHandling.py" />
-        <option value="$PROJECT_DIR$/Lib/Classification/common.py" />
-        <option value="$PROJECT_DIR$/Lib/Classification/Classifiers.py" />
         <option value="$PROJECT_DIR$/Lib/Classification/ModelBuilder.py" />
-        <option value="$PROJECT_DIR$/Classification TimeSeries test.py" />
         <option value="$PROJECT_DIR$/FetchStaticData.py" />
-        <option value="$PROJECT_DIR$/data/Schema/PlayerStats.py" />
         <option value="$PROJECT_DIR$/data/ETL/ItemStats.py" />
         <option value="$PROJECT_DIR$/data/ETL/ProMatches.py" />
         <option value="$PROJECT_DIR$/data/ETL/ChampionStats.py" />
+        <option value="$PROJECT_DIR$/Lib/Viz.py" />
+        <option value="$PROJECT_DIR$/Lib/Classification/Classifiers.py" />
+        <option value="$PROJECT_DIR$/prepare_purchases.py" />
+        <option value="$PROJECT_DIR$/data/constants.py" />
+        <option value="$PROJECT_DIR$/Lib/Classification/DataHandling.py" />
+        <option value="$PROJECT_DIR$/Classification TimeSeries test.py" />
+        <option value="$PROJECT_DIR$/Lib/Classification/common.py" />
+        <option value="$PROJECT_DIR$/run_classification.py" />
+        <option value="$PROJECT_DIR$/data/Pipelines.py" />
+        <option value="$PROJECT_DIR$/data/Schema/PlayerStats.py" />
+        <option value="$PROJECT_DIR$/Lib/Crawler.py" />
       </list>
     </option>
   </component>
@@ -367,7 +325,6 @@
     </navigator>
     <panes>
       <pane id="Scratches" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -400,75 +357,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="test" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="MasterThesis" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="MasterThesis" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="test" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="LSTM_2" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="MasterThesis" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="MasterThesis" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Lib" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="MasterThesis" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="MasterThesis" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Lib" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Classification" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="MasterThesis" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="MasterThesis" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Lib" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="API" />
+              <option name="myItemId" value="data" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -483,6 +372,10 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="data" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Schema" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -506,6 +399,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -535,7 +429,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.Classification TimeSeries test">
+  <component name="RunManager" selected="Python.etl_matches_mongo_to_maria">
     <configuration default="false" name="run_classification" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -549,24 +443,6 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="MasterThesis" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/run_classification.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <method />
-    </configuration>
-    <configuration default="false" name="Classifier_Tuning" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="MasterThesis" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Classifier_Tuning.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -621,6 +497,24 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="MasterThesis" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/prepare_purchases.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="etl_matches_mongo_to_maria" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="MasterThesis" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/etl_matches_mongo_to_maria.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -735,18 +629,18 @@
     <list size="6">
       <item index="0" class="java.lang.String" itemvalue="Python.insertFromMongoDB" />
       <item index="1" class="java.lang.String" itemvalue="Python.run_classification" />
-      <item index="2" class="java.lang.String" itemvalue="Python.Classifier_Tuning" />
-      <item index="3" class="java.lang.String" itemvalue="Python.imdb_example" />
-      <item index="4" class="java.lang.String" itemvalue="Python.Classification TimeSeries test" />
-      <item index="5" class="java.lang.String" itemvalue="Python.prepare_purchases" />
+      <item index="2" class="java.lang.String" itemvalue="Python.imdb_example" />
+      <item index="3" class="java.lang.String" itemvalue="Python.Classification TimeSeries test" />
+      <item index="4" class="java.lang.String" itemvalue="Python.prepare_purchases" />
+      <item index="5" class="java.lang.String" itemvalue="Python.etl_matches_mongo_to_maria" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.Classification TimeSeries test" />
-        <item index="1" class="java.lang.String" itemvalue="Python.prepare_purchases" />
-        <item index="2" class="java.lang.String" itemvalue="Python.run_classification" />
-        <item index="3" class="java.lang.String" itemvalue="Python.imdb_example" />
-        <item index="4" class="java.lang.String" itemvalue="Python.Classifier_Tuning" />
+        <item index="0" class="java.lang.String" itemvalue="Python.etl_matches_mongo_to_maria" />
+        <item index="1" class="java.lang.String" itemvalue="Python.run_classification" />
+        <item index="2" class="java.lang.String" itemvalue="Python.Classification TimeSeries test" />
+        <item index="3" class="java.lang.String" itemvalue="Python.prepare_purchases" />
+        <item index="4" class="java.lang.String" itemvalue="Python.imdb_example" />
       </list>
     </recent_temporary>
   </component>
@@ -806,7 +700,14 @@
       <option name="project" value="LOCAL" />
       <updated>1521759474486</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="- Classification advanced&#10;- ModelBuilder for Classification Experiments&#10;- LSTM integrated&#10;- adjusted ETL scripts for Ubuntu16.0 usage">
+      <created>1524356110485</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1524356110485</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -825,15 +726,14 @@
     <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39748955" sideWeight="0.3203125" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.34623432" sideWeight="0.6791667" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3970433" sideWeight="0.3203125" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.35460252" sideWeight="0.6791667" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980973" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.39748955" sideWeight="0.6796875" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39748955" sideWeight="0.6796875" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3294979" sideWeight="0.49583334" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20729166" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="R Packages" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="R Graphics" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32845187" sideWeight="0.47916666" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39435145" sideWeight="0.47916666" order="3" side_tool="false" content_ui="tabs" x="0" y="333" width="1920" height="374" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -845,6 +745,7 @@
       <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" x="1053" y="100" width="774" height="847" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32845187" sideWeight="0.47916666" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
@@ -881,7 +782,8 @@
     <MESSAGE value="- added Script for analysing itemsets based on champions and patch&#10;- extended constants&#10;- added plots (Viz), but still needs a review" />
     <MESSAGE value="- Rproject improvements&#10;- etl processes&#10;- classifiers implemented &#10;- most likely just way too much to tell." />
     <MESSAGE value="- Rproject improvements (colors and themes)&#10;- Adjusted Vizualisations for n-core item charts&#10;- Multiple Versions of &quot;naive classification&quot; approaches" />
-    <option name="LAST_COMMIT_MESSAGE" value="- Rproject improvements (colors and themes)&#10;- Adjusted Vizualisations for n-core item charts&#10;- Multiple Versions of &quot;naive classification&quot; approaches" />
+    <MESSAGE value="- Classification advanced&#10;- ModelBuilder for Classification Experiments&#10;- LSTM integrated&#10;- adjusted ETL scripts for Ubuntu16.0 usage" />
+    <option name="LAST_COMMIT_MESSAGE" value="- Classification advanced&#10;- ModelBuilder for Classification Experiments&#10;- LSTM integrated&#10;- adjusted ETL scripts for Ubuntu16.0 usage" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -898,7 +800,7 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="116" />
+      <option name="time" value="123" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="PythonConfigurationType">
@@ -909,53 +811,6 @@
     </watches-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36/Lib/site-packages/keras/engine/training.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="158">
-          <caret line="1629" column="0" lean-forward="false" selection-start-line="1629" selection-start-column="0" selection-end-line="1629" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36/Lib/site-packages/keras/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="962" column="0" lean-forward="false" selection-start-line="962" selection-start-column="0" selection-end-line="962" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36/Lib/site-packages/hyperopt/pyll_utils.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="20" column="0" lean-forward="false" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36/Lib/site-packages/sklearn/model_selection/_split.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="183">
-          <caret line="1919" column="4" lean-forward="false" selection-start-line="1919" selection-start-column="4" selection-end-line="1919" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36/Lib/site-packages/IPython/core/interactiveshell.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="183">
-          <caret line="2962" column="0" lean-forward="false" selection-start-line="2962" selection-start-column="0" selection-end-line="2962" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/Pipelines.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="327">
-          <caret line="2439" column="21" lean-forward="true" selection-start-line="2439" selection-start-column="21" selection-end-line="2439" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Loss.png" />
-    <entry file="file://$PROJECT_DIR$/Loss4.png" />
-    <entry file="file://$PROJECT_DIR$/Loss3.png" />
-    <entry file="file://$PROJECT_DIR$/Loss2.png" />
-    <entry file="file://$PROJECT_DIR$/Accuracy.png" />
     <entry file="file://$PROJECT_DIR$/Accuracy1.png" />
     <entry file="file://$PROJECT_DIR$/Accuracy2.png" />
     <entry file="file://$PROJECT_DIR$/Accuracy3.png" />
@@ -1012,22 +867,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/testfile.png" />
-    <entry file="file://$PROJECT_DIR$/prepare_purchases.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="850">
-          <caret line="52" column="97" lean-forward="false" selection-start-line="52" selection-start-column="97" selection-end-line="52" selection-end-column="97" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/constants.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/test/LSTM_1/Accuracy1.png">
       <provider selected="true" editor-type-id="images">
         <state />
@@ -1038,56 +877,69 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Lib/API/APIRequests.py">
+    <entry file="file://$PROJECT_DIR$/Cleansing.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3060">
+        <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#15#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Lib/Crawler.py">
+    <entry file="file://$PROJECT_DIR$/CreateItemsetDocs.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="45" column="45" lean-forward="true" selection-start-line="45" selection-start-column="45" selection-end-line="45" selection-end-column="45" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/LSTM_2a/Loss2a.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/LSTM_2a/Accuracy2a.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36/Lib/site-packages/keras/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="191">
+          <caret line="466" column="0" lean-forward="false" selection-start-line="466" selection-start-column="0" selection-end-line="466" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36/Lib/site-packages/keras/layers/recurrent.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="200">
+          <caret line="498" column="0" lean-forward="false" selection-start-line="498" selection-start-column="0" selection-end-line="498" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Items_Classification_availableGold.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-319">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Lib/Viz.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="82" column="25" lean-forward="false" selection-start-line="82" selection-start-column="25" selection-end-line="82" selection-end-column="25" />
-          <folding>
-            <element signature="e#0#16#0" expanded="false" />
-          </folding>
+        <state relative-caret-position="1326">
+          <caret line="82" column="19" lean-forward="false" selection-start-line="82" selection-start-column="19" selection-end-line="82" selection-end-column="19" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Cleansing.py">
+    <entry file="file://$PROJECT_DIR$/Lib/Classification/Classifiers.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
+        <state relative-caret-position="17">
+          <caret line="275" column="0" lean-forward="false" selection-start-line="275" selection-start-column="0" selection-end-line="275" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Lib/Classification/common.py">
+    <entry file="file://$PROJECT_DIR$/Lib/Classification/ModelBuilder.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-697">
-          <caret line="16" column="27" lean-forward="true" selection-start-line="16" selection-start-column="27" selection-end-line="16" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Lib/Classification/DataHandling.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="190" column="13" lean-forward="true" selection-start-line="190" selection-start-column="13" selection-end-line="190" selection-end-column="13" />
-          <folding>
-            <element signature="e#0#19#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="-1071">
+          <caret line="45" column="40" lean-forward="false" selection-start-line="45" selection-start-column="40" selection-end-line="45" selection-end-column="40" />
         </state>
       </provider>
     </entry>
@@ -1101,117 +953,161 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Lib/Classification/Classifiers.py">
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36/Lib/site-packages/pandas/core/groupby.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3268">
-          <caret line="362" column="61" lean-forward="true" selection-start-line="362" selection-start-column="61" selection-end-line="362" selection-end-column="61" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/run_classification.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="234">
-          <caret line="21" column="1" lean-forward="true" selection-start-line="21" selection-start-column="1" selection-end-line="21" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Lib/Classification/ModelBuilder.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2040">
-          <caret line="27" column="52" lean-forward="true" selection-start-line="27" selection-start-column="52" selection-end-line="27" selection-end-column="52" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="191">
+          <caret line="2933" column="0" lean-forward="false" selection-start-line="2933" selection-start-column="0" selection-end-line="2933" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Classification TimeSeries test.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="292" column="58" lean-forward="false" selection-start-line="292" selection-start-column="58" selection-end-line="292" selection-end-column="58" />
+        <state relative-caret-position="224">
+          <caret line="387" column="22" lean-forward="false" selection-start-line="387" selection-start-column="22" selection-end-line="387" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Lib/Classification/DataHandling.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="177" column="65" lean-forward="true" selection-start-line="177" selection-start-column="65" selection-end-line="177" selection-end-column="65" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Items_Classification_Gold.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="438">
+          <caret line="35" column="55" lean-forward="true" selection-start-line="35" selection-start-column="55" selection-end-line="35" selection-end-column="55" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/output/Team Performance depending/Deep Learning 1/loss.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/output/Team Performance depending/Deep Learning 1/confusion_matrix.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/ETL/ProMatches.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="18" column="59" lean-forward="false" selection-start-line="18" selection-start-column="59" selection-end-line="18" selection-end-column="59" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/Schema/ProPlayerStats.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="73">
+          <caret line="120" column="8" lean-forward="false" selection-start-line="120" selection-start-column="8" selection-end-line="120" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/Pipelines.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-679">
+          <caret line="144" column="4" lean-forward="false" selection-start-line="144" selection-start-column="4" selection-end-line="144" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/prepare_purchases.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="527">
+          <caret line="34" column="65" lean-forward="false" selection-start-line="34" selection-start-column="65" selection-end-line="34" selection-end-column="65" />
           <folding>
-            <element signature="e#0#14#0" expanded="true" />
+            <element signature="e#0#42#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Items_Classification_availableGold.py">
+    <entry file="file://$PROJECT_DIR$/data/constants.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1362">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state relative-caret-position="1717">
+          <caret line="118" column="0" lean-forward="false" selection-start-line="118" selection-start-column="0" selection-end-line="118" selection-end-column="0" />
           <folding>
-            <element signature="e#0#19#0" expanded="true" />
+            <element signature="e#3210#3508#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/run_classification.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="527">
+          <caret line="52" column="0" lean-forward="false" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Lib/Classification/common.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="531">
+          <caret line="117" column="50" lean-forward="false" selection-start-line="117" selection-start-column="50" selection-end-line="117" selection-end-column="50" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Lib/API/APIRequests.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2551">
+          <caret line="210" column="28" lean-forward="true" selection-start-line="210" selection-start-column="28" selection-end-line="210" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Lib/Crawler.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1020">
+          <caret line="71" column="21" lean-forward="false" selection-start-line="71" selection-start-column="21" selection-end-line="71" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Lib/patches.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="17" column="66" lean-forward="false" selection-start-line="17" selection-start-column="66" selection-end-line="17" selection-end-column="66" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/data/Schema/PlayerStats.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" column="0" lean-forward="true" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#24#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="1177">
+          <caret line="129" column="41" lean-forward="false" selection-start-line="129" selection-start-column="41" selection-end-line="129" selection-end-column="41" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/etl_matches_mongo_to_maria.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="1" column="26" lean-forward="false" selection-start-line="1" selection-start-column="26" selection-end-line="1" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/FetchStaticData.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="20" column="10" lean-forward="true" selection-start-line="20" selection-start-column="10" selection-end-line="20" selection-end-column="10" />
-          <folding>
-            <element signature="e#0#33#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/CreateItemsetDocs.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#30#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/ETL/ProMatches.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="24" lean-forward="false" selection-start-line="6" selection-start-column="24" selection-end-line="6" selection-end-column="24" />
+        <state relative-caret-position="663">
+          <caret line="39" column="44" lean-forward="true" selection-start-line="39" selection-start-column="44" selection-end-line="39" selection-end-column="44" />
           <folding>
             <element signature="e#0#28#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/data/ETL/ItemStats.py">
+    <entry file="file://$PROJECT_DIR$/data/ETL/ChampionStats.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="0" lean-forward="true" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#21#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="221">
+          <caret line="19" column="32" lean-forward="true" selection-start-line="19" selection-start-column="32" selection-end-line="19" selection-end-column="32" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/data/ETL/ChampionStats.py">
+    <entry file="file://$PROJECT_DIR$/data/ETL/ItemStats.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="219">
-          <caret line="19" column="32" lean-forward="true" selection-start-line="19" selection-start-column="32" selection-end-line="19" selection-end-column="32" />
-          <folding>
-            <element signature="e#0#21#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="187">
+          <caret line="17" column="33" lean-forward="true" selection-start-line="17" selection-start-column="33" selection-end-line="17" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/FetchStaticData.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="20" column="10" lean-forward="true" selection-start-line="20" selection-start-column="10" selection-end-line="20" selection-end-column="10" />
+          <folding />
         </state>
       </provider>
     </entry>

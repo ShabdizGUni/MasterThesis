@@ -3,15 +3,14 @@ source("initialize.R")
 
 ####DISTRIBUTIONS OF CHAMPIONS
 #overall distribution in season 7
-p <- ggplot(data=adc.distribution,aes(x=names, y=gamesPlayed)) + 
+p <- ggplot(data=adc.distribution,aes(x=names, y=gamesPlayed/1000)) + 
   geom_bar(stat='identity', fill="#56B4E9") +
   scale_x_discrete(limits=adc.distribution[order(by=gamesPlayed,decreasing = T)][1:30]$names) +
-  labs(x = "Champion", y = "#matches", title="Distribution of Top 30 ADCs played in Season 7") +
+  labs(x = "Champion", y = "#matches") +
   theme_bw() + 
-  theme(axis.text.x = element_text(size=16,angle = 90, hjust = 1), 
-        axis.text.y = element_text(size=6),
-        title = element_text(size=40),
-        axis.title = element_text(size=24)) 
+  theme(axis.text.x = element_text(size=8,angle = 45, hjust = 1), 
+        axis.text.y = element_text(size=8),
+        axis.title = element_text(size=12)) 
 p
 
 
@@ -30,6 +29,53 @@ p
 #Linechart
 p <- ggplot(data = adc.performance[championId %in% relchamps.adc], aes(x = patch, y=games/10000 * 100, group=platformId, color=platformId)) + 
   geom_line(linetype = 1) + 
+  #geom_line(data = adc.performance , aes(y = winrate), linetype = 2) + 
+  scale_x_discrete(limits=patchOrder) +
+  theme_igray() +
+  theme(axis.text.x = element_text(size=5)) +
+  labs(x = "Patch", y = "Playrate in Percentage") +
+  facet_wrap(~ name, ncol = 4) 
+p + ggtitle("ADC Picks per Patch and Region")
+
+#Linechart
+p <- ggplot(data = adc.performance.patch[championId %in% relchamps.adc], aes(x = patch, y=winrate * 100,group=name)) + 
+  geom_line(linetype = 1) + 
+  #geom_line(data = adc.performance , aes(y = winrate), linetype = 2) + 
+  scale_x_discrete(limits=patchOrder) +
+  theme_igray() +
+  theme(axis.text.x = element_text(size=5)) +
+  labs(x = "Patch", y = "Winrate in Percentage") +
+  facet_wrap(~ name, ncol = 4) 
+p + ggtitle("ADC Picks per Patch and Region")
+
+
+
+#Linechart
+p <- ggplot(data = adc.performance[championId %in% relchamps.adc], aes(x = patch, y=gamesBanned/10000 * 100, group=platformId, color=platformId)) + 
+  geom_line(linetype = 1) + 
+  #geom_line(data = adc.performance , aes(y = winrate), linetype = 2) + 
+  scale_x_discrete(limits=patchOrder) +
+  theme_igray() +
+  theme(axis.text.x = element_text(size=5)) +
+  labs(x = "Patch", y = "Playrate in Percentage") +
+  facet_wrap(~ name, ncol = 4) 
+p + ggtitle("ADC Picks per Patch and Region")
+
+#Linechart
+p <- ggplot(data = adc.performance[championId %in% relchamps.adc], aes(x = patch, y=(gamesBanned+games)/10000 * 100, group=platformId, color=platformId)) + 
+  geom_line(linetype = 1) + 
+  #geom_line(data = adc.performance , aes(y = winrate), linetype = 2) + 
+  scale_x_discrete(limits=patchOrder) +
+  theme_igray() +
+  theme(axis.text.x = element_text(size=5)) +
+  labs(x = "Patch", y = "Playrate in Percentage") +
+  facet_wrap(~ name, ncol = 4) 
+p + ggtitle("ADC Picks per Patch and Region")
+
+
+
+p <- ggplot(data = adc.performance[championId %in% relchamps.adc], aes(x = patch, y=games/40000 * 100, group=platformId, fill=platformId)) + 
+  geom_area() + 
   #geom_line(data = adc.performance , aes(y = winrate), linetype = 2) + 
   scale_x_discrete(limits=patchOrder) +
   theme_igray() +

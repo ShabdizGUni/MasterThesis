@@ -90,7 +90,9 @@ def get_events_as_timeseries(champions, patches, tiers, limit, min_purch):
     #             frame.loc[len(frame)] = new_frame.loc[i, columns]
     #         data = []
     # return frame
-    return pd.DataFrame(data=data, columns=data[0].keys())
+    keys = data[1].keys()
+    df = pd.DataFrame(data, columns=keys)
+    return df.drop(columns=["_id"])
 
 
 def get_according_frames(mongo, events):
@@ -179,7 +181,7 @@ def compute_reward_gold(events):
 
 
 # for neural networks and deep learning
-def one_hot_encode_columns(df, columns):
+def one_hot_encode_columns(df, columns, drop=True):
     c = []
     for column in columns:
         if column in df.columns: c.append(column)
@@ -187,7 +189,7 @@ def one_hot_encode_columns(df, columns):
         values = list(set(df[column]))
         for v in values:
             df[v] = np.where(df[column].str.contains(v), 1, 0)
-        # df = df.drop(columns=[column])
+        if drop: df = df.drop(columns=[column])
     return df
 
 
@@ -239,13 +241,13 @@ def prepare_dataset(df):
 
 
 def filter_data_set(events):  # Corrupting Potions stays!
-    events = events[events.itemId.isin(get_regular())]
-    events.loc[events['itemId'] == 2010, ['itemId']] = 2003  # Health Potions and Biscuits
-    events = events.loc[events['itemId'] != 2055]  # Control Wards
-    events = events.loc[events['itemId'] != 2003]  # Health Potions and Biscuits
-    # events = events.loc[events['itemId'] != 2031]  # Refillable Potion
-    events = events.loc[~events['itemId'].isin([2011, 2140, 2139, 2138])]  # Elixir of Skill, Wrath, Sorcery and Iron
-    events = events.loc[~events['itemId'].isin([3340, 3363, 3341])]  # Warding Totem, Farsight Aleration, Sweeping Lens
+    events = events[events.itemId.isin(const.ADC_RELEVANT_ITEMS)]
+    # events.loc[events['itemId'] == 2010, ['itemId']] = 2003  # Health Potions and Biscuits
+    # events = events.loc[events['itemId'] != 2055]  # Control Wards
+    # events = events.loc[events['itemId'] != 2003]  # Health Potions and Biscuits
+    # # events = events.loc[events['itemId'] != 2031]  # Refillable Potion
+    # events = events.loc[~events['itemId'].isin([2011, 2140, 2139, 2138])]  # Elixir of Skill, Wrath, Sorcery and Iron
+    # events = events.loc[~events['itemId'].isin([3340, 3363, 3341])]  # Warding Totem, Farsight Aleration, Sweeping Lens
     return events
 
 
@@ -259,40 +261,95 @@ def get_regular():
 def get_purchases_blank(champions=None, patches=None, tiers=None, limit=None, timeseries=False, min_purch=10):
     mongo = get_mongo_connection()
     if not timeseries:
-        events = get_data_frame(mongo.adc_purchase_details, limit=limit, champions=champions, patches=patches)
+        events = get_data_frame(mongo.adc_purchase_details, limit=limit, champions=champions, patches=patches, tiers=tiers)
     else:
-        events = get_events_as_timeseries(champions=champions, patches=patches, tiers=None, limit=limit, min_purch=min_purch)
+        events = get_events_as_timeseries(champions=champions, patches=patches, tiers=tiers, limit=limit, min_purch=min_purch)
     events.drop(columns=events.columns.difference(common.columns_blank), inplace=True)
     events = filter_data_set(events)
+    print('Join Frames...')
+    events = join_frames(events)
+    print('Join Gold Values ...')
+    item_infos = get_item_infos()
+    events = pd.merge(events, item_infos[["itemId", "patch", "goldSell", "goldBase", "goldTotal"]],
+                      how="left", on=["itemId", "patch"], copy=False)
+    print('Calculate available Gold ...')
+    events = compute_reward_gold(events)
+    events = filter_data_set(events)
+    print('Join Itemstats by Patch ...')
+    events = pd.merge(events, get_item_stats(), how='left', on='patch', copy=False)
     return events
 
 
 def get_purchases_pre_game(champions=None, patches=None, tiers=None, limit=None, timeseries=False, min_purch=10):
     mongo = get_mongo_connection()
     if not timeseries:
-        events = get_data_frame(mongo.adc_purchase_details, limit=limit, champions=champions, patches=patches)
+        events = get_data_frame(mongo.adc_purchase_details, limit=limit, champions=champions, patches=patches, tiers=tiers)
     else:
-        events = get_events_as_timeseries(champions=champions, patches=patches, tiers=None, limit=limit, min_purch=min_purch)
+        events = get_events_as_timeseries(champions=champions, patches=patches, tiers=tiers, limit=limit, min_purch=min_purch)
     events.drop(columns=events.columns.difference(common.columns_pre_game), inplace=True)
     events = filter_data_set(events)
+    print('Join Frames...')
+    events = join_frames(events)
+    print('Join Gold Values ...')
+    item_infos = get_item_infos()
+    events = pd.merge(events, item_infos[["itemId", "patch", "goldSell", "goldBase", "goldTotal"]],
+                      how="left", on=["itemId", "patch"], copy=False)
+    print('Calculate available Gold ...')
+    events = compute_reward_gold(events)
+    events = filter_data_set(events)
+    print('Join Itemstats by Patch ...')
+    events = pd.merge(events, get_item_stats(), how='left', on='patch', copy=False)
     return events
 
 
 def get_purchases_in_game(champions=None, patches=None, tiers=None, limit=None, timeseries=False, min_purch=10):
     mongo = get_mongo_connection()
     if not timeseries:
-        events = get_data_frame(mongo.adc_purchase_details, limit=limit, champions=champions, patches=patches)
+        events = get_data_frame(mongo.adc_purchase_details, limit=limit, champions=champions, patches=patches, tiers=tiers)
     else:
-        events = get_events_as_timeseries(champions=champions, patches=patches, tiers=None, limit=limit, min_purch=min_purch)
+        events = get_events_as_timeseries(champions=champions, patches=patches, tiers=tiers, limit=limit, min_purch=min_purch)
     events.drop(columns=events.columns.difference(common.columns_in_game), inplace=True)
     events = filter_data_set(events)
+    print('Join Frames...')
+    events = join_frames(events)
+    print('Join Gold Values ...')
+    item_infos = get_item_infos()
+    events = pd.merge(events, item_infos[["itemId", "patch", "goldSell", "goldBase", "goldTotal"]],
+                      how="left", on=["itemId", "patch"], copy=False)
+    print('Calculate available Gold ...')
+    events = compute_reward_gold(events)
+    events = filter_data_set(events)
+    print('Join Itemstats by Patch ...')
+    events = pd.merge(events, get_item_stats(), how='left', on='patch', copy=False)
+    return events
+
+
+def get_purchases_inventory(champions=None, patches=None, tiers=None, limit=None, timeseries=False, min_purch=10):
+    mongo = get_mongo_connection()
+    if not timeseries:
+        events = get_data_frame(mongo.adc_purchase_details, limit=limit, champions=champions, patches=patches, tiers=tiers)
+    else:
+        events = get_events_as_timeseries(champions=champions, patches=patches, tiers=tiers, limit=limit, min_purch=min_purch)
+    events.drop(columns=events.columns.difference(common.columns_inventory), inplace=True)
+    events = filter_data_set(events)
+    print('Join Frames...')
+    events = join_frames(events)
+    print('Join Gold Values ...')
+    item_infos = get_item_infos()
+    events = pd.merge(events, item_infos[["itemId", "patch", "goldSell", "goldBase", "goldTotal"]],
+                      how="left", on=["itemId", "patch"], copy=False)
+    print('Calculate available Gold ...')
+    events = compute_reward_gold(events)
+    events = filter_data_set(events)
+    print('Join Itemstats by Patch ...')
+    events = pd.merge(events, get_item_stats(), how='left', on='patch', copy=False)
     return events
 
 
 def get_purchases_performance(champions=None, patches=None, tiers=None, limit=None, timeseries=False, min_purch=10):
     mongo = get_mongo_connection()
     if not timeseries:
-        events = get_data_frame(mongo.adc_purchase_details, limit=limit, champions=champions, patches=patches)
+        events = get_data_frame(mongo.adc_purchase_details, limit=limit, champions=champions, patches=patches, tiers=tiers)
     else:
         events = get_events_as_timeseries(champions=champions, patches=patches, tiers=tiers, limit=limit, min_purch=min_purch)
     events.drop(columns=events.columns.difference(common.columns_performance), inplace=True)
@@ -310,8 +367,25 @@ def get_purchases_performance(champions=None, patches=None, tiers=None, limit=No
     return events
 
 
-def get_purchase_global_performance(champions=None, patches=None, limit=None, timeseries=False, min_purch=10):
-    pass
+def get_purchase_teams(champions=None, patches=None, tiers=None, limit=None, timeseries=False, min_purch=10):
+    mongo = get_mongo_connection()
+    if not timeseries:
+        events = get_data_frame(mongo.adc_purchase_details, limit=limit, champions=champions, patches=patches)
+    else:
+        events = get_events_as_timeseries(champions=champions, patches=patches, tiers=tiers, limit=limit, min_purch=min_purch)
+    events.drop(columns=events.columns.difference(common.columns_teams), inplace=True)
+    print('Join Frames...')
+    events = join_frames(events)
+    print('Join Gold Values ...')
+    item_infos = get_item_infos()
+    events = pd.merge(events, item_infos[["itemId", "patch", "goldSell", "goldBase", "goldTotal"]],
+                      how="left", on=["itemId", "patch"], copy=False)
+    print('Calculate available Gold ...')
+    events = compute_reward_gold(events)
+    events = filter_data_set(events)
+    print('Join Itemstats by Patch ...')
+    events = pd.merge(events, get_item_stats(), how='left', on='patch', copy=False)
+    return events
 
 
 def get_data_set_0_all():

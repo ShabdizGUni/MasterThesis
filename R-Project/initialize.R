@@ -31,6 +31,9 @@ require(dplyr)
 require(tibble)
 library(rgl)
 
+# especially important for weekday labels
+Sys.setlocale(category = "LC_ALL", locale = "english")
+
 coord_radar <- function (theta = "x", start = 0, direction = 1) 
 {
   theta <- match.arg(theta, c("x", "y"))
@@ -59,6 +62,7 @@ connection <-
 
 champPerformancePatch <- data.table(dbReadTable(connection, "champ_kpi_patch"))
 champPerformancePatchRegion <- data.table(dbReadTable(connection, "champ_kpi_patch_region"))
+bans <- data.table(dbReadTable(connection, "bans"))
 #champPerformancePatchByWin <- data.table(dbReadTable(connection, "champPerformancePatchWin"))
 
 # #ProGames
@@ -126,10 +130,56 @@ names(champ) <- champLookUp$championId
 ### AD CARRIES
 adc <- data.table(dbGetQuery(conn = connection, "SELECT * FROM playerdetails WHERE lane = 'BOTTOM' AND role = 'DUO_CARRY' AND gameDuration >= 900"))
 #adc.Pro <- proplayerstats[lane == "BOTTOM" & role == "DUO_CARRY"] 
+
+banlist <- merge(rbind(
+                bans[,list(gameId, platformId,patch, ban=ban0)], 
+                bans[,list(gameId, platformId,patch, ban=ban1)],
+                bans[,list(gameId, platformId,patch, ban=ban2)],
+                bans[,list(gameId, platformId,patch, ban=ban3)],
+                bans[,list(gameId, platformId,patch, ban=ban4)]
+              ),
+              champLookUp,
+              by.x="ban", by.y="championId"
+        )
+
+#bans <- bans[,list(gamesBanned = .N), by = list(gameId, patch, platformId,name)]
+bans2 <- banlist[, banned := list(list(sort(unique(name)))) , by=list(gameId, platformId, patch)]
+
+banned2 <- bans2[,list(ban1 = banned[[1]][1], 
+                       ban2 = banned[[1]][2], 
+                       ban3 = banned[[1]][3], 
+                       ban4 = banned[[1]][4], 
+                       ban5 = banned[[1]][5], 
+                       ban6 = banned[[1]][6], 
+                       ban7 = banned[[1]][7], 
+                       ban8 = banned[[1]][8], 
+                       ban9 = banned[[1]][9], 
+                       ban10 = banned[[1]][10]), by = list(gameId,patch,platformId)]
+
+banlist <- rbind(
+            banned2[,list(gameId, platformId,patch, name=ban1)],
+            banned2[,list(gameId, platformId,patch, name=ban2)],
+            banned2[,list(gameId, platformId,patch, name=ban3)],
+            banned2[,list(gameId, platformId,patch, name=ban4)],
+            banned2[,list(gameId, platformId,patch, name=ban5)],
+            banned2[,list(gameId, platformId,patch, name=ban6)],
+            banned2[,list(gameId, platformId,patch, name=ban7)],
+            banned2[,list(gameId, platformId,patch, name=ban8)],
+            banned2[,list(gameId, platformId,patch, name=ban9)],
+            banned2[,list(gameId, platformId,patch, name=ban10)]
+          )
+
+
+
 relchamps.adc <- adc[,list(gamesPlayed = .N), by = championId][order(by = gamesPlayed, decreasing = T)][,.SD[1:16]][,championId]
 
 adc.relevant <- adc[championId %in% relchamps.adc]
 adc.performance <- champPerformancePatchRegion[lane=="BOTTOM" & role == "DUO_CARRY" & championId %in% unique(adc.relevant$championId)]
+adc.performance <- merge(
+                    adc.performance,
+                    banlist[, list(gamesBanned=.N), by= list(name, platformId, patch)],
+                    by=c("patch", "platformId", "name")
+)
 adc.performance.patch <- champPerformancePatch[lane == "BOTTOM" & role == "DUO_CARRY" & championId %in% unique(adc.relevant$championId)]
 #adc.performance.patch.win <- champPerformancePatchByWin[lane == "BOTTOM" & role == "DUO_CARRY" & championId %in% unique(adc.relevant$championId)]
 
@@ -196,6 +246,7 @@ relItems.ADC = c("Infinity Edge",
                  "Guinsoo's Rageblade",
                  "Blade of the Ruined King",
                  "The Bloodthirster",
+                 "Death's Dance",
                  "Edge of Night",
                  "Hexdrinker",
                  "Wit's End",
@@ -243,6 +294,7 @@ items.sup = rbind(
   sup[championId %in% relchamps.sup,list(championId, platformId, patch, item=item5)],
   sup[championId %in% relchamps.sup,list(championId, platformId, patch, item=item6)]
 )
+
 
 # botlane adc+sup:
 # botlane = data.table(

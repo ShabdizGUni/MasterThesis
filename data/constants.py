@@ -71,25 +71,25 @@ ADC_CHAMPIONS_DICT = {
 # ITEMS #
 
 ADC_TIER_3_ITEMS_LIST = [
-                        3031,  #Infinity Edge
-                        3508,  #Essence Reaver
-                        3043,  #Muramana
-                        3004,  #Manamune
-                        3124,  #Guinsoo's Rageblade
-                        3153,  #BORK
-                        3072,  #Bloodthirster
-                        3814,  #Edge of Night
-                        3156,  #Maw of Malmortius
-                        3091,  #Wit's End
-                        3071,  #Black Cleaver
-                        3147,  #Duskblade
-                        3142,  #Ghostblade
-                        3078,  #Trinity Force
-                        3085,  #Runaan's
-                        3094,  #Rapid Firecannon
-                        3087,  #Statikk Shiv
-                        3046,  #Phantom Dancer
-                        3025  #Iceborn Gauntlet
+                        3031,  # Infinity Edge
+                        3508,  # Essence Reaver
+                        3043,  # Muramana
+                        3004,  # Manamune
+                        3124,  # Guinsoo's Rageblade
+                        3153,  # BORK
+                        3072,  # Bloodthirster
+                        3814,  # Edge of Night
+                        3156,  # Maw of Malmortius
+                        3091,  # Wit's End
+                        3071,  # Black Cleaver
+                        3147,  # Duskblade
+                        3142,  # Ghostblade
+                        3078,  # Trinity Force
+                        3085,  # Runaan's
+                        3094,  # Rapid Firecannon
+                        3087,  # Statikk Shiv
+                        3046,  # Phantom Dancer
+                        3025   # Iceborn Gauntlet
                          ]
 
 ADC_TIER_3_ITEMS_DICT = {
@@ -115,3 +115,68 @@ ADC_TIER_3_ITEMS_DICT = {
     # Guardian Angel, Scimitar (QSS), Last Whisper (Lord Dominik's, Mortal Reminder)
     # Boots, Masteries, Runes
 }
+
+ADC_RELEVANT_ITEMS = [
+    1055,   # dorans blade
+    1056,   # dorans ring
+    1054,   # dorans shield
+    1083,   # cull
+    1036,   # long sowrd
+    1042,   # dagger
+    1051,   # brawler's gloves
+    1018,   # cloak of agility
+    1028,   # ruby crystal
+    1027,   # saphire crystal
+    3067,   # kindlegem
+    1029,   # cloth armor
+    1031,   # chain vest
+    1033,   # null magic mantle
+    1057,   # negatron cloak
+    3140,   # qss
+    1026,   # blasting wand
+    1037,   # pickaxe
+    1038,   # bf sword
+    1001,   # boots
+    3006,   # berserkers grieves
+    3117,   # mobi boots
+    3009,   # boots of swiftness
+    3047,   # ninja tabis
+    3158,   # boots of lucidity
+    3111,   # merc treads
+    3134,   # serrated dirk
+    3133,   # cf warhammer
+    1053,   # vamp scepter
+    3144,   # cutlass
+    1043,   # recurve bow
+    3086,   # zeal
+    2015,   # kircheis shard
+    3057,   # sheen
+    3044,   # phage
+    3046,   # phantom dancer
+    3087,   # statikk shiv
+    3085,   # runaans hurricane
+    3094,   # rapid firecannon
+    3078,   # trinity force
+    3031,   # infinity edge
+    3508,   # essence reaver
+    3142,   # youmuu's ghostblade
+    3147,   # duskblade
+    3814,   # edge of night
+    3042,   # muramana
+    3004,   # manamune
+    3025,   # ice bourne gauntlet
+    3091,   # wit's end
+    3124,   # guinsoo's rageblade
+    3026,   # guardian angel
+    3155,   # hexdrinker
+    3156,   # maw of malmortius
+    3139,   # mercurial scimitar
+    3072,   # Bloodthirster
+    3812,   # Death's Dance
+    3071,   # black cleaver
+    3035,   # last whisper
+    3123,   # executioner's calling
+    3034,   # giant slayer
+    3036,   # lord dominik's regard
+    3033    # mortal reminder
+]

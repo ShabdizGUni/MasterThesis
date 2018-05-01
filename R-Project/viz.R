@@ -14,15 +14,11 @@ source("initialize.R")
 tiers_agg <- data.table(tiers_stats)[,list(count = sum(count)), by=list(tier)]
 p <- ggplot(data = tiers_agg, aes(x=tier, y=count/1000, fill=tier)) + 
   geom_bar(stat='Identity') + 
-  labs(x ="Skill Tier", y = "#Players", title="Representation of Skill Tiers in thousands") + 
+  labs(x ="Skill Tier", y = "#Players in thousands") + 
   scale_x_discrete(limits=(tiers_order)) +
-  theme_bw()+ 
-  theme(legend.position="none",  
-        title=element_text(size=20),
-        axis.title.x=element_text(size=12),
-        axis.ticks.x = element_text(size=8),
-        axis.title.y = element_text(size=12),
-        axis.ticks.y = element_text(size=8)) + 
+  theme_bw() + 
+  theme(legend.position="none",
+        axis.text.x = element_text(size=8)) +
   scale_fill_manual(values=c("CHALLENGER"="orange", 
                       "MASTER"="#966F33", 
                       "DIAMOND"="#cbe3f0",
@@ -44,11 +40,10 @@ p <- ggplot(data = tiers_stats, aes(x=patch, y=count, group=order, color=factor(
 p
 
 #bar
-p <- ggplot(data = tiers_stats, aes(x=patch, y=count/1000, group=order, fill=factor(tier, levels=tiers_order))) + 
+p <- ggplot(data = tiers_stats, aes(x=patch, y=count/1000, group=factor(tier, levels=tiers_order), fill=factor(tier, levels=tiers_order))) + 
   geom_bar(stat='Identity') + 
   scale_x_discrete(limits=patchOrder) +  
-  labs( y = "#players",
-        title = "Representation of Skill Tiers through Season 7 in thousands")+ 
+  labs( y = "#players in thousands") + 
   theme(title=element_text(size=20),
         legend.title = element_text(size=16),
         axis.title = element_text(size=12)) +
@@ -62,51 +57,118 @@ p <- ggplot(data = tiers_stats, aes(x=patch, y=count/1000, group=order, fill=fac
                              "UNRANKED"="black"))
 p
 
+
+
+pop_tier_platform <- data.table(dbReadTable(connection, "population_region_tier"))
+pop_tier_platform %>%
+  group_by(tier, platformId) %>%
+  summarise(count = sum(count)) -> ptp
+ptp$order <- factor(ptp$tier, levels = tiers_order)
+ptp <- ptp[order(ptp$order),]
+p <- ggplot(data = ptp, aes(x=order, y=count/1000, group=order, fill=order)) + 
+  geom_bar(stat='Identity') + 
+  facet_wrap(~platformId, nrow=2) +
+  scale_x_discrete(limits=tiers_order) +  
+  labs( y = "#players in thousands",
+        x = "Skill Tier")+ 
+  theme_bw() +
+  theme(title=element_text(size=12),
+        legend.title = element_text(size=8),
+        axis.title = element_text(size=8),
+        axis.text.x = element_blank(),
+        legend.position = "bottom") +
+  scale_fill_manual("Skill Tier", values=c("CHALLENGER"="orange", 
+                                           "MASTER"="#966F33", 
+                                           "DIAMOND"="#cbe3f0",
+                                           "PLATINUM"="#A0BFB4",
+                                           "GOLD"="#e6c200",
+                                           "SILVER"="#c0c0c0",
+                                           "BRONZE"="#cd7f32",
+                                           "UNRANKED"="black"))
+
+p
+
+#bar (per region)
+pop_tier_platform_patch <- data.table(dbReadTable(connection, "population_region_tier_patch"))
+pop_tier_platform_patch %>%
+  group_by(tier, platformId, patch) %>%
+  summarise(count = sum(count)) -> ptpp
+p <- ggplot(data = ptpp, aes(x=patch, y=count/1000, group=factor(tier, levels=tiers_order), fill=factor(tier, levels=tiers_order))) + 
+  geom_bar(stat='Identity') + 
+  facet_wrap(~platformId) + 
+  scale_x_discrete(limits=patchOrder) +  
+  labs( y = "#players in thousands") + 
+  theme_bw() + 
+  theme(title=element_text(size=20),
+        legend.title = element_text(size=16),
+        axis.title = element_text(size=12),
+        axis.text.x = element_text(size=8, angle=45, hjust = 1),
+        legend.position = "bottom") +
+  scale_fill_manual("Skill Tier", values=c("CHALLENGER"="orange", 
+                                           "MASTER"="#966F33", 
+                                           "DIAMOND"="#cbe3f0",
+                                           "PLATINUM"="#A0BFB4",
+                                           "GOLD"="#e6c200",
+                                           "SILVER"="#c0c0c0",
+                                           "BRONZE"="#cd7f32",
+                                           "UNRANKED"="black"))
+p
+
+
 ## game Duration
 
 time_info <- data.table(dbGetQuery(connection, "SELECT * FROM matchdetails"))
-maxDuration <- round(max(time_info$gameDuration)/60)
+maxDuration <- round(max(time_info$gameDuration)/60,2)
 meanDuration <- round(mean(time_info$gameDuration/60),2)
-minDuration <- round(min(time_info$gameDuration/60)) 
+minDuration <- round(min(time_info$gameDuration/60),2) 
 
 
 
-p <- ggplot(data = time_info, aes(round(gameDuration/60))) + 
-  geom_histogram(breaks = c(seq(0,maxDuration, by=1))) + 
-  annotate("text", x = 70, y = 5000, label = paste("Max: ",toString(maxDuration))) + 
-  annotate("text", x = 70, y = 3000, label = paste("Mean: ",toString(meanDuration))) + 
-  annotate("text", x = 70, y = 1000, label = paste("Min: ",toString(minDuration))) + 
-  labs(x = "Match Duration", y = "#matches",
-       title = "Distribution of Match Durations") +
+p <- ggplot(data = time_info, aes(round(gameDuration/60), fill = "#00BFFF")) + 
+  geom_histogram(aes(y= ..count.. /1000), breaks = c(seq(0,maxDuration, by=1)),fill = "#56B4E9") + 
+  scale_x_continuous(breaks=seq(0,maxDuration,5)) + 
+  geom_vline(xintercept = round(minDuration), linetype=2) + 
+  geom_vline(xintercept = round(meanDuration), linetype=2) + 
+  geom_vline(xintercept = round(maxDuration), linetype=2) + 
+  annotate("text", x = 70, y = 9, label = paste("Max: ",toString(maxDuration), " Minutes")) + 
+  annotate("text", x = 70, y = 5, label = paste("Mean: ",toString(meanDuration), " Minutes")) + 
+  annotate("text", x = 70, y = 1, label = paste("Min: ",toString(minDuration), " Minutes")) + 
+  labs(x = "Match Duration in Minutes", y = "#matches in thousands") +
   theme_bw() +
   theme(title=element_text(size=20),
         legend.title = element_text(size=16),
-        axis.title = element_text(size=12)) +
-  scale_fill_brewer(palette = "Blues") 
+        axis.title = element_text(size=12))
 p
 
 # histograms for each platform
 p <- ggplot(data = time_info, aes(round(gameDuration/60))) + 
-  geom_histogram(breaks = c(seq(0,maxDuration, by=1))) + 
-  labs(x = "Match Duration", y = "#matches",
-       title = "Distribution of Match Durations") +
+  geom_histogram(aes(y = ..count../1000),breaks = c(seq(0,maxDuration, by=1)),fill = "#56B4E9") + 
+  scale_x_continuous(breaks=seq(0,maxDuration,5)) + 
+  labs(x = "Match Duration", y = "#matches in thousands") +
   theme_bw() +
   theme(title=element_text(size=20),
         legend.title = element_text(size=16),
         axis.title = element_text(size=12)) +
-  facet_wrap(~platformId, nrow=2)+
+  facet_grid(platformId~.) +
   scale_fill_brewer(palette = "Blues") 
 p
 
+# brazil has more than double the amount of remakes 
+time_info[gameDuration/60 < 5] %>% group_by(platformId) %>% summarise(count = n())
+
+
 time_info %>% 
-  group_by(platformId) %>%
   summarise(minDuration = min(gameDuration/60),
+            "10qDuration" = quantile(gameDuration/60 , .10),
             "25qDuration" = quantile(gameDuration/60 , .25),
-            meanDuration = mean(gameDuration/60),
+            "Median" = quantile(gameDuration/60 , .5),
             "75Duration" = quantile(gameDuration/60 , .75),
+            "90qDuration" = quantile(gameDuration/60 , .90),
             maxDuration = max(gameDuration/60)
-            ) -> time_info_agg
-time_info_agg
+  ) -> time_info_overall
+time_info_overall
+
+
 
 time_info %>% 
   group_by(platformId) %>%
@@ -144,14 +206,70 @@ time_by_tier %>%
 
 p <- ggplot(data = time_by_tier, aes(x = tier, y=round(gameDuration/60), group=tier, fill=tier)) + 
   geom_boxplot() + 
-  labs(x = "Skill Tier", y = "Match Duration",
-       title = "Distribution of Match Durations along SKill Tiers") +
+  labs(x = "Skill Tier", y = "Match Duration in Minutes") +
   scale_x_discrete(limits=tiers_order) + 
+  scale_y_continuous(breaks=seq(0,maxDuration, 5)) +
   theme_bw() +
   theme(legend.position = "None",
         title=element_text(size=20),
         legend.title = element_text(size=16),
         axis.title = element_text(size=12)) +
+  scale_fill_manual("Skill Tier", values=c("CHALLENGER"="orange", 
+                                           "MASTER"="#966F33", 
+                                           "DIAMOND"="#cbe3f0",
+                                           "PLATINUM"="#A0BFB4",
+                                           "GOLD"="#e6c200",
+                                           "SILVER"="#c0c0c0",
+                                           "BRONZE"="#cd7f32",
+                                           "UNRANKED"="black"))
+p
+
+# time by tier and region
+time_by_tier_region <- data.table(dbGetQuery(connection, "SELECT platformId, tier, patch, gameDuration, gameCreation from playerdetails"))
+time_by_tier_region %>%
+  group_by(tier, platformId) %>%
+  summarise(minDuration = min(gameDuration/60),
+            "25qDuration" = quantile(gameDuration/60 , .25),
+            meanDuration = mean(gameDuration/60),
+            "75Duration" = quantile(gameDuration/60 , .75),
+            maxDuration = max(gameDuration/60)
+  ) -> time_by_tier_agg
+time_by_tier_region$clr = ifelse(time_by_tier_region$gameDuration %in% c(1200,1260), "red", "white")
+
+p <- ggplot(data = time_by_tier_region, aes(x = tier, y=round(gameDuration/60), group=tier, fill=tier)) + 
+  geom_boxplot() + 
+  facet_wrap(~platformId, nrow=2) +
+  labs(x = "Skill Tier", y = "Match Duration") +
+  scale_x_discrete(limits=tiers_order) + 
+  scale_y_continuous(breaks=seq(0,maxDuration, 10)) +
+  theme_bw() +
+  theme(legend.position = "None",
+        title=element_text(size=20),
+        legend.title = element_text(size=16),
+        axis.title = element_text(size=12),
+        axis.text.x = element_blank()) +
+  scale_fill_manual("Skill Tier", values=c("CHALLENGER"="orange", 
+                                           "MASTER"="#966F33", 
+                                           "DIAMOND"="#cbe3f0",
+                                           "PLATINUM"="#A0BFB4",
+                                           "GOLD"="#e6c200",
+                                           "SILVER"="#c0c0c0",
+                                           "BRONZE"="#cd7f32",
+                                           "UNRANKED"="black"))
+p
+
+
+p <- ggplot(data = time_by_tier_region, aes(round(gameDuration/60), 
+                                            group=factor(tier, levels=tiers_order), 
+                                            fill=factor(tier, levels=tiers_order))) + 
+  geom_histogram(aes(y=..count../1000), breaks = c(seq(0,maxDuration, by=1))) + 
+  scale_x_continuous(breaks=seq(0,maxDuration,10)) + 
+  facet_wrap(~factor(tier, levels=tiers_order), ncol=2) +
+  labs(x = "Skill Tier", y = "Match Duration") +
+  theme_bw() +
+  theme(legend.position = "None",
+        axis.title = element_text(size=12),
+        axis.text.x = element_text(size=6)) +
   scale_fill_manual("Skill Tier", values=c("CHALLENGER"="orange", 
                                            "MASTER"="#966F33", 
                                            "DIAMOND"="#cbe3f0",
@@ -173,7 +291,7 @@ p
 
 time_by_tier %>%
   group_by(patch) %>%
-  
+  summarise(count = sum(count))
 
 
 ## game Creation
@@ -196,11 +314,47 @@ p
 time_info$patch2 <- factor(time_info$patch, levels = patchOrder)
 time_info %>%
   group_by(gameDates, patch) %>%
-  summarise(Frequency = n()) -> test
+  summarise(Frequency = n()) -> time_info_patch
+time_info %>%
+  group_by(gameDates, patch, platformId) %>%
+  summarise(Frequency = n()) -> time_info_regionPatch
 
+p <- ggplot(data = time_info_patch, aes(gameDates, Frequency, group=patch)) + 
+  facet_grid(.~factor(time_info_patch$patch, levels = patchOrder),scale="free", space="free", switch = "x") +
+  geom_area(breaks = c(seq(as.numeric(minDate),as.numeric(maxDate),by=1))) + 
+  scale_x_date(date_labels = "%b %d", breaks = date_breaks("22 days"), date_minor_breaks = "1 day", expand = c(0,0)) +
+  labs(x = "Match Date and Patch", y = "#matches",
+       title = "Distribution of Matches played through the year") +
+  theme_bw() +
+  theme(title=element_text(size=20),
+        legend.title = element_text(size=16),
+        axis.title = element_text(size=12), 
+        axis.text.x = element_text(size= 16, angle = 90),
+        axis.text.y = element_text(size= 16),
+        panel.spacing.x = unit(0,"line"), 
+        strip.placement = "outside")  + 
+  scale_fill_manual(values = c("blue")) 
+p
 
-p <- ggplot(data = test, aes(gameDates, Frequency, group=patch)) + 
-  facet_grid(.~factor(test$patch, levels = patchOrder),scale="free", space="free", switch = "x") +
+p <- ggplot(data = time_info_regionPatch, aes(gameDates, Frequency, group=platformId, fill=platformId)) + 
+  facet_grid(.~factor(time_info_regionPatch$patch, levels = patchOrder),scale="free", space="free", switch = "x") +
+  geom_area(position='identity', alpha=0.5, breaks = c(seq(as.numeric(minDate),as.numeric(maxDate),by=1))) + 
+  scale_x_date(date_labels = "%b %d", breaks = date_breaks("22 days"), date_minor_breaks = "1 day", expand = c(0,0)) +
+  labs(x = "Match Date and Patch", y = "#matches",
+       title = "Distribution of Matches played through the year") +
+  theme_bw() +
+  theme(title=element_text(size=20),
+        legend.title = element_text(size=16),
+        axis.title = element_text(size=12), 
+        axis.text.x = element_text(size= 16, angle = 90),
+        axis.text.y = element_text(size= 16),
+        panel.spacing.x = unit(0,"line"), 
+        strip.placement = "outside")  #+ 
+  #scale_fill_manual(values = c("blue")) 
+p
+
+p <- ggplot(data = time_info_patch, aes(gameDates, Frequency, group=patch)) + 
+  facet_grid(.~factor(time_info_patch$patch, levels = patchOrder),scale="free", space="free", switch = "x") +
   geom_area(breaks = c(seq(as.numeric(minDate),as.numeric(maxDate),by=1))) + 
   scale_x_date(date_labels = "%b %d", breaks = date_breaks("22 days"), date_minor_breaks = "1 day", expand = c(0,0)) +
   labs(x = "Match Date and Patch", y = "#matches",
@@ -217,6 +371,57 @@ p <- ggplot(data = test, aes(gameDates, Frequency, group=patch)) +
 p
 
 
+
+time_info_patch2 <- time_info_regionPatch#[which(time_info_regionPatch$patch=="7.2"),]
+p <- ggplot(data = time_info_patch2, aes(gameDates, Frequency/1000, group=platformId, fill=platformId)) + 
+  facet_wrap(~factor(time_info_patch2$patch, levels = patchOrder),scale="free", nrow=4) +
+  geom_area(alpha=0.6) + 
+  scale_x_date(date_labels = "%a %m-%d", breaks = date_breaks("7 days"), date_minor_breaks = "1 day", expand = c(0,0)) +
+  scale_y_continuous(limits = c(0, 4)) + 
+  scale_fill_discrete(name = "Region", labels = c("Brazil", "Europe West", "Korea", "North America")) + 
+  labs(x = "Match Date and Patch", y = "#matches",
+       title = "Distribution of Matches played through season 2017 in thousands") +
+  #facet_wrap(~factor(time_info_patch2$patch, levels = patchOrder), nrow=4) +
+  theme_bw() +
+  theme(title=element_text(size=20),
+        legend.title = element_text(size=16),
+        axis.title = element_text(size=12), 
+        axis.text.x = element_text(size=6),
+        axis.text.y = element_text(size=8),
+        panel.spacing.x = unit(1,"line"), 
+        strip.placement = "outside")
+p
+
+time_info_tier <- adc[,list(platformId, patch, tier, gameCreation)]
+time_info_tier$gameDates <-  as.Date(as.POSIXct(time_info_tier$gameCreation/1000, origin="1970-01-01"))
+time_info_tier$order <- factor(time_info_tier$tier, levels = tiers_order)
+time_info_tier$patch2 <- factor(time_info_tier$patch, levels = patchOrder)
+time_info_tier %>%
+  group_by(gameDates, patch2, order) %>%
+  summarise(Frequency = n()) -> time_info_tier
+p <- ggplot(data = time_info_tier, aes(gameDates, Frequency, group=order, fill=order)) + 
+  #facet_grid(.~factor(time_info_patch$patch, levels = patchOrder),scale="free", space="free", switch = "x") +
+  geom_area() + 
+  scale_x_date(date_labels = "%a %b %d", breaks = date_breaks("4 days"), date_minor_breaks = "1 day", expand = c(0,0), position="top") +
+  labs(x = "Match Date and Patch", y = "#matches",
+       title = "Distribution of Matches played through the year") +
+  theme_bw() +
+  theme(title=element_text(size=20),
+        legend.title = element_text(size=16),
+        axis.title = element_text(size=12), 
+        axis.text.x = element_text(size= 16, angle = 90),
+        axis.text.y = element_text(size= 16),
+        panel.spacing.x = unit(0,"line"), 
+        strip.placement = "outside") +
+  scale_fill_manual("Skill Tier", values=c("CHALLENGER"="orange", 
+                                           "MASTER"="#966F33", 
+                                           "DIAMOND"="#cbe3f0",
+                                           "PLATINUM"="#A0BFB4",
+                                           "GOLD"="#e6c200",
+                                           "SILVER"="#c0c0c0",
+                                           "BRONZE"="#cd7f32",
+                                           "UNRANKED"="black"))
+p
 ############################ TOP ####################################
 
 ### Distribution in Season 7
