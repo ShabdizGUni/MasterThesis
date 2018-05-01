@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="4e29aa07-948d-4c5f-b43a-151662fe8a96" name="Default" comment="">
+    <list default="true" id="4e29aa07-948d-4c5f-b43a-151662fe8a96" name="Default" comment="- getting ready for &quot;prepare_purchases&quot;">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/prepare_purchases.py" afterPath="$PROJECT_DIR$/prepare_purchases.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -716,7 +715,14 @@
       <option name="project" value="LOCAL" />
       <updated>1525183576306</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="- getting ready for &quot;prepare_purchases&quot;">
+      <created>1525187504191</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1525187504191</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -794,7 +800,8 @@
     <MESSAGE value="- Classification advanced&#10;- ModelBuilder for Classification Experiments&#10;- LSTM integrated&#10;- adjusted ETL scripts for Ubuntu16.0 usage" />
     <MESSAGE value="- Getting Ready for VM" />
     <MESSAGE value="- Get rid of cassiopeia" />
-    <option name="LAST_COMMIT_MESSAGE" value="- Get rid of cassiopeia" />
+    <MESSAGE value="- getting ready for &quot;prepare_purchases&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="- getting ready for &quot;prepare_purchases&quot;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
