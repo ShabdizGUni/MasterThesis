@@ -2,7 +2,6 @@ import requests
 import time
 import datetime
 from pprint import pprint
-from cassiopeia.type.dto.match import *
 
 class RateLimitException(Exception):
     def __init__(self):

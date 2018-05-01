@@ -3,24 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="4e29aa07-948d-4c5f-b43a-151662fe8a96" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Classification TimeSeries test.py" afterPath="$PROJECT_DIR$/Classification TimeSeries test.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/Classification/Classifiers.py" afterPath="$PROJECT_DIR$/Lib/Classification/Classifiers.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/Classification/DataHandling.py" afterPath="$PROJECT_DIR$/Lib/Classification/DataHandling.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/Classification/common.py" afterPath="$PROJECT_DIR$/Lib/Classification/common.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/Viz.py" afterPath="$PROJECT_DIR$/Lib/Viz.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/R-Project/.Rhistory" afterPath="$PROJECT_DIR$/R-Project/.Rhistory" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/R-Project/.Rproj.user/3A2C61EF/pcs/source-pane.pper" afterPath="$PROJECT_DIR$/R-Project/.Rproj.user/3A2C61EF/pcs/source-pane.pper" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/R-Project/.Rproj.user/3A2C61EF/pcs/windowlayoutstate.pper" afterPath="$PROJECT_DIR$/R-Project/.Rproj.user/3A2C61EF/pcs/windowlayoutstate.pper" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/R-Project/.Rproj.user/3A2C61EF/sdb/prop/INDEX" afterPath="$PROJECT_DIR$/R-Project/.Rproj.user/3A2C61EF/sdb/prop/INDEX" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/R-Project/.Rproj.user/shared/notebooks/paths" afterPath="$PROJECT_DIR$/R-Project/.Rproj.user/shared/notebooks/paths" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/R-Project/adc_sup_viz.R" afterPath="$PROJECT_DIR$/R-Project/adc_sup_viz.R" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/R-Project/initialize.R" afterPath="$PROJECT_DIR$/R-Project/initialize.R" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/R-Project/viz.R" afterPath="$PROJECT_DIR$/R-Project/viz.R" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/Pipelines.py" afterPath="$PROJECT_DIR$/data/Pipelines.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/Schema/PlayerStats.py" afterPath="$PROJECT_DIR$/data/Schema/PlayerStats.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/constants.py" afterPath="$PROJECT_DIR$/data/constants.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/prepare_purchases.py" afterPath="$PROJECT_DIR$/prepare_purchases.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/run_classification.py" afterPath="$PROJECT_DIR$/run_classification.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/API/APIRequests.py" afterPath="$PROJECT_DIR$/Lib/API/APIRequests.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -47,20 +30,10 @@
       <file leaf-file-name="PlayerStats.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/data/Schema/PlayerStats.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1177">
-              <caret line="129" column="41" lean-forward="false" selection-start-line="129" selection-start-column="41" selection-end-line="129" selection-end-column="41" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="constants.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/data/constants.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1717">
-              <caret line="118" column="0" lean-forward="false" selection-start-line="118" selection-start-column="0" selection-end-line="118" selection-end-column="0" />
+            <state relative-caret-position="-2">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding>
-                <element signature="e#3210#3508#0" expanded="false" />
+                <element signature="e#0#24#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -88,12 +61,24 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="FetchStaticData.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="FetchStaticData.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/FetchStaticData.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="20" column="10" lean-forward="true" selection-start-line="20" selection-start-column="10" selection-end-line="20" selection-end-column="10" />
+            <state relative-caret-position="0">
+              <caret line="0" column="20" lean-forward="false" selection-start-line="0" selection-start-column="20" selection-end-line="0" selection-end-column="20" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="APIRequests.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Lib/API/APIRequests.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="51">
+              <caret line="3" column="25" lean-forward="false" selection-start-line="3" selection-start-column="25" selection-end-line="3" selection-end-column="25" />
+              <folding>
+                <element signature="e#0#15#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -252,7 +237,6 @@
         <option value="$PROJECT_DIR$/Items_Classification_filtered_gold.py" />
         <option value="$PROJECT_DIR$/fetchMasteries.py" />
         <option value="$PROJECT_DIR$/Deep_learninig_classification.py" />
-        <option value="$PROJECT_DIR$/Lib/API/APIRequests.py" />
         <option value="$PROJECT_DIR$/data/Schema/ItemStats.py" />
         <option value="$PROJECT_DIR$/Lib/Classification/Metrics.py" />
         <option value="$PROJECT_DIR$/Classifier_Tuning.py" />
@@ -274,6 +258,7 @@
         <option value="$PROJECT_DIR$/data/Pipelines.py" />
         <option value="$PROJECT_DIR$/data/Schema/PlayerStats.py" />
         <option value="$PROJECT_DIR$/Lib/Crawler.py" />
+        <option value="$PROJECT_DIR$/Lib/API/APIRequests.py" />
       </list>
     </option>
   </component>
@@ -707,7 +692,14 @@
       <option name="project" value="LOCAL" />
       <updated>1524356110485</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="- Getting Ready for VM">
+      <created>1525181804335</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1525181804335</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -783,7 +775,8 @@
     <MESSAGE value="- Rproject improvements&#10;- etl processes&#10;- classifiers implemented &#10;- most likely just way too much to tell." />
     <MESSAGE value="- Rproject improvements (colors and themes)&#10;- Adjusted Vizualisations for n-core item charts&#10;- Multiple Versions of &quot;naive classification&quot; approaches" />
     <MESSAGE value="- Classification advanced&#10;- ModelBuilder for Classification Experiments&#10;- LSTM integrated&#10;- adjusted ETL scripts for Ubuntu16.0 usage" />
-    <option name="LAST_COMMIT_MESSAGE" value="- Classification advanced&#10;- ModelBuilder for Classification Experiments&#10;- LSTM integrated&#10;- adjusted ETL scripts for Ubuntu16.0 usage" />
+    <MESSAGE value="- Getting Ready for VM" />
+    <option name="LAST_COMMIT_MESSAGE" value="- Getting Ready for VM" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1012,26 +1005,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/prepare_purchases.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="527">
-          <caret line="34" column="65" lean-forward="false" selection-start-line="34" selection-start-column="65" selection-end-line="34" selection-end-column="65" />
-          <folding>
-            <element signature="e#0#42#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/constants.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1717">
-          <caret line="118" column="0" lean-forward="false" selection-start-line="118" selection-start-column="0" selection-end-line="118" selection-end-column="0" />
-          <folding>
-            <element signature="e#3210#3508#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/run_classification.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="527">
@@ -1043,13 +1016,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="531">
           <caret line="117" column="50" lean-forward="false" selection-start-line="117" selection-start-column="50" selection-end-line="117" selection-end-column="50" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Lib/API/APIRequests.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2551">
-          <caret line="210" column="28" lean-forward="true" selection-start-line="210" selection-start-column="28" selection-end-line="210" selection-end-column="28" />
         </state>
       </provider>
     </entry>
@@ -1065,14 +1031,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="225">
           <caret line="17" column="66" lean-forward="false" selection-start-line="17" selection-start-column="66" selection-end-line="17" selection-end-column="66" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/Schema/PlayerStats.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1177">
-          <caret line="129" column="41" lean-forward="false" selection-start-line="129" selection-start-column="41" selection-end-line="129" selection-end-column="41" />
           <folding />
         </state>
       </provider>
@@ -1103,11 +1061,51 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/data/constants.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-68">
+          <caret line="118" column="0" lean-forward="false" selection-start-line="118" selection-start-column="0" selection-end-line="118" selection-end-column="0" />
+          <folding>
+            <element signature="e#3210#3508#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/prepare_purchases.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="527">
+          <caret line="34" column="65" lean-forward="false" selection-start-line="34" selection-start-column="65" selection-end-line="34" selection-end-column="65" />
+          <folding>
+            <element signature="e#0#42#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/Schema/PlayerStats.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#24#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/FetchStaticData.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="20" column="10" lean-forward="true" selection-start-line="20" selection-start-column="10" selection-end-line="20" selection-end-column="10" />
+        <state relative-caret-position="0">
+          <caret line="0" column="20" lean-forward="false" selection-start-line="0" selection-start-column="20" selection-end-line="0" selection-end-column="20" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Lib/API/APIRequests.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="3" column="25" lean-forward="false" selection-start-line="3" selection-start-column="25" selection-end-line="3" selection-end-column="25" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
