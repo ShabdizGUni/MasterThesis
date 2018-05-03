@@ -1,6 +1,6 @@
 from pathlib import Path
 # /absolute/path/to/two/levels/up
-p = Path(__file__).parents[1]
+p = Path("__file__").parents[1]
 from data.constants import *
 from sqlalchemy.orm import *
 from data.Schema.ItemStats import *
