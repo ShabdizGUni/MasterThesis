@@ -1,13 +1,9 @@
-from pymongo import *
+from pathlib import Path
+# /absolute/path/to/two/levels/up
+p = Path(__file__).parents[1]
 from data.constants import *
-from pprint import pprint
-from sqlalchemy import *
 from sqlalchemy.orm import *
 from data.Schema.ItemStats import *
-from pathlib import Path
-
-p = Path(__file__).parents[1]
-# /absolute/path/to/two/levels/up
 
 def main():
     engine = create_engine('mysql+pymysql://root:Milch4321@localhost:3306/leaguestats', encoding='latin1', echo=True)
