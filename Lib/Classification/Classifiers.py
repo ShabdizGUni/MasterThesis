@@ -1,5 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+plt.switch_backend('agg')
 import seaborn as sns
 import numpy as np
 import Lib.Classification.DataHandling as dh
