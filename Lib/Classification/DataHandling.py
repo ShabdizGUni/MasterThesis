@@ -112,7 +112,7 @@ def get_item_dict():
 
 def get_item_infos():
     engine = get_maria_connection()
-    item_infos = pd.read_sql("SELECT * FROM ITEMSTATS", engine)
+    item_infos = pd.read_sql("SELECT * FROM itemstats_adj", engine)
     item_infos["patch"] = item_infos["version"].str.extract("(\d.\d+)")
     item_infos = item_infos.rename(columns={"key": "itemId"})
     return item_infos
