@@ -351,7 +351,7 @@ def itemsets_adc():
         "_id": {
             "gameId": "$gameId",
             "platformId": "$platformId",
-            "gameVersion": "$gameVersion",
+            "patch": "$patch",
             "championId": "$participants.championId"
         },
         "items": {
@@ -362,7 +362,7 @@ def itemsets_adc():
         "_id": 0,
         "gameId": "$_id.gameId",
         "platformId": "$_id.platformId",
-        "gameVersion": "$_id.gameVersion",
+        "patch": "$_id.patch",
         "championId": "$_id.championId",
         "items": "$items"
     }
@@ -371,7 +371,7 @@ def itemsets_adc():
 def itemsets(championId, export:False):
     pipline = \
         [{"$match": {
-            "gameDuration": {"$gte": 1260 } #game Duration >= 900 seconds = 21 Minutes
+            "gameDuration": {"$gte": 1260 } #game Duration >= 1260 seconds = 21 Minutes
             }
         },
         {"$unwind": "$participants"},
@@ -533,12 +533,6 @@ def get_adc_events(sample=None):
         "skillSlot": "$timeline.frames.events.skillSlot",
         "timestamp": "$timeline.frames.events.timestamp"
     }},
-    # { "$sort": {
-    #     "championId": 1,
-    #     "gameId": 1,
-    #     "timestamp": 1
-    #     }
-    # },
     { "$out": "adc_events"}
     ]
     if sample: pipe.insert(0, {"$limit": sample})
@@ -612,7 +606,7 @@ def get_frames(sample=None):
         pipe.insert(0, {"$limit": sample})
     return pipe
 
-def get_purchase_details(sample=None):
+def get_purchase_details(sample=None, with_frames=None):
     pipe = \
     [
         {"$group" : {"_id" : { "gameId": "$gameId", "platformId": "$platformId", "side": "$side" }, "data" : {"$push" : "$$ROOT"}}},
@@ -642,7 +636,7 @@ def get_purchase_details(sample=None):
                     "cloth": 0, "chainvest": 0,
                     "blasting_wand":0, "pickaxe": 0, "bf_sword": 0,
                     "serrated_dirk": 0, "cf_warhammer": 0, "vamp_scepter": 0, "cutlass": 0,
-                    "recurve_bow": 0, "zeal": 0, "kircheis_shard": 0, "sheen":0, "phage":0,
+                    "recurve_bow": 0, "zeal": 0, "kircheis_shard": 0, "glacial_shroud": 0, "sheen":0, "phage":0, "stinger":0,
                     "p_dancer":0, "s_shivv": 0 , "runaans_h":0, "rapid_fc": 0, "tri_force":0,
                     "ie":0, "er":0,
                     "gb":0, "duskblade":0, "eon": 0,
@@ -2017,6 +2011,28 @@ def get_purchase_details(sample=None):
                             }}
                         ]
                     },
+                    "glacial shroud": {
+                        "$sum": [
+                            "$$value.sheen",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  3024] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  3024] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  3024] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  3024] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  3024] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
                     "sheen": {
                         "$sum": [
                             "$$value.sheen",
@@ -2054,6 +2070,28 @@ def get_purchase_details(sample=None):
                                         { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  3044] } ]},
                                         { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  3044] } ]},
                                         { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  3044] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "stinger": {
+                        "$sum": [
+                            "$$value.phage",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  3101] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  3101] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  3101] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  3101] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  3101] } ]}
                                     ]},
                                         "then": -1
                                     }],
@@ -2731,6 +2769,7 @@ def get_purchase_details(sample=None):
                                     "recurve_bow": "$$value.recurve_bow",
                                     "zeal": "$$value.zeal",
                                     "kircheis_shard": "$$value.kircheis_shard",
+                                    "glacial_shroud": "$$value.glacial_shroud",
                                     "sheen": "$$value.sheen",
                                     "phage": "$$value.phage",
                                     "p_dancer": "$$value.p_dancer",
@@ -2769,37 +2808,2274 @@ def get_purchase_details(sample=None):
         }},
         {"$unwind" : "$data.data"},
         {"$replaceRoot" : {"newRoot" : "$data.data"}},
-        # {"$lookup": {
-        #     "from": "adc_frames",
-        #     "localField": "gameId",
-        #     "foreignField": "gameId",
-        #     "as": "frame"
-        #     }
-        # },
-        # {"$unwind": "$frame"},
-        # {"$addFields": {
-        #     "mid": { "$cond": [{ "$and": [
-        #         {"$eq": ["$frameNo", "$frame.frameNo"]},
-        #         {"$eq": ["$participantId", "$frame.participantId"]}
-        #         ]}, 1, 0]
-        #     },
-        #     "xp": "$frame.xp",
-        #     "level": "$frame.level",
-        #     "totalGold": "$frame.totalGold",
-        #     "currentGold": "$frame.currentGold",
-        #     "minionsKilled": "$frame.minionsKilled",
-        #     "jungleMinionsKilled": "$frame.jungleMinionsKilled"
-        # }},
-        # {"$match": {
-        #     "mid": 1
-        # }},
-        # {"$project": {
-        #     "frame": 0,
-        #     "mid": 0
-        # }},
         {"$out": "adc_purchase_details"}
     ]
     if sample: pipe.insert(0, {"$limit": sample})
+    if with_frames : pip.insert(len(pip)-2,
+        {"$lookup": {
+            "from": "adc_frames",
+            "localField": "gameId",
+            "foreignField": "gameId",
+            "as": "frame"
+            }
+        },
+        {"$unwind": "$frame"},
+        {"$addFields": {
+            "mid": { "$cond": [{ "$and": [
+                {"$eq": ["$frameNo", "$frame.frameNo"]},
+                {"$eq": ["$participantId", "$frame.participantId"]}
+                ]}, 1, 0]
+            },
+            "xp": "$frame.xp",
+            "level": "$frame.level",
+            "totalGold": "$frame.totalGold",
+            "currentGold": "$frame.currentGold",
+            "minionsKilled": "$frame.minionsKilled",
+            "jungleMinionsKilled": "$frame.jungleMinionsKilled"
+        }},
+        {"$match": {
+            "mid": 1
+        }},
+        {"$project": {
+            "frame": 0,
+            "mid": 0
+        }},)
+    return pipe
+
+def get_skill_level_ups(sample=None, with_frames=None):
+    pipe = \
+    [
+        {"$group" : {"_id" : { "gameId": "$gameId", "platformId": "$platformId", "side": "$side" }, "data" : {"$push" : "$$ROOT"}}},
+        {"$addFields" : {"data" : {
+            "$reduce" : {
+                "input" : "$data",
+                "initialValue" : {
+                    "data" : [],
+                    "kills" : 0, "deaths": 0 , "assists": 0,
+                    "teamTurrets": 0, "enemyTurrets": 0,
+                    "turretKills": 0, "turretAssists":0,
+                    "teamMidT": 0, "teamBotT":0, "teamTopT": 0,
+                    "enemyMidT":0, "enemyBotT":0, "enemyTopT":0,
+                    "teamInh": 0,  "enemyInh":0,
+                    "teamMidInh": 0 , "teamTopInh":0 , "teamBotInh":0,
+                    "enemyMidInh": 0 , "enemyTopInh":0 , "enemyBotInh":0,
+                    "teamHeralds":0, "teamBarons":0, "teamDragons": 0,
+                    "enemyHeralds":0, "enemyBarons":0, "enemyDragons": 0,
+                    "teamInfernal": 0 , "teamMountain": 0, "teamOcean":0, "teamCloud":0, "teamElder": 0,
+                    "enemyInfernal": 0 , "enemyMountain": 0, "enemyOcean":0, "enemyCloud":0, "enemyElder": 0,
+                    "q_rank": 0 , "w_rank": 0 , "e_rank": 0 , "r_rank": 0,
+                    "dorans_blade": 0, "dorans_ring": 0, "dorans_shield":0, "cull": 0,
+                    "boots": 0, "bers_greaves": 0, "mobi_boots": 0 , "boots_swiftn": 0, "ninja_tabi":0, "boots_luci":0, "merc_treads":0,
+                    "long_sword": 0, "dagger": 0, "brawl_gloves": 0, "cloak_oa": 0,
+                    "ruby_crystal": 0, "saph_crystal":0, "kindlegem": 0,
+                    "nullmag_mantle": 0, "negatron": 0, "qss": 0,
+                    "cloth": 0, "chainvest": 0,
+                    "blasting_wand":0, "pickaxe": 0, "bf_sword": 0,
+                    "serrated_dirk": 0, "cf_warhammer": 0, "vamp_scepter": 0, "cutlass": 0,
+                    "recurve_bow": 0, "zeal": 0, "kircheis_shard": 0, "glacial_shroud": 0, "sheen":0, "phage":0, "stinger":0,
+                    "p_dancer":0, "s_shivv": 0 , "runaans_h":0, "rapid_fc": 0, "tri_force":0,
+                    "ie":0, "er":0,
+                    "gb":0, "duskblade":0, "eon": 0,
+                    "muramana":0, "ibg":0,
+                    "wits_end":0, "g_rageblade":0,
+                    "guard_angel":0, "hexdrinker":0, "maw":0, "merc_scimitar":0, "bt": 0, "dd": 0,
+                    "last_whisper":0, "giant_slayer": 0, "exec_calling": 0, "black_cleaver": 0,
+                    "lord_dom":0, "mortal_rem":0
+                },
+                "in" : {
+                    "kills" : {
+                        "$sum" : [
+                            "$$value.kills",
+                            {"$cond" : [
+                                {"$and": [
+                                    {"$eq": ["$$this.killerId" ,  "$$this.participantId"]},
+                                    {"$eq" : ["$$this.type", "CHAMPION_KILL"]}
+                                ]},
+                                1,
+                                0
+                            ]}
+                        ]
+                    },
+                    "deaths" : {
+                        "$sum" : [
+                            "$$value.deaths",
+                            {"$cond" : [
+                                {"$and": [
+                                    {"$eq": ["$$this.victimId" ,  "$$this.participantId"]},
+                                    {"$eq" : ["$$this.type", "CHAMPION_KILL"]}
+                                ]},
+                                1,
+                                0
+                            ]}
+                        ]
+                    },
+                    "assists" : {
+                        "$sum" : [
+                            "$$value.assists",
+                            {"$cond" : [
+                                {"$and": [
+                                    {"$eq" : ["$$this.type", "CHAMPION_KILL"]},
+                                    {"$in": [
+                                        "$$this.participantId",
+                                        { "$ifNull": ["$$this.assistingParticipantIds", {"$literal": [] }] }
+                                    ]
+                                    }
+                                ]},
+                                1,
+                                0
+                            ]}
+                        ]
+                    },
+                    "teamTurrets" : {
+                        "$sum" : [
+                            "$$value.teamTurrets",
+                            {"$cond" : [
+                                {"$and": [
+                                    {"$eq" : ["$$this.type", "BUILDING_KILL"]},
+                                    {"$eq" : ["$$this.buildingType", "TOWER_BUILDING"]},
+                                    {"$ne": ["$$this.teamId" ,  "$$this.side"]},
+                                ]},
+                                1,
+                                0
+                            ]}
+                        ]
+                    },
+                    "enemyTurrets" : {
+                        "$sum" : [
+                            "$$value.enemyTurrets",
+                            {"$cond" : [
+                                {"$and": [
+                                    {"$eq" : ["$$this.type", "BUILDING_KILL"]},
+                                    {"$eq" : ["$$this.buildingType", "TOWER_BUILDING"]},
+                                    {"$eq" : ["$$this.teamId" ,  "$$this.side"]},
+                                ]},
+                                1,
+                                0
+                            ]}
+                        ]
+                    },
+                    "turretKills" : {
+                        "$sum" : [
+                            "$$value.turretKills",
+                            {"$cond" : [
+                                {"$and": [
+                                    {"$eq" : ["$$this.type", "BUILDING_KILL"]},
+                                    {"$eq" : ["$$this.buildingType", "TOWER_BUILDING"]},
+                                    {"$eq": ["$$this.participantId" ,  "$$this.killerId"]},
+                                ]},
+                                1,
+                                0
+                            ]}
+                        ]
+                    },
+                    "turretAssists": {
+                        "$sum" : [
+                            "$$value.turretAssists",
+                            {"$cond" : [
+                                {"$and": [
+                                    {"$eq" : ["$$this.type", "BUILDING_KILL"]},
+                                    {"$eq" : ["$$this.buildingType", "TOWER_BUILDING"]},
+                                    {"$in": [
+                                        "$$this.participantId",
+                                        { "$ifNull": ["$$this.assistingParticipantIds", {"$literal": [] }] }
+                                    ]
+                                    },
+                                ]},
+                                1,
+                                0
+                            ]}
+                        ]
+                    },
+                    "teamMidT" : {
+                        "$sum" : [
+                            "$$value.teamMidT",
+                            {"$cond" : [
+                                {"$and": [
+                                    {"$eq" : ["$$this.type", "BUILDING_KILL"]},
+                                    {"$eq" : ["$$this.buildingType", "TOWER_BUILDING"]},
+                                    {"$eq" : ["$$this.laneType", "MID_LANE"]},
+                                    {"$ne" : ["$$this.side", "$$this.teamId"]}
+                                ]},
+                                1,
+                                0
+                            ]}
+                        ]
+                    },
+                    "teamBotT": {
+                        "$sum" : [
+                            "$$value.teamBotT",
+                            {"$cond" : [
+                                {"$and": [
+                                    {"$eq" : ["$$this.type", "BUILDING_KILL"]},
+                                    {"$eq" : ["$$this.buildingType", "TOWER_BUILDING"]},
+                                    {"$eq" : ["$$this.laneType", "BOT_LANE"]},
+                                    {"$ne" : ["$$this.side", "$$this.teamId"]}
+                                ]},
+                                1,
+                                0
+                            ]}
+                        ]
+                    },
+                    "teamTopT": {
+                        "$sum" : [
+                            "$$value.teamTopT",
+                            {"$cond" : [
+                                {"$and": [
+                                    {"$eq" : ["$$this.type", "BUILDING_KILL"]},
+                                    {"$eq" : ["$$this.buildingType", "TOWER_BUILDING"]},
+                                    {"$eq" : ["$$this.laneType", "TOP_LANE"]},
+                                    {"$ne" : ["$$this.side", "$$this.teamId"]}
+                                ]},
+                                1,
+                                0
+                            ]}
+                        ]
+                    },
+                    "enemyTopT": {
+                        "$sum" : [
+                            "$$value.enemyTopT",
+                            {"$cond" : [
+                                {"$and": [
+                                    {"$eq" : ["$$this.type", "BUILDING_KILL"]},
+                                    {"$eq" : ["$$this.buildingType", "TOWER_BUILDING"]},
+                                    {"$eq" : ["$$this.laneType", "TOP_LANE"]},
+                                    {"$eq" : ["$$this.side", "$$this.teamId"]}
+                                ]},
+                                1,
+                                0
+                            ]}
+                        ]
+                    },
+                    "enemyMidT": {
+                        "$sum" : [
+                            "$$value.enemyMidT",
+                            {"$cond" : [
+                                {"$and": [
+                                    {"$eq" : ["$$this.type", "BUILDING_KILL"]},
+                                    {"$eq" : ["$$this.buildingType", "TOWER_BUILDING"]},
+                                    {"$eq" : ["$$this.laneType", "MID_LANE"]},
+                                    {"$eq" : ["$$this.side", "$$this.teamId"]}
+                                ]},
+                                1,
+                                0
+                            ]}
+                        ]
+                    },
+                    "enemyBotT": {
+                        "$sum" : [
+                            "$$value.enemyBotT",
+                            {"$cond" : [
+                                {"$and": [
+                                    {"$eq" : ["$$this.type", "BUILDING_KILL"]},
+                                    {"$eq" : ["$$this.buildingType", "TOWER_BUILDING"]},
+                                    {"$eq" : ["$$this.laneType", "BOT_LANE"]},
+                                    {"$eq" : ["$$this.side", "$$this.teamId"]}
+                                ]},
+                                1,
+                                0
+                            ]}
+                        ]
+                    },
+                    "teamInh": {
+                        "$sum" : [
+                            "$$value.teamInh",
+                            {"$cond" : [
+                                {"$and": [
+                                    {"$eq" : ["$$this.type", "BUILDING_KILL"]},
+                                    {"$eq" : ["$$this.buildingType", "INHIBITOR_BUILDING"]},
+                                    {"$eq" : ["$$this.laneType", "BOT_LANE"]},
+                                    {"$ne" : ["$$this.side", "$$this.teamId"]}
+                                ]},
+                                1,
+                                0
+                            ]}
+                        ]
+                    },
+                    "teamInh": {
+                        "$sum" : [
+                            "$$value.teamInh",
+                            {"$cond" : [
+                                {"$and": [
+                                    {"$eq" : ["$$this.type", "BUILDING_KILL"]},
+                                    {"$eq" : ["$$this.buildingType", "INHIBITOR_BUILDING"]},
+                                    {"$ne" : ["$$this.side", "$$this.teamId"]}
+                                ]},
+                                1,
+                                0
+                            ]}
+                        ]
+                    },
+                    "enemyInh": {
+                        "$sum" : [
+                            "$$value.enemyInh",
+                            {"$cond" : [
+                                {"$and": [
+                                    {"$eq" : ["$$this.type", "BUILDING_KILL"]},
+                                    {"$eq" : ["$$this.buildingType", "INHIBITOR_BUILDING"]},
+                                    {"$eq" : ["$$this.side", "$$this.teamId"]}
+                                ]},
+                                1,
+                                0
+                            ]}
+                        ]
+                    },
+                    "teamMidInh": {
+                        "$sum" : [
+                            "$$value.teamMidInh",
+                            {"$cond" : [
+                                {"$and": [
+                                    {"$eq" : ["$$this.type", "BUILDING_KILL"]},
+                                    {"$eq" : ["$$this.buildingType", "INHIBITOR_BUILDING"]},
+                                    {"$eq" : ["$$this.laneType", "MID_LANE"]},
+                                    {"$ne" : ["$$this.side", "$$this.teamId"]}
+                                ]},
+                                1,
+                                0
+                            ]}
+                        ]
+                    },
+                    "teamTopInh": {
+                        "$sum" : [
+                            "$$value.teamTopInh",
+                            {"$cond" : [
+                                {"$and": [
+                                    {"$eq" : ["$$this.type", "BUILDING_KILL"]},
+                                    {"$eq" : ["$$this.buildingType", "INHIBITOR_BUILDING"]},
+                                    {"$eq" : ["$$this.laneType", "TOP_LANE"]},
+                                    {"$ne" : ["$$this.side", "$$this.teamId"]}
+                                ]},
+                                1,
+                                0
+                            ]}
+                        ]
+                    },
+                    "teamBotInh": {
+                        "$sum" : [
+                            "$$value.teamBotInh",
+                            {"$cond" : [
+                                {"$and": [
+                                    {"$eq" : ["$$this.type", "BUILDING_KILL"]},
+                                    {"$eq" : ["$$this.buildingType", "INHIBITOR_BUILDING"]},
+                                    {"$eq" : ["$$this.laneType", "BOT_LANE"]},
+                                    {"$ne" : ["$$this.side", "$$this.teamId"]}
+                                ]},
+                                1,
+                                0
+                            ]}
+                        ]
+                    },
+                    "enemyBotInh": {
+                        "$sum" : [
+                            "$$value.enemyBotInh",
+                            {"$cond" : [
+                                {"$and": [
+                                    {"$eq" : ["$$this.type", "BUILDING_KILL"]},
+                                    {"$eq" : ["$$this.buildingType", "INHIBITOR_BUILDING"]},
+                                    {"$eq" : ["$$this.laneType", "BOT_LANE"]},
+                                    {"$eq" : ["$$this.side", "$$this.teamId"]}
+                                ]},
+                                1,
+                                0
+                            ]}
+                        ]
+                    },
+                    "enemyMidInh": {
+                        "$sum" : [
+                            "$$value.enemyMidInh",
+                            {"$cond" : [
+                                {"$and": [
+                                    {"$eq" : ["$$this.type", "BUILDING_KILL"]},
+                                    {"$eq" : ["$$this.buildingType", "INHIBITOR_BUILDING"]},
+                                    {"$eq" : ["$$this.laneType", "MID_LANE"]},
+                                    {"$eq" : ["$$this.side", "$$this.teamId"]}
+                                ]},
+                                1,
+                                0
+                            ]}
+                        ]
+                    },
+                    "enemyTopInh": {
+                        "$sum" : [
+                            "$$value.enemyTopInh",
+                            {"$cond" : [
+                                {"$and": [
+                                    {"$eq" : ["$$this.type", "BUILDING_KILL"]},
+                                    {"$eq" : ["$$this.buildingType", "INHIBITOR_BUILDING"]},
+                                    {"$eq" : ["$$this.laneType", "TOP_LANE"]},
+                                    {"$eq" : ["$$this.side", "$$this.teamId"]}
+                                ]},
+                                1,
+                                0
+                            ]}
+                        ]
+                    },
+                    "teamHeralds": {
+                        "$sum" : [
+                            "$$value.teamHeralds",
+                            {"$cond" : [
+                                {"$and": [
+                                    {"$eq" : ["$$this.monsterType", "RIFTHERALD"]},
+                                    {"$eq" : [
+                                        { "$trunc": { "$divide": [ "$$this.killerId", 5] } },
+                                        { "$trunc": { "$divide": [ "$$this.participantId", 5] } },
+                                    ]}
+                                ]},
+                                1,
+                                0
+                            ]}
+                        ]
+                    },
+                    "teamBarons": {
+                        "$sum" : [
+                            "$$value.teamBarons",
+                            {"$cond" : [
+                                {"$and": [
+                                    {"$eq" : ["$$this.monsterType", "BARON_NASHOR"]},
+                                    {"$eq" : [
+                                        { "$trunc": { "$divide": [ "$$this.killerId", 5] } },
+                                        { "$trunc": { "$divide": [ "$$this.participantId", 5] } },
+                                    ]}
+                                ]},
+                                1,
+                                0
+                            ]}
+                        ]
+                    },
+                    "teamDragons": {
+                        "$sum" : [
+                            "$$value.teamDragons",
+                            {"$cond" : [
+                                {"$and": [
+                                    {"$eq" : ["$$this.monsterType", "DRAGON"]},
+                                    {"$eq" : [
+                                        { "$trunc": { "$divide": [ "$$this.killerId", 5] } },
+                                        { "$trunc": { "$divide": [ "$$this.participantId", 5] } },
+                                    ]}
+                                ]},
+                                1,
+                                0
+                            ]}
+                        ]
+                    },
+                    "teamInfernal": {
+                        "$sum" : [
+                            "$$value.teamInfernal",
+                            {"$cond" : [
+                                {"$and": [
+                                    {"$eq" : ["$$this.monsterType", "DRAGON"]},
+                                    {"$eq" : ["$$this.monsterSubType", "FIRE_DRAGON"]},
+                                    {"$eq" : [
+                                        { "$trunc": { "$divide": [ "$$this.killerId", 5] } },
+                                        { "$trunc": { "$divide": [ "$$this.participantId", 5] } },
+                                    ]}
+                                ]},
+                                1,
+                                0
+                            ]}
+                        ]
+                    },
+                    "teamMountain": {
+                        "$sum" : [
+                            "$$value.teamMountain",
+                            {"$cond" : [
+                                {"$and": [
+                                    {"$eq" : ["$$this.monsterType", "DRAGON"]},
+                                    {"$eq" : ["$$this.monsterSubType", "EARTH_DRAGON"]},
+                                    {"$eq" : [
+                                        { "$trunc": { "$divide": [ "$$this.killerId", 5] } },
+                                        { "$trunc": { "$divide": [ "$$this.participantId", 5] } },
+                                    ]}
+                                ]},
+                                1,
+                                0
+                            ]}
+                        ]
+                    },
+                    "teamOcean": {
+                        "$sum" : [
+                            "$$value.teamOcean",
+                            {"$cond" : [
+                                {"$and": [
+                                    {"$eq" : ["$$this.monsterType", "DRAGON"]},
+                                    {"$eq" : ["$$this.monsterSubType", "WATER_DRAGON"]},
+                                    {"$eq" : [
+                                        { "$trunc": { "$divide": [ "$$this.killerId", 5] } },
+                                        { "$trunc": { "$divide": [ "$$this.participantId", 5] } },
+                                    ]}
+                                ]},
+                                1,
+                                0
+                            ]}
+                        ]
+                    },
+                    "teamCloud": {
+                        "$sum" : [
+                            "$$value.teamCloud",
+                            {"$cond" : [
+                                {"$and": [
+                                    {"$eq" : ["$$this.monsterType", "DRAGON"]},
+                                    {"$eq" : ["$$this.monsterSubType", "AIR_DRAGON"]},
+                                    {"$eq" : [
+                                        { "$trunc": { "$divide": [ "$$this.killerId", 5] } },
+                                        { "$trunc": { "$divide": [ "$$this.participantId", 5] } },
+                                    ]}
+                                ]},
+                                1,
+                                0
+                            ]}
+                        ]
+                    },
+                    "teamElder": {
+                        "$sum" : [
+                            "$$value.teamElder",
+                            {"$cond" : [
+                                {"$and": [
+                                    {"$eq" : ["$$this.monsterType", "DRAGON"]},
+                                    {"$eq" : ["$$this.monsterSubType", "ELDER_DRAGON"]},
+                                    {"$eq" : [
+                                        { "$trunc": { "$divide": [ "$$this.killerId", 5] } },
+                                        { "$trunc": { "$divide": [ "$$this.participantId", 5] } },
+                                    ]}
+                                ]},
+                                1,
+                                0
+                            ]}
+                        ]
+                    },
+                    "enemyHeralds": {
+                        "$sum" : [
+                            "$$value.enemyHeralds",
+                            {"$cond" : [
+                                {"$and": [
+                                    {"$eq" : ["$$this.monsterType", "RIFTHERALD"]},
+                                    {"$ne" : [
+                                        { "$trunc": { "$divide": [ "$$this.killerId", 5] } },
+                                        { "$trunc": { "$divide": [ "$$this.participantId", 5] } },
+                                    ]}
+                                ]},
+                                1,
+                                0
+                            ]}
+                        ]
+                    },
+                    "enemyBarons": {
+                        "$sum" : [
+                            "$$value.enemyBarons",
+                            {"$cond" : [
+                                {"$and": [
+                                    {"$eq" : ["$$this.monsterType", "BARON_NASHOR"]},
+                                    {"$ne" : [
+                                        { "$trunc": { "$divide": [ "$$this.killerId", 5] } },
+                                        { "$trunc": { "$divide": [ "$$this.participantId", 5] } },
+                                    ]}
+                                ]},
+                                1,
+                                0
+                            ]}
+                        ]
+                    },
+                    "enemyDragons": {
+                        "$sum" : [
+                            "$$value.enemyDragons",
+                            {"$cond" : [
+                                {"$and": [
+                                    {"$eq" : ["$$this.monsterType", "DRAGON"]},
+                                    {"$ne" : [
+                                        { "$trunc": { "$divide": [ "$$this.killerId", 5] } },
+                                        { "$trunc": { "$divide": [ "$$this.participantId", 5] } },
+                                    ]}
+                                ]},
+                                1,
+                                0
+                            ]}
+                        ]
+                    },
+                    "enemyInfernal": {
+                        "$sum" : [
+                            "$$value.enemyInfernal",
+                            {"$cond" : [
+                                {"$and": [
+                                    {"$eq" : ["$$this.monsterType", "DRAGON"]},
+                                    {"$eq" : ["$$this.monsterSubType", "FIRE_DRAGON"]},
+                                    {"$ne" : [
+                                        { "$trunc": { "$divide": [ "$$this.killerId", 5] } },
+                                        { "$trunc": { "$divide": [ "$$this.participantId", 5] } },
+                                    ]}
+                                ]},
+                                1,
+                                0
+                            ]}
+                        ]
+                    },
+                    "enemyMountain": {
+                        "$sum" : [
+                            "$$value.enemyMountain",
+                            {"$cond" : [
+                                {"$and": [
+                                    {"$eq" : ["$$this.monsterType", "DRAGON"]},
+                                    {"$eq" : ["$$this.monsterSubType", "EARTH_DRAGON"]},
+                                    {"$ne" : [
+                                        { "$trunc": { "$divide": [ "$$this.killerId", 5] } },
+                                        { "$trunc": { "$divide": [ "$$this.participantId", 5] } },
+                                    ]}
+                                ]},
+                                1,
+                                0
+                            ]}
+                        ]
+                    },
+                    "enemyOcean": {
+                        "$sum" : [
+                            "$$value.enemyOcean",
+                            {"$cond" : [
+                                {"$and": [
+                                    {"$eq" : ["$$this.monsterType", "DRAGON"]},
+                                    {"$eq" : ["$$this.monsterSubType", "WATER_DRAGON"]},
+                                    {"$ne" : [
+                                        { "$trunc": { "$divide": [ "$$this.killerId", 5] } },
+                                        { "$trunc": { "$divide": [ "$$this.participantId", 5] } },
+                                    ]}
+                                ]},
+                                1,
+                                0
+                            ]}
+                        ]
+                    },
+                    "enemyCloud": {
+                        "$sum" : [
+                            "$$value.enemyCloud",
+                            {"$cond" : [
+                                {"$and": [
+                                    {"$eq" : ["$$this.monsterType", "DRAGON"]},
+                                    {"$eq" : ["$$this.monsterSubType", "AIR_DRAGON"]},
+                                    {"$ne" : [
+                                        { "$trunc": { "$divide": [ "$$this.killerId", 5] } },
+                                        { "$trunc": { "$divide": [ "$$this.participantId", 5] } },
+                                    ]}
+                                ]},
+                                1,
+                                0
+                            ]}
+                        ]
+                    },
+                    "enemyElder": {
+                        "$sum" : [
+                            "$$value.enemyElder",
+                            {"$cond" : [
+                                {"$and": [
+                                    {"$eq" : ["$$this.monsterType", "DRAGON"]},
+                                    {"$eq" : ["$$this.monsterSubType", "ELDER_DRAGON"]},
+                                    {"$ne" : [
+                                        { "$trunc": { "$divide": [ "$$this.killerId", 5] } },
+                                        { "$trunc": { "$divide": [ "$$this.participantId", 5] } },
+                                    ]}
+                                ]},
+                                1,
+                                0
+                            ]}
+                        ]
+                    },
+                    "q_rank" : {
+                        "$sum" : [
+                            "$$value.q_rank",
+                            {"$cond" : [
+                                {"$and": [
+                                    {"$eq" : ["$$this.type", "SKILL_LEVEL_UP"]},
+                                    {"$eq": ["$$this.skillSlot" ,  1]},
+                                ]},
+                                1,
+                                0
+                            ]}
+                        ]
+                    },
+                    "w_rank" : {
+                        "$sum" : [
+                            "$$value.w_rank",
+                            {"$cond" : [
+                                {"$and": [
+                                    {"$eq" : ["$$this.type", "SKILL_LEVEL_UP"]},
+                                    {"$eq": ["$$this.skillSlot" ,  2]},
+                                ]},
+                                1,
+                                0
+                            ]}
+                        ]
+                    },
+                    "e_rank" : {
+                        "$sum" : [
+                            "$$value.e_rank",
+                            {"$cond" : [
+                                {"$and": [
+                                    {"$eq" : ["$$this.type", "SKILL_LEVEL_UP"]},
+                                    {"$eq": ["$$this.skillSlot" ,  3]},
+                                ]},
+                                1,
+                                0
+                            ]}
+                        ]
+                    },
+                    "r_rank" : {
+                        "$sum" : [
+                            "$$value.r_rank",
+                            {"$cond" : [
+                                {"$and": [{"$eq" : ["$$this.type", "SKILL_LEVEL_UP"]},{"$eq": ["$$this.skillSlot" ,  4]},]}, 1, 0 ]}
+                        ]
+                    },
+                    "dorans_blade": {
+                        "$sum": [
+                            "$$value.dorans_blade",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  1055] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  1055] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  1055] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  1055] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  1055] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "dorans_ring": {
+                        "$sum": [
+                            "$$value.dorans_ring",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  1056] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  1056] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  1056] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  1056] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  1056] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "dorans_shield": {
+                        "$sum": [
+                            "$$value.dorans_shield",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  1054] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  1054] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  1054] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  1054] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  1054] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "cull": {
+                        "$sum": [
+                            "$$value.cull",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  1083] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  1083] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  1083] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  1083] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  1083] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "boots": {
+                        "$sum": [
+                            "$$value.boots",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  1001] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  1001] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  1001] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  1001] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  1001] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "bers_greaves": {
+                        "$sum": [
+                            "$$value.bers_greaves",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  3006] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  3006] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  3006] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  3006] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  3006] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "boots_swiftn": {
+                        "$sum": [
+                            "$$value.boots_swiftn",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  3009] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  3009] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  3009] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  3009] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  3009] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "mobi_boots": {
+                        "$sum": [
+                            "$$value.mobi_boots",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  3117] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  3117] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  3117] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  3117] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  3117] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "ninja_tabi": {
+                        "$sum": [
+                            "$$value.ninja_tabi",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  3047] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  3047] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  3047] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  3047] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  3047] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "boots_luci": {
+                        "$sum": [
+                            "$$value.boots_luci",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  3158] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  3158] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  3158] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  3158] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  3158] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "merc_treads": {
+                        "$sum": [
+                            "$$value.merc_treads",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  3111] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  3111] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  3111] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  3111] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  3111] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "long_sword": {
+                        "$sum": [
+                            "$$value.long_sword",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  1036] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  1036] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  1036] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  1036] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  1036] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "dagger": {
+                        "$sum": [
+                            "$$value.dagger",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  1042] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  1042] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  1042] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  1042] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  1042] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "brawl_gloves": {
+                        "$sum": [
+                            "$$value.brawl_gloves",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  1051] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  1051] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  1051] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  1051] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  1051] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "cloak_oa": {
+                        "$sum": [
+                            "$$value.cloak_oa",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  1018] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  1018] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  1018] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  1018] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  1018] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "ruby_crystal": {
+                        "$sum": [
+                            "$$value.ruby_crystal",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  1028] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  1028] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  1028] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  1028] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  1028] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "saph_crystal": {
+                        "$sum": [
+                            "$$value.saph_crystal",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  1027] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  1027] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  1027] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  1027] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  1027] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "kindlegem": {
+                        "$sum": [
+                            "$$value.kindlegem",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  3067] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  3067] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  3067] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  3067] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  3067] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "nullmag_mantle": {
+                        "$sum": [
+                            "$$value.nullmag_mantle",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  1033] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  1033] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  1033] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  1033] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  1033] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "negatron": {
+                        "$sum": [
+                            "$$value.negatron",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  1057] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  1057] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  1057] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  1057] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  1057] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "qss": {
+                        "$sum": [
+                            "$$value.qss",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  3140] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  3140] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  3140] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  3140] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  3140] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "cloth": {
+                        "$sum": [
+                            "$$value.cloth",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  1029] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  1029] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  1029] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  1029] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  1029] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "chainvest": {
+                        "$sum": [
+                            "$$value.chainvest",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  1031] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  1031] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  1031] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  1031] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  1031] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "blasting_wand": {
+                        "$sum": [
+                            "$$value.blasting_wand",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  1026] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  1026] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  1026] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  1026] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  1026] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "pickaxe": {
+                        "$sum": [
+                            "$$value.pickaxe",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  1037] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  1037] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  1037] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  1037] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  1037] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "bf_sword": {
+                        "$sum": [
+                            "$$value.bf_sword",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  1038] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  1038] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  1038] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  1038] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  1038] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "serrated_dirk": {
+                        "$sum": [
+                            "$$value.serrated_dirk",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  3134] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  3134] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  3134] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  3134] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  3134] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "cf_warhammer": {
+                        "$sum": [
+                            "$$value.cf_warhammer",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  3133] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  3133] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  3133] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  3133] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  3133] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "vamp_scepter": {
+                        "$sum": [
+                            "$$value.vamp_scepter",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  1053] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  1053] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  1053] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  1053] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  1053] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "cutlass": {
+                        "$sum": [
+                            "$$value.cutlass",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  3144] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  3144] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  3144] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  3144] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  3144] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "recurve_bow": {
+                        "$sum": [
+                            "$$value.recurve_bow",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  1043] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  1043] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  1043] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  1043] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  1043] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "zeal": {
+                        "$sum": [
+                            "$$value.zeal",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  3086] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  3086] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  3086] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  3086] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  3086] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "kircheis_shard": {
+                        "$sum": [
+                            "$$value.kircheis_shard",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  2015] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  2015] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  2015] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  2015] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  2015] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "glacial shroud": {
+                        "$sum": [
+                            "$$value.sheen",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  3024] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  3024] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  3024] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  3024] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  3024] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "sheen": {
+                        "$sum": [
+                            "$$value.sheen",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  3057] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  3057] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  3057] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  3057] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  3057] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "phage": {
+                        "$sum": [
+                            "$$value.phage",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  3044] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  3044] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  3044] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  3044] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  3044] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "stinger": {
+                        "$sum": [
+                            "$$value.phage",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  3101] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  3101] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  3101] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  3101] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  3101] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "p_dancer": {
+                        "$sum": [
+                            "$$value.p_dancer",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  3046] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  3046] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  3046] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  3046] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  3046] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "s_shivv": {
+                        "$sum": [
+                            "$$value.s_shivv",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  3087] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  3087] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  3087] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  3087] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  3087] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "runaans_h": {
+                        "$sum": [
+                            "$$value.runaans_h",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  3085] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  3085] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  3085] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  3085] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  3085] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "rapid_fc": {
+                        "$sum": [
+                            "$$value.rapid_fc",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  3094] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  3094] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  3094] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  3094] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  3094] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "tri_force": {
+                        "$sum": [
+                            "$$value.tri_force",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  3078] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  3078] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  3078] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  3078] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  3078] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "ie": {
+                        "$sum": [
+                            "$$value.ie",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  3031] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  3031] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  3031] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  3031] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  3031] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "er": {
+                        "$sum": [
+                            "$$value.er",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  3508] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  3508] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  3508] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  3508] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  3508] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "gb": {
+                        "$sum": [
+                            "$$value.gb",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  3142] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  3142] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  3142] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  3142] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  3142] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "duskblade": {
+                        "$sum": [
+                            "$$value.duskblade",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  3147] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  3147] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  3147] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  3147] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  3147] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "eon": {
+                        "$sum": [
+                            "$$value.eon",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  3814] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  3814] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  3814] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  3814] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  3814] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "muramana": {
+                        "$sum": [
+                            "$$value.muramana",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  3004] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  3042] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  3004] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  3042] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  3004] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId", 3042]}]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  3004] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  3042] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  3004] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  3042] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "ibg": {
+                        "$sum": [
+                            "$$value.ibg",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  3025] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  3025] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  3025] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  3025] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  3025] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "wits_end": {
+                        "$sum": [
+                            "$$value.wits_end",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  3091] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  3091] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  3091] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  3091] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  3091] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "g_rageblade": {
+                        "$sum": [
+                            "$$value.g_rageblade",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  3124] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  3124] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  3124] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  3124] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  3124] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "guard_angel": {
+                        "$sum": [
+                            "$$value.guard_angel",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  3026] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  3026] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  3026] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  3026] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  3026] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "hexdrinker": {
+                        "$sum": [
+                            "$$value.hexdrinker",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  3155] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  3155] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  3155] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  3155] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  3155] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "maw": {
+                        "$sum": [
+                            "$$value.maw",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  3156] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  3156] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  3156] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  3156] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  3156] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "merc_scimitar": {
+                        "$sum": [
+                            "$$value.merc_scimitar",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  3139] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  3139] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  3139] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  3139] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  3139] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "bt": {
+                        "$sum": [
+                            "$$value.bt",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  3072] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  3072] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  3072] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  3072] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  3072] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "dd": {
+                        "$sum": [
+                            "$$value.bt",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  3812] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  3812] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  3812] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  3812] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  3812] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "last_whisper": {
+                        "$sum": [
+                            "$$value.last_whisper",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  3035] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  3035] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  3035] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  3035] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  3035] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "black_cleaver": {
+                        "$sum": [
+                            "$$value.black_cleaver",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  3071] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  3071] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  3071] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  3071] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  3071] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "giant_slayer": {
+                        "$sum": [
+                            "$$value.giant_slayer",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  3034] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  3034] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  3034] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  3034] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  3034] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "exec_calling": {
+                        "$sum": [
+                            "$$value.exec_calling",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  3123] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  3123] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  3123] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  3123] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  3123] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "lord_dom": {
+                        "$sum": [
+                            "$$value.lord_dom",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  3036] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  3036] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  3036] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  3036] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  3036] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "mortal_rem": {
+                        "$sum": [
+                            "$$value.mortal_rem",
+                            { "$switch": {
+                                "branches": [
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_PURCHASED"] }, { "$eq" : ["$$this.itemId",  3033] } ] },
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.afterId",  3033] } ] }
+                                    ]},
+                                        "then": 1
+                                    },
+                                    { "case": { "$or": [
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_DESTROYED"] }, { "$eq" : ["$$this.itemId",  3033] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_UNDO"] }, { "$eq" : ["$$this.beforeId",  3033] } ]},
+                                        { "$and": [ { "$eq" : ["$$this.type", "ITEM_SOLD"] }, { "$eq" : ["$$this.itemId",  3033] } ]}
+                                    ]},
+                                        "then": -1
+                                    }],
+                                "default": 0
+                            }}
+                        ]
+                    },
+                    "data" : { "$concatArrays" : [
+                        "$$value.data",
+                        {"$cond" : [
+                            { "$eq" : ["$$this.type", "SKILL_LEVEL_UP"] },
+                            [
+                                {
+                                    "_id" : "$$this._id",
+                                    "gameId" : "$$this.gameId",
+                                    "platformId": "$$this.platformId",
+                                    "patch": "$$this.patch",
+                                    "frameNo": "$$this.frameNo",
+                                    "type" : "$$this.type",
+                                    "skillSlot": "$$this.skillSlot",
+                                    "timestamp" : "$$this.timestamp",
+                                    "participantId" : "$$this.participantId",
+                                    "tier": "$$this.tier",
+                                    "side" :"$$this.side",
+                                    "championId" : "$$this.championId",
+                                    "masteryId": "$$this.masteryId",
+                                    "kills" : "$$value.kills",
+                                    "deaths": "$$value.deaths",
+                                    "assists": "$$value.assists",
+                                    "q_rank": "$$value.q_rank",
+                                    "w_rank": "$$value.w_rank",
+                                    "e_rank": "$$value.e_rank",
+                                    "r_rank": "$$value.r_rank",
+                                    "teamTurrets": "$$value.teamTurrets",
+                                    "enemyTurrets": "$$value.enemyTurrets",
+                                    "turretKills": "$$value.turretKills",
+                                    "turretAssists": "$$value.turretAssists",
+                                    "teamMidT": "$$value.teamMidT",
+                                    "teamBotT": "$$value.teamBotT",
+                                    "teamTopT": "$$value.teamTopT",
+                                    "enemyMidT": "$$value.enemyMidT",
+                                    "enemyBotT": "$$value.enemyBotT",
+                                    "enemyTopT": "$$value.enemyTopT",
+                                    "teamInh": "$$value.teamInh",
+                                    "enemyInh": "$$value.enemyInh",
+                                    "teamMidInh": "$$value.teamMidInh",
+                                    "teamTopInh": "$$value.teamTopInh",
+                                    "teamBotInh": "$$value.teamBotInh",
+                                    "enemyMidInh": "$$value.enemyMidInh",
+                                    "enemyTopInh": "$$value.enemyTopInh",
+                                    "enemyBotInh": "$$value.enemyBotInh",
+                                    "teamHeralds": "$$value.teamHeralds",
+                                    "teamBarons": "$$value.teamBarons",
+                                    "teamDragons": "$$value.teamDragons",
+                                    "teamInfernal": "$$value.teamInfernal",
+                                    "teamMountain": "$$value.teamMountain",
+                                    "teamOcean": "$$value.teamOcean",
+                                    "teamCloud": "$$value.teamCloud",
+                                    "teamElder": "$$value.teamElder",
+                                    "enemyHeralds": "$$value.enemyHeralds",
+                                    "enemyBarons": "$$value.enemyBarons",
+                                    "enemyDragons": "$$value.enemyDragons",
+                                    "enemyInfernal": "$$value.enemyInfernal",
+                                    "enemyMountain": "$$value.enemyMountain",
+                                    "enemyOcean": "$$value.enemyOcean",
+                                    "enemyCloud": "$$value.enemyCloud",
+                                    "enemyElder": "$$value.enemyElder",
+                                    "dorans_blade": "$$value.dorans_blade",
+                                    "dorans_ring": "$$value.dorans_ring",
+                                    "dorans_shield":"$$value.dorans_shield",
+                                    "cull": "$$value.cull",
+                                    "boots": "$$value.boots",
+                                    "bers_greaves": "$$value.bers_greaves",
+                                    "mobi_boots": "$$value.mobi_boots",
+                                    "boots_swiftn": "$$value.boots_swiftn",
+                                    "ninja_tabi": "$$value.ninja_tabi",
+                                    "boots_luci": "$$value.boots_luci",
+                                    "merc_treads": "$$value.merc_treads",
+                                    "long_sword": "$$value.long_sword",
+                                    "dagger": "$$value.dagger",
+                                    "brawl_gloves":"$$value.brawl_gloves",
+                                    "cloak_oa":"$$value.cloak_oa",
+                                    "ruby_crystal":"$$value.ruby_crystal",
+                                    "saph_crystal":"$$value.saph_crystal",
+                                    "kindlegem":"$$value.kindlegem",
+                                    "nullmag_mantle": "$$value.nullmag_mantle",
+                                    "negatron": "$$value.negatron",
+                                    "qss": "$$value.qss",
+                                    "cloth": "$$value.cloth",
+                                    "chainvest": "$$value.chainvest",
+                                    "blasting_wand":"$$value.blasting_wand",
+                                    "pickaxe": "$$value.pickaxe",
+                                    "bf_sword": "$$value.bf_sword",
+                                    "serrated_dirk": "$$value.serrated_dirk",
+                                    "cf_warhammer": "$$value.cf_warhammer",
+                                    "vamp_scepter": "$$value.vamp_scepter",
+                                    "cutlass": "$$value.cutlass",
+                                    "recurve_bow": "$$value.recurve_bow",
+                                    "zeal": "$$value.zeal",
+                                    "kircheis_shard": "$$value.kircheis_shard",
+                                    "glacial_shroud": "$$value.glacial_shroud",
+                                    "sheen": "$$value.sheen",
+                                    "phage": "$$value.phage",
+                                    "p_dancer": "$$value.p_dancer",
+                                    "s_shivv": "$$value.s_shivv",
+                                    "runaans_h": "$$value.runaans_h",
+                                    "rapid_fc": "$$value.rapid_fc",
+                                    "tri_force": "$$value.tri_force",
+                                    "ie": "$$value.ie",
+                                    "er": "$$value.er",
+                                    "gb": "$$value.gb",
+                                    "duskblade": "$$value.duskblade",
+                                    "eon": "$$value.eon",
+                                    "muramana": "$$value.muramana",
+                                    "ibg": "$$value.ibg",
+                                    "wits_end": "$$value.wits_end",
+                                    "g_rageblade": "$$value.g_rageblade",
+                                    "guard_angel": "$$value.guard_angel",
+                                    "hexdrinker": "$$value.hexdrinker",
+                                    "maw": "$$value.maw",
+                                    "merc_scimitar": "$$value.merc_scimitar",
+                                    "bt": "$$value.bt",
+                                    "dd": "$$value.dd",
+                                    "last_whisper": "$$value.last_whisper",
+                                    "giant_slayer": "$$value.giant_slayer",
+                                    "exec_calling": "$$value.exec_calling",
+                                    "black_cleaver": "$$value.black_cleaver",
+                                    "lord_dom": "$$value.lord_dom",
+                                    "mortal_rem": "$$value.mortal_rem"
+                                }
+                            ],
+                            []
+                        ]}
+                    ]}
+                }
+            }}
+        }},
+        {"$unwind" : "$data.data"},
+        {"$replaceRoot" : {"newRoot" : "$data.data"}},
+        {"$out": "adc_skill_level_ups"}
+    ]
+    if sample: pipe.insert(0, {"$limit": sample})
+    if with_frames : pipe[len(pipe)-1:len(pipe)-1] = [
+        {"$lookup": {
+            "from": "adc_frames",
+            "localField": "gameId",
+            "foreignField": "gameId",
+            "as": "frame"
+            }
+        },
+        {"$unwind": "$frame"},
+        {"$addFields": {
+            "mid": { "$cond": [{ "$and": [
+                {"$eq": ["$frameNo", "$frame.frameNo"]},
+                {"$eq": ["$participantId", "$frame.participantId"]}
+                ]}, 1, 0]
+            },
+            "xp": "$frame.xp",
+            "level": "$frame.level",
+            "totalGold": "$frame.totalGold",
+            "currentGold": "$frame.currentGold",
+            "minionsKilled": "$frame.minionsKilled",
+            "jungleMinionsKilled": "$frame.jungleMinionsKilled"
+        }},
+        {"$match": {
+            "mid": 1
+        }},
+        {"$project": {
+            "frame": 0,
+            "mid": 0
+        }} ]
     return pipe
 
 def get_item_count(sample=None):
