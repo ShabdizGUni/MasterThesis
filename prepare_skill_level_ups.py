@@ -8,7 +8,7 @@ def main():
     mongoDB = MongoClient('mongodb://localhost:27017/').LeagueCrawler
     globalStart, start = datetime.now(), datetime.now()
 
-    mongoDB.adc_events.aggregate(pl.get_skill_level_ups(), allowDiskUse=True)
+    mongoDB.adc_events.aggregate(pl.get_skill_level_ups(with_frames=True), allowDiskUse=True)
     print("Start Indexing at: " + str(datetime.now() - start))
     mongoDB.adc_skill_level_ups.create_index([("championId", ASCENDING)])
     mongoDB.adc_skill_level_ups.create_index([("championId", ASCENDING), ("patch", ASCENDING)])
