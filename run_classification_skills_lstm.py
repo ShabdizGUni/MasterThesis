@@ -199,36 +199,37 @@ def to_xy_staggered(frame, feat, target='itemId', length=None, partition=None):
 cols_collection = [
     common.columns_blank_item,
     common.columns_pre_game,
-    common.columns_in_game,
-    common.columns_inventory,
-    common.columns_performance,
-    common.columns_teams
+    # spell level ups (in_game) do not make sense here
+    list(np.setdiff1d(common.columns_inventory, ["q_rank", "w_rank", "e_rank", "r_rank"])),
+    list(np.setdiff1d(common.columns_performance,["q_rank", "w_rank", "e_rank", "r_rank"])),
+    list(np.setdiff1d(common.columns_teams, ["q_rank", "w_rank", "e_rank", "r_rank"])),
+    list(np.setdiff1d(common.columns_teams, ["q_rank", "w_rank", "e_rank", "r_rank"])) + common.item_columns
 ]
 
 set_1 = [110, 202]
 set_2 = [22, 51, 81, 110, 202]
 data = dh.get_skills_teams(champions=set_1, patches=PATCHES, tiers=["CHALLENGER", "MASTER", "DIAMOND", "PLATINUM"],
                            limit=1000, timeseries=True, min_purch=15)
-for i, cols in enumerate(cols_collection):
+for it, cols in enumerate(cols_collection):
+    if 'availGold' in cols: cols.remove('availGold')
     cols.remove('type')
     cols.remove('itemId')
     cols.append('skillSlot')
-    df = data[cols]
-    # if 'tier' in df.columns: _, tier_keys = dh.factorise_column(df, 'tier')
+    print('Features for Iteration: ' + str(it+1))
+    print(cols)
+    df = data.copy()[cols]
+    print("Iterataion No.: " + str(it+1))
     if 'tier' in df.columns: _, tier_keys = dh.factorise_column(df, 'tier')
     if 'side' in df.columns: df['side'] = df['side'].astype(str)
     if 'masteryId' in df.columns: df['masteryId'] = df['masteryId'].astype(str)
     if 'championId' in df.columns: df['championId'] = df['championId'].astype(str)
     df = dh.one_hot_encode_columns(df, drop=False)
-    feat = df.columns.difference(
-        ['_id', 'gameId', 'frameNo', 'itemId', 'participantId', 'platformId', 'tier', 'type', 'itemId_fact', 'patch'])
-    feat = feat.difference(common.columns_inventory)
 
     lb = LabelBinarizer()  # Learn ItemIds
-    itemset = list(df['itemId'].unique())
+    itemset = list(df['skillSlot'].unique())
     itemset.append(0)  # padding ID
     lb.fit(itemset)
-    item_names = dh.get_item_dict()
+    item_names = {1: "Q", 2: "W", 3: "E", 4: "R"}
 
     gb = df.groupby(['gameId', 'side'])  # Create Groupby object
 
@@ -240,12 +241,13 @@ for i, cols in enumerate(cols_collection):
     print('Mean Amount of Items bought: %2.1f' % avg)
     print('Min Amount of Items bought: %2.1f' % min)
 
-
     scaler = RobustScaler()
+    feat = df.columns.difference(
+        ['_id', 'gameId', 'side', 'frameNo', 'skillSlot', 'participantId', 'platformId', 'tier', 'type', 'patch'])
     scaler.fit(df[feat])
     df_scale = scaler.transform(df[feat])
 
-    x, y = to_xy_staggered(df_scale, feat, length=15)
+    x, y = to_xy_staggered(df_scale, feat, target='skillSlot', length=15)
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.1, random_state=42)
     _, x_org, _, y_org = train_test_split(gb.head(15)[df.columns].as_matrix().reshape(-1, 15, len(gb.head(15)[df.columns].columns)), y, test_size=0.1,
                                           random_state=42)
@@ -332,11 +334,10 @@ for i, cols in enumerate(cols_collection):
 
     print("TWO LAYERS ")
     start = datetime.now()
-    path = setup(name="LSTM_2b")
-    monitor = EarlyStopping(monitor='val_loss', min_delta=1e-4, patience=10, verbose=0, mode='auto')
+    path = setup(name="LSTM_2_iteration_" + str(it+1))
+    monitor = EarlyStopping(monitor='val_loss', min_delta=1e-3, patience=10, verbose=0, mode='auto')
     checkpointer = ModelCheckpoint(filepath=path + "/best_weights2b.hdf5", verbose=0, save_best_only=True)
     print("Shape X: (", str(x.shape[0]), ", ", str(x.shape[1]), ", ", str(x.shape[2]), ")")
-    # model, monitor, checkpointer = build_param_model_2a(x, y, path, units=units, dropout=0.3)
     model = mb.lstm_classifier(num_feat=x.shape[2], classes=y.shape[2], timesteps=x.shape[1],
                                batch_size=5, units_per_layer=[x.shape[2], x.shape[2]], layers=2, dropout=0.2,
                                optimizer='adam')

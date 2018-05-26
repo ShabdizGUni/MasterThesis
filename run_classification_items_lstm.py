@@ -20,7 +20,7 @@ rmsp = SGD(lr=0.001, decay=1e-6, momentum=0.9, nesterov=True)
 
 
 def setup(name):
-    path = "output/lstm_skills" + "/" + name
+    path = "output/lstm_items" + "/" + name
     pathlib.Path(path).mkdir(parents=True, exist_ok=True)
     print("Start Processing: " + name)
     return path
@@ -200,25 +200,26 @@ cols_collection = [
     common.columns_blank_item,
     common.columns_pre_game,
     common.columns_in_game,
-    common.columns_inventory,
-    common.columns_performance,
-    common.columns_teams
+    # inventory does not make sense here
+    list(np.setdiff1d(common.columns_performance, common.inventory)),
+    list(np.setdiff1d(common.columns_teams, common.inventory)),
+    list(np.setdiff1d(common.columns_teams, common.inventory)) + common.item_columns
 ]
 
 set_1 = [110, 202]
 set_2 = [22, 51, 81, 110, 202]
 data = dh.get_purchase_teams(champions=set_1, patches=PATCHES, tiers=["CHALLENGER", "MASTER", "DIAMOND", "PLATINUM"],
                              limit=1000, timeseries=True, min_purch=15)
-for i, cols in enumerate(cols_collection):
-    df = data[cols]
+for it, cols in enumerate(cols_collection):
+    print('Features for Iteration: ' + str(it+1))
+    print(cols)
+    df = data.copy()[cols]
+    print("Iterataion No.: " + str(it+1))
     if 'tier' in df.columns: _, tier_keys = dh.factorise_column(df, 'tier')
     if 'side' in df.columns: df['side'] = df['side'].astype(str)
     if 'masteryId' in df.columns: df['masteryId'] = df['masteryId'].astype(str)
     if 'championId' in df.columns: df['championId'] = df['championId'].astype(str)
     df = dh.one_hot_encode_columns(df, drop=False)
-    feat = df.columns.difference(
-        ['_id', 'gameId', 'frameNo', 'itemId', 'participantId', 'platformId', 'tier', 'type', 'itemId_fact', 'patch'])
-    feat = feat.difference(common.columns_inventory)
 
     lb = LabelBinarizer()  # Learn ItemIds
     itemset = list(df['itemId'].unique())
@@ -237,6 +238,8 @@ for i, cols in enumerate(cols_collection):
     print('Min Amount of Items bought: %2.1f' % min)
 
     scaler = RobustScaler()
+    feat = df.columns.difference(
+        ['_id', 'gameId', 'side', 'frameNo', 'itemId', 'participantId', 'platformId', 'tier', 'type', 'itemId_fact', 'patch'])
     scaler.fit(df[feat])
     df_scale = scaler.transform(df[feat])
 
@@ -327,7 +330,7 @@ for i, cols in enumerate(cols_collection):
 
     print("TWO LAYERS ")
     start = datetime.now()
-    path = setup(name="LSTM_2b_iteration_" + str(i))
+    path = setup(name="LSTM_2_iteration_" + str(it+1))
     monitor = EarlyStopping(monitor='val_loss', min_delta=1e-4, patience=10, verbose=0, mode='auto')
     checkpointer = ModelCheckpoint(filepath=path + "/best_weights2b.hdf5", verbose=0, save_best_only=True)
     print("Shape X: (", str(x.shape[0]), ", ", str(x.shape[1]), ", ", str(x.shape[2]), ")")
