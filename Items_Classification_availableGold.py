@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import sys
 from sqlalchemy import *
-from Lib.Classification.Classifiers import *
+from Lib.Classification.Classifiers_items import *
 from sklearn.metrics import classification as metrics
 from pprint import pprint
 from data.constants import *

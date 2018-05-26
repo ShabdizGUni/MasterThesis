@@ -11,26 +11,6 @@ def playerstats(platformId, patch, testset:int=None):
         },
         {"$unwind": "$participants"},
         {"$unwind": "$participantIdentities"},
-        # {"$addFields": {
-        #     "bans" : {
-        #         "$concatArrays": [
-        #             {
-        #                 "$let": {
-        #                     "vars": {"t1": {"$arrayElemAt": ["$teams", 0] } },
-        #                     "in": "$$t1.bans"
-        #                     }
-        #             },
-        #             {
-        #                 "$let": {
-        #                     "vars": {"t2": {"$arrayElemAt": ["$teams", 1] } },
-        #                     "in": "$$t2.bans"
-        #
-        #                 }
-        #             }
-        #         ]
-        #     }
-        # }
-        # },
         {"$unwind": "$teams"},
         {"$redact":
              {"$cond": {"if": {"$eq": ["$participants.participantId", "$participantIdentities.participantId"]},
@@ -181,6 +161,7 @@ def proplayerstats(patch):
             "participantId": "$participants.participantId",
             "teamId": "$participants.teamId",
             "summonerId": "$participantIdentities.player.summonerName",
+            "bans": "$teams.bans",
             "championId": "$participants.championId",
             "lane": "$participants.timeline.lane",
             "role": "$participants.timeline.role",
@@ -2771,6 +2752,7 @@ def get_purchase_details(sample=None, with_frames=None):
                                     "kircheis_shard": "$$value.kircheis_shard",
                                     "glacial_shroud": "$$value.glacial_shroud",
                                     "sheen": "$$value.sheen",
+                                    "stinger": "$$value.stinger",
                                     "phage": "$$value.phage",
                                     "p_dancer": "$$value.p_dancer",
                                     "s_shivv": "$$value.s_shivv",
@@ -5007,6 +4989,7 @@ def get_skill_level_ups(sample=None, with_frames=None):
                                     "kircheis_shard": "$$value.kircheis_shard",
                                     "glacial_shroud": "$$value.glacial_shroud",
                                     "sheen": "$$value.sheen",
+                                    "stinger": "$$value.stinger",
                                     "phage": "$$value.phage",
                                     "p_dancer": "$$value.p_dancer",
                                     "s_shivv": "$$value.s_shivv",
@@ -5059,7 +5042,9 @@ def get_skill_level_ups(sample=None, with_frames=None):
         {"$addFields": {
             "mid": { "$cond": [{ "$and": [
                 {"$eq": ["$frameNo", "$frame.frameNo"]},
-                {"$eq": ["$participantId", "$frame.participantId"]}
+                {"$eq": ["$participantId", "$frame.participantId"]},
+                {"$eq": ["$platformId", "$frame.platformId"]},
+                {"$eq": ["$patch", "$frame.patch"]}
                 ]}, 1, 0]
             },
             "xp": "$frame.xp",
@@ -5140,4 +5125,30 @@ def create_purchase_detail_ids(itemIds):
         }
     },
     {"$out": "adc_purchase_details_Ids"}
+    ]
+
+def create_skill_level_ups_ids():
+    return [
+    {"$group": {
+        "_id": {
+            "gameId": "$gameId",
+            "side": "$side",
+            "championId": "$championId",
+            "patch": "$patch",
+            "tier": "$tier"
+        },
+        "count": { "$sum" : 1 }
+        }
+    },
+    {"$project": {
+        "_id": 0,
+        "gameId": "$_id.gameId",
+        "side": "$_id.side",
+        "patch": "$_id.patch",
+        "tier": "$_id.tier",
+        "championId": "$_id.championId",
+        "count": "$count"
+        }
+    },
+    {"$out": "adc_skill_level_ups_Ids"}
     ]

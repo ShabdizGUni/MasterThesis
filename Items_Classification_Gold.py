@@ -1,4 +1,4 @@
-from Lib.Classification.Classifiers import *
+from Lib.Classification.Classifiers_items import *
 from sqlalchemy import *
 from data.constants import *
 

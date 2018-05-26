@@ -73,45 +73,49 @@ ADC_CHAMPIONS_DICT = {
 ADC_TIER_3_ITEMS_LIST = [
                         3031,  # Infinity Edge
                         3508,  # Essence Reaver
-                        3043,  # Muramana
+                        3042,  # Muramana
                         3004,  # Manamune
-                        3124,  # Guinsoo's Rageblade
-                        3153,  # BORK
-                        3072,  # Bloodthirster
-                        3814,  # Edge of Night
-                        3156,  # Maw of Malmortius
-                        3091,  # Wit's End
-                        3071,  # Black Cleaver
-                        3147,  # Duskblade
-                        3142,  # Ghostblade
+                        3025,  # Iceborn Gauntlet
                         3078,  # Trinity Force
                         3085,  # Runaan's
                         3094,  # Rapid Firecannon
                         3087,  # Statikk Shiv
                         3046,  # Phantom Dancer
-                        3025   # Iceborn Gauntlet
+                        3072,  # Bloodthirster
+                        3155,  # Hexdrinker
+                        3156,  # Maw of Malmortius
+                        3153,  # BORK
+                        3124,  # Guinsoo's Rageblade
+                        3812,  # Death's Dance
+                        3091,  # Wit's End
+                        3071,  # Black Cleaver
+                        3814,  # Edge of Night
+                        3147,  # Duskblade
+                        3142,  # Ghostblade
                          ]
 
 ADC_TIER_3_ITEMS_DICT = {
     3031: "IE",
     3508: "ER",
-    3043: "MM",
     3004: "MM",
-    3124: "RB",
-    3153: "BORK",
-    3072: "BT",
-    3814: "EoN",
-    3156: "Maw",
-    3091: "WE",
-    3071: "BC",
-    3147: "DB",
-    3142: "GB",
+    3043: "MM",
+    3025: "IBG",
     3078: "Tri",
     3085: "Runaan's",
     3094: "RFC",
     3087: "StS",
     3046: "PD",
-    3025: "IBG"
+    3072: "BT",
+    3812: "DD",
+    3155: "Maw/Hex",
+    3156: "Maw/Hex",
+    3153: "BORK",
+    3124: "RB",
+    3091: "WE",
+    3071: "BC",
+    3814: "EoN",
+    3147: "DB",
+    3142: "GB"
     # Guardian Angel, Scimitar (QSS), Last Whisper (Lord Dominik's, Mortal Reminder)
     # Boots, Masteries, Runes
 }
@@ -151,7 +155,9 @@ ADC_RELEVANT_ITEMS = [
     3086,   # zeal
     2015,   # kircheis shard
     3057,   # sheen
+    3024,   # glacial shroud
     3044,   # phage
+    3101,   # stinger
     3046,   # phantom dancer
     3087,   # statikk shiv
     3085,   # runaans hurricane

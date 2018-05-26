@@ -1,5 +1,5 @@
-columns_blank = ["gameId", "platformId", "patch", "frameNo", "participantId",
-                 "championId", "type", "itemId", "timestamp"]
+columns_blank_item = ["gameId", "platformId", "patch", "frameNo", "participantId",
+                      "side", "type", "itemId", "timestamp"]
 
 inventory = [
     "dorans_blade",
@@ -64,9 +64,9 @@ inventory = [
     "mortal_rem"
 ]
 
-columns_pre_game = columns_blank + ["tier",
-                                    "side",
-                                    "masteryId"]
+columns_pre_game = columns_blank_item + ["tier",
+                                         "masteryId",
+                                         "championId"]
 
 columns_in_game = columns_pre_game + ["q_rank",
                                       "w_rank",
@@ -219,7 +219,89 @@ itemStatSet = [
     ])
 ]
 
-# note: needed to adjust some values manually because
-# of inconsistencies in the static data endpoint
-# see: https://discussion.developer.riotgames.com/questions/5178/edge-of-night-erronous-entry.html
-# and: https://discussion.developer.riotgames.com/questions/1596/known-issue-static-data-errorsmissing-data.html
+item_columns = [
+    # Infinity Edge
+    "ie_goldTotal",
+    "ie_goldBase",
+    "ie_goldSell",
+    "ie_FlatCritChanceMod",
+    "ie_FlatPhysicalDamageMod",
+    "ie_e1",
+    # Essence Reaver
+    "er_goldTotal",
+    "er_goldBase",
+    "er_goldSell",
+    "er_FlatCritChanceMod",
+    "er_FlatPhysicalDamageMod",
+    "er_e1",
+    "er_e2",
+    "er_e3",
+    "er_e4",
+    # BORK
+    "bork_goldTotal",
+    "bork_goldBase",
+    "bork_goldSell",
+    "bork_FlatPhysicalDamageMod",
+    "bork_PercentAttackSpeedMod",
+    "bork_PercentLifeStealMod",
+    # Edge of Night
+    "eon_goldTotal",
+    "eon_goldBase",
+    "eon_goldSell",
+    "eon_FlatHPPoolMod",
+    "eon_FlatPhysicalDamageMod",
+    "eon_FlatSpellBlockMod",
+    "eon_e1",
+    "eon_e2",
+    "eon_e3",
+    "eon_e4",
+    # Black Cleaver
+    "bc_goldTotal",
+    "bc_goldBase",
+    "bc_goldSell",
+    "bc_FlatHPPoolMod",
+    "bc_e2",
+    "bc_e5",
+    # Duskblade
+    "db_goldTotal",
+    "db_goldBase",
+    "db_goldSell",
+    "db_FlatPhysicalDamageMod",
+    "db_e1",
+    "db_e2",
+    "db_e5",
+    "db_e6",
+    "db_e7",
+    "db_e8",
+    "db_e10",
+    "db_e12",
+    # Zeal
+    "z_goldTotal",
+    "z_goldBase",
+    "z_goldSell",
+    # Rapid FireCannon
+    "rfc_goldTotal",
+    "rfc_goldBase",
+    "rfc_goldSell",
+    "rfc_e6",
+    "rfc_e3",
+    "rfc_e4",
+    # Statikk Shiv
+    "ss_goldTotal",
+    "ss_goldBase",
+    "ss_goldSell",
+    "ss_e5",
+    "ss_e6",
+    "ss_e9",
+    "ss_e10",
+    # Runaan's
+    "rh_goldTotal",
+    "rh_goldBase",
+    "rh_goldSell",
+    "rh_e2",
+    "rh_e4",
+    # Phantom Dancer
+    "pd_goldTotal",
+    "pd_goldBase",
+    "pd_goldSell",
+]

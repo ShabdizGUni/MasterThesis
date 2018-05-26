@@ -38,7 +38,7 @@ def get_data_frame(col, limit=None, champions=None, tiers=None, patches=None) ->
                         criteria['patch'] = p
                         data = data + list(col.aggregate([{"$match": criteria}, {"$sample": {"size": int(per_patch)}}], allowDiskUse=True))
                 else:
-                    data = data + list(col.aggregate([{"$match": criteria}, {"$sample": {"size": int(per_patch)}}], allowDiskUse=True))
+                    data = data + list(col.aggregate([{"$match": criteria}, {"$sample":  {"size": int(per_patch)}}], allowDiskUse=True))
             else:
                 data = data + list(col.find(criteria))
     else:
@@ -48,7 +48,7 @@ def get_data_frame(col, limit=None, champions=None, tiers=None, patches=None) ->
     return pd.DataFrame(df.drop(columns=['_id']))
 
 
-def get_events_as_timeseries(champions, patches, tiers, limit, min_purch):
+def get_purchases_as_timeseries(champions, patches, tiers, limit, min_purch):
     print("Get GameIds")
     Ids = []
     data = []
@@ -68,7 +68,7 @@ def get_events_as_timeseries(champions, patches, tiers, limit, min_purch):
             criteria['patch'] = p
             Ids = Ids + list(mongo.adc_purchase_details_Ids.aggregate([
                 {"$match": criteria},
-                {"$sample": {"size": per_crit}}
+                {"$limit": per_crit}
             ], allowDiskUse=True))
     print("Get Purchases")
     # columns = list(mongo.adc_purchase_details.find_one())
@@ -79,6 +79,53 @@ def get_events_as_timeseries(champions, patches, tiers, limit, min_purch):
         #     "side": Id['side']}
         # ))
         data.extend(list(mongo.adc_purchase_details.find({
+            "gameId": Id['gameId'],
+            "side": Id['side']}
+        )))
+    #     print(str(idx))
+    #     if (idx + 1) % 1000 == 0:
+    #         print("Unload No.: ", str(int(idx / 1000)))
+    #         new_frame = pd.DataFrame(data, columns=columns)
+    #         for i in range(len(new_frame.index)):
+    #             frame.loc[len(frame)] = new_frame.loc[i, columns]
+    #         data = []
+    # return frame
+    keys = data[1].keys()
+    df = pd.DataFrame(data, columns=keys)
+    return df.drop(columns=["_id"])
+
+
+def get_skills_as_timeseries(champions, patches, tiers, limit, min_purch):
+    print("Get GameIds")
+    Ids = []
+    data = []
+    criteria = {
+        "count": {
+            "$gte": min_purch
+        }
+    }
+    if tiers is not None:
+        if type(tiers) is str: criteria["tier"] = tiers
+        if type(tiers) is list: criteria["tier"] = {"$in": tiers}
+    per_crit = int(limit/(len(patches)*len(champions)))
+    mongo = get_mongo_connection()
+    for c in champions:
+        criteria['championId'] = c
+        for p in patches:
+            criteria['patch'] = p
+            Ids = Ids + list(mongo.adc_skill_level_ups_Ids.aggregate([
+                {"$match": criteria},
+                {"$limit": per_crit}
+            ], allowDiskUse=True))
+    print("Get Purchases")
+    # columns = list(mongo.adc_purchase_details.find_one())
+    # frame = pd.DataFrame([], columns=columns)
+    for idx, Id in enumerate(Ids):
+        # new = list(mongo.adc_purchase_details.find({
+        #     "gameId": Id['gameId'],
+        #     "side": Id['side']}
+        # ))
+        data.extend(list(mongo.adc_skill_level_ups.find({
             "gameId": Id['gameId'],
             "side": Id['side']}
         )))
@@ -181,15 +228,64 @@ def compute_reward_gold(events):
 
 
 # for neural networks and deep learning
-def one_hot_encode_columns(df, columns, drop=True):
-    c = []
-    for column in columns:
-        if column in df.columns: c.append(column)
-    for column in c:
-        values = list(set(df[column]))
-        for v in values:
-            df[v] = np.where(df[column].str.contains(v), 1, 0)
-        if drop: df = df.drop(columns=[column])
+def one_hot_encode_columns(df, drop=True):
+    # c = []
+    # for column in columns:
+    #     if column in df.columns: c.append(column)
+    # for column in c:
+    #     values = list(set(df[column]))
+    #     for v in values:
+    #         df[v] = np.where(df[column].str.contains(v), 1, 0)
+    #     if drop: df = df.drop(columns=[column])
+    if 'platformId' in df.columns:
+        df['platformId'] = df['platformId'].astype(str)
+        df['EUW'] = np.where(df['platformId'].str.contains("EUW1"), 1, 0)
+        df['KR'] = np.where(df['platformId'].str.contains("KR"), 1, 0)
+        df['NA1'] = np.where(df['platformId'].str.contains("NA1"), 1, 0)
+        df['BR1'] = np.where(df['platformId'].str.contains("BR1"), 1, 0)
+        if drop: df.drop(columns=['platformId'], inplace=True)
+    if "masteryId" in df.columns:
+        df['masteryId'] = df['masteryId'].astype(str)
+        # [6161, 6162, 6164, 6361, 6362, 6363, 6261, 6262, 6263]
+        df['6161'] = np.where(df['masteryId'].str.contains("6161"), 1, 0)
+        df['6162'] = np.where(df['masteryId'].str.contains("6162"), 1, 0)
+        df['6164'] = np.where(df['masteryId'].str.contains("6164"), 1, 0)
+        df['6361'] = np.where(df['masteryId'].str.contains("6361"), 1, 0)
+        df['6362'] = np.where(df['masteryId'].str.contains("6362"), 1, 0)
+        df['6363'] = np.where(df['masteryId'].str.contains("6363"), 1, 0)
+        df['6261'] = np.where(df['masteryId'].str.contains("6261"), 1, 0)
+        df['6262'] = np.where(df['masteryId'].str.contains("6262"), 1, 0)
+        df['6263'] = np.where(df['masteryId'].str.contains("6263"), 1, 0)
+        if drop: df.drop(columns=['masteryId'], inplace=True)
+    if 'side' in df.columns:
+        df['side'] = df['side'].astype(str)
+        df['blue'] = np.where(df['side'].str.contains("100"), 1, 0)
+        df['red'] = np.where(df['side'].str.contains("200"), 1, 0)
+        if drop: df.drop(columns=['side'], inplace=True)
+    if 'championId' in df.columns:
+        # [22,51,119,81,202,222,429,96,236,21,15,18,29,110,67,498]
+        df['championId'] = df['championId'].astype(str)
+        df['22'] = np.where(df['championId'].str.contains("22"), 1, 0)
+        df['51'] = np.where(df['championId'].str.contains("51"), 1, 0)
+        df['81'] = np.where(df['championId'].str.contains("81"), 1, 0)
+        df['110'] = np.where(df['championId'].str.contains("110"), 1, 0)
+        df['202'] = np.where(df['championId'].str.contains("202"), 1, 0)
+        if drop: df.drop(columns=['championId'], inplace=True)
+    if 'tier' in df.columns:
+        df['tier'] = df['tier'].astype('str')
+        df['CHALLENGER'] = np.where(df['tier'].str.contains("CHALLENGER"), 1, 0)
+        df['MASTER'] = np.where(df['tier'].str.contains("MASTER"), 1, 0)
+        df['DIAMOND'] = np.where(df['tier'].str.contains("DIAMOND"), 1, 0)
+        df['PLATINUM'] = np.where(df['tier'].str.contains("PLATINUM"), 1, 0)
+        df['GOLD'] = np.where(df['tier'].str.contains("GOLD"), 1, 0)
+        df['SILVER'] = np.where(df['tier'].str.contains("SILVER"), 1, 0)
+        df['BRONZE'] = np.where(df['tier'].str.contains("BRONZE"), 1, 0)
+        if drop: df.drop(columns=['tier'], inplace=True)
+    if 'type' in df.columns:
+        df['type'] = df['type'].astype('str')
+        df['ITEM_PURCHASED'] = np.where(df['type'].str.contains("ITEM_PURCHASED"), 1, 0)
+        df['ITEM_SOLD'] = np.where(df['type'].str.contains("ITEM_SOLD"), 1, 0)
+        if drop: df.drop(columns=['type'], inplace=True)
     return df
 
 
@@ -206,8 +302,10 @@ def factorise_column(df, column):
     return column_fact, column_key
 
 
-def to_xy(df, target):
+def to_xy(data, target):
+    df = data.copy()
     result = []
+    if 'patch' in df.columns: df.drop(columns=['patch'], inplace=True)
     for x in df.columns:
         if x != target:
             result.append(x)
@@ -224,21 +322,36 @@ def to_xy(df, target):
         return df.as_matrix(result).astype(np.float32), df.as_matrix([target]).astype(np.float32)
 
 
-def prepare_dataset(df):
+def prepare_dataset(df, target=None):
     columns_to_drop = ['_id', 'gameId', 'frameNo', 'participantId', 'patch']
     for column in columns_to_drop:
         if column in df.columns: df.drop(columns=[column], inplace=True)
     c = []
     for column in df.columns:
-        if df[column].dtypes not in (np.int32, np.int64, np.float, np.double):
+        if (df[column].dtypes not in (np.int32, np.int64, np.float, np.double)) & (column != target):
             c.append(column)
     df = one_hot_encode_columns(df, c)
-    x, y = to_xy(df, 'itemId')
+    x, y = to_xy(df, 'itemId' if target is None else target)
     scaler = MinMaxScaler()
     scaler.fit(x)
     x = scaler.transform(x)
     return x, y
 
+
+def prepare_dataset_2(df, target=None):
+    columns_to_drop = ['_id', 'gameId', 'frameNo', 'participantId']
+    for column in columns_to_drop:
+        if column in df.columns: df.drop(columns=[column], inplace=True)
+    c = []
+    for column in df.columns.difference(['patch']):
+        if df[column].dtypes not in (np.int32, np.int64, np.float, np.double):
+            c.append(column)
+    df = one_hot_encode_columns(df, c)
+    x, y = to_xy(df, 'itemId' if target is None else target)
+    scaler = MinMaxScaler()
+    scaler.fit(x)
+    x = scaler.transform(x)
+    return x, y
 
 def filter_data_set(events):  # Corrupting Potions stays!
     events = events[events.itemId.isin(const.ADC_RELEVANT_ITEMS)]
@@ -263,8 +376,8 @@ def get_purchases_blank(champions=None, patches=None, tiers=None, limit=None, ti
     if not timeseries:
         events = get_data_frame(mongo.adc_purchase_details, limit=limit, champions=champions, patches=patches, tiers=tiers)
     else:
-        events = get_events_as_timeseries(champions=champions, patches=patches, tiers=tiers, limit=limit, min_purch=min_purch)
-    events.drop(columns=events.columns.difference(common.columns_blank), inplace=True)
+        events = get_purchases_as_timeseries(champions=champions, patches=patches, tiers=tiers, limit=limit, min_purch=min_purch)
+    events.drop(columns=events.columns.difference(common.columns_blank_item), inplace=True)
     events = filter_data_set(events)
     print('Join Frames...')
     events = join_frames(events)
@@ -285,7 +398,7 @@ def get_purchases_pre_game(champions=None, patches=None, tiers=None, limit=None,
     if not timeseries:
         events = get_data_frame(mongo.adc_purchase_details, limit=limit, champions=champions, patches=patches, tiers=tiers)
     else:
-        events = get_events_as_timeseries(champions=champions, patches=patches, tiers=tiers, limit=limit, min_purch=min_purch)
+        events = get_purchases_as_timeseries(champions=champions, patches=patches, tiers=tiers, limit=limit, min_purch=min_purch)
     events.drop(columns=events.columns.difference(common.columns_pre_game), inplace=True)
     events = filter_data_set(events)
     print('Join Frames...')
@@ -307,7 +420,7 @@ def get_purchases_in_game(champions=None, patches=None, tiers=None, limit=None, 
     if not timeseries:
         events = get_data_frame(mongo.adc_purchase_details, limit=limit, champions=champions, patches=patches, tiers=tiers)
     else:
-        events = get_events_as_timeseries(champions=champions, patches=patches, tiers=tiers, limit=limit, min_purch=min_purch)
+        events = get_purchases_as_timeseries(champions=champions, patches=patches, tiers=tiers, limit=limit, min_purch=min_purch)
     events.drop(columns=events.columns.difference(common.columns_in_game), inplace=True)
     events = filter_data_set(events)
     print('Join Frames...')
@@ -329,7 +442,7 @@ def get_purchases_inventory(champions=None, patches=None, tiers=None, limit=None
     if not timeseries:
         events = get_data_frame(mongo.adc_purchase_details, limit=limit, champions=champions, patches=patches, tiers=tiers)
     else:
-        events = get_events_as_timeseries(champions=champions, patches=patches, tiers=tiers, limit=limit, min_purch=min_purch)
+        events = get_purchases_as_timeseries(champions=champions, patches=patches, tiers=tiers, limit=limit, min_purch=min_purch)
     events.drop(columns=events.columns.difference(common.columns_inventory), inplace=True)
     events = filter_data_set(events)
     print('Join Frames...')
@@ -351,7 +464,7 @@ def get_purchases_performance(champions=None, patches=None, tiers=None, limit=No
     if not timeseries:
         events = get_data_frame(mongo.adc_purchase_details, limit=limit, champions=champions, patches=patches, tiers=tiers)
     else:
-        events = get_events_as_timeseries(champions=champions, patches=patches, tiers=tiers, limit=limit, min_purch=min_purch)
+        events = get_purchases_as_timeseries(champions=champions, patches=patches, tiers=tiers, limit=limit, min_purch=min_purch)
     events.drop(columns=events.columns.difference(common.columns_performance), inplace=True)
     print('Join Frames...')
     events = join_frames(events)
@@ -372,7 +485,7 @@ def get_purchase_teams(champions=None, patches=None, tiers=None, limit=None, tim
     if not timeseries:
         events = get_data_frame(mongo.adc_purchase_details, limit=limit, champions=champions, patches=patches)
     else:
-        events = get_events_as_timeseries(champions=champions, patches=patches, tiers=tiers, limit=limit, min_purch=min_purch)
+        events = get_purchases_as_timeseries(champions=champions, patches=patches, tiers=tiers, limit=limit, min_purch=min_purch)
     events.drop(columns=events.columns.difference(common.columns_teams), inplace=True)
     print('Join Frames...')
     events = join_frames(events)
@@ -388,10 +501,33 @@ def get_purchase_teams(champions=None, patches=None, tiers=None, limit=None, tim
     return events
 
 
+def get_skills_teams(champions=None, patches=None, tiers=None, limit=None, timeseries=False, min_purch=10):
+    mongo = get_mongo_connection()
+    if not timeseries:
+        events = get_data_frame(mongo.adc_skill_level_ups, limit=limit, champions=champions, patches=patches)
+    else:
+        events = get_skills_as_timeseries(champions=champions, patches=patches, tiers=tiers, limit=limit, min_purch=min_purch)
+    cols = ['skillSlot' if c == 'itemId' else c for c in common.columns_teams]
+    cols.remove('availGold')
+    events.drop(columns=events.columns.difference(cols), inplace=True)
+    print('Join Frames...')
+    events = join_frames(events)
+    # print('Join Gold Values ...')
+    # item_infos = get_item_infos()
+    # events = pd.merge(events, item_infos[["itemId", "patch", "goldSell", "goldBase", "goldTotal"]],
+    #                   how="left", on=["itemId", "patch"], copy=False)
+    # print('Calculate available Gold ...')
+    # events = compute_reward_gold(events)
+    # events = filter_data_set(events)
+    # print('Join Itemstats by Patch ...')
+    events = pd.merge(events, get_item_stats(), how='left', on='patch', copy=False)
+    return events
+
+
 def get_data_set_0_all():
     mongo = get_mongo_connection()
     events = get_data_frame(mongo.adc_purchase_details, limit=10000)
-    events.drop(columns=events.columns.difference(common.columns_blank), inplace=True)
+    events.drop(columns=events.columns.difference(common.columns_blank_item), inplace=True)
 
     return events
 
@@ -400,7 +536,7 @@ def get_data_set_0_all():
 def get_data_set_0() -> pd.DataFrame:
     mongo = get_mongo_connection()
     events = get_data_frame(mongo.jhin_training_set)
-    events.drop(columns=events.columns.difference(common.columns_blank), inplace=True)
+    events.drop(columns=events.columns.difference(common.columns_blank_item), inplace=True)
     events = filter_data_set(events)
     return events
 

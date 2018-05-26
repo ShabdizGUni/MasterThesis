@@ -1,5 +1,6 @@
 from pymongo import *
 import data.Pipelines as pl
+from matplotlib import pyplot as plt
 import re as r
 import operator
 import pandas as pd
@@ -7,6 +8,7 @@ import seaborn as sns
 import data.constants as con
 import os
 
+sns.set(rc={'figure.figsize': (21.7, 11.00)})
 
 def ensure_dir(file_path):
     directory = os.path.dirname(file_path)
@@ -63,16 +65,18 @@ for _id in con.ADC_CHAMPIONS_DICT.keys():
     result_2['freq'] = result_2['2_items_count'] / result_2['gamesPlayed_2']
     num_games_2 = sum(itemsets["two_core_items"])
 
-    sns.set(font_scale=1)
+    sns.set(font_scale=1.2)
     df2 = result_2[(result_2['freq'] > threshold)][['platformId', 'patch', 'core_items_2', 'freq']]
+    g2, ax = plt.subplots(figsize=(22, 10))
     g2 = sns.FacetGrid(df2,
                        col='patch', col_wrap=5, col_order=con.PATCHES)
     g2 = (g2.map(sns.barplot, 'freq', 'core_items_2', 'platformId', hue_order=["EUW1", "NA1", "BR1", "KR"],
                  palette=sns.color_palette("pastel"),
                  order=sorted(df2.core_items_2.unique(), key=operator.itemgetter(0))).add_legend())
-    g2.fig.subplots_adjust(top=0.9)
-    g2.fig.suptitle(champion + "'s Itemsets - Games: " + str(num_games_2)+", Threshold:" + str(threshold), fontsize=20)
-    g2.savefig(path+"2_items.pdf")
+    # g2.fig.subplots_adjust(top=0.9)
+    # g2.fig.suptitle(champion + "'s Itemsets - Games: " + str(num_games_2)+", Threshold:" + str(threshold), fontsize=20)
+    # g2.tight_layout()
+    g2.savefig(path+"2_items.svg")
 
     # alternatively:
     # g2 = sb.factorplot('freq', 'core_items_2', 'platformId',
@@ -93,17 +97,19 @@ for _id in con.ADC_CHAMPIONS_DICT.keys():
     result_3['freq'] = result_3['2_items_count'] / result_3['gamesPlayed_3']
     num_games_3 = sum(itemsets["three_core_items"])
 
-    sns.set(font_scale=0.7)
+    sns.set(font_scale=1.3)
     df3 = result_3[(result_3['freq'] > threshold)][['platformId', 'patch', 'core_items_3', 'freq']]
+    g3, ax = plt.subplots(figsize=(22, 10))
     g3 = sns.FacetGrid(df3,
                        col='patch', col_wrap=5, col_order=con.PATCHES)
     g3 = (g3.map(sns.barplot, 'freq', 'core_items_3', 'platformId', hue_order=["EUW1", "NA1", "BR1", "KR"],
                  palette=sns.color_palette("pastel"),
                  order=sorted(df3.core_items_3.unique(), key=operator.itemgetter(0))
                  ).add_legend())
-    g3.fig.subplots_adjust(top=0.9)
-    g3.fig.suptitle(champion + " Itemsets - Games: " + str(num_games_3)+", Threshold:" + str(threshold), fontsize=20)
-    g3.savefig(path+"3_items.pdf")
+    # g3.fig.subplots_adjust(top=0.9)
+    # g3.fig.suptitle(champion + " Itemsets - Games: " + str(num_games_3)+", Threshold:" + str(threshold), fontsize=20)
+    # g3.tight_layout()
+    g3.savefig(path+"3_items.svg")
 
     # First four items
     result_4_items = df[df["num_core_items"] >= 4] \
@@ -115,13 +121,15 @@ for _id in con.ADC_CHAMPIONS_DICT.keys():
     result_4['freq'] = result_4['4_items_count'] / result_4['gamesPlayed_4']
     num_games_4 = sum(itemsets["four_core_items"])
 
-    sns.set(font_scale=0.5)
+    sns.set(font_scale=1.5)
     df4 = result_4[(result_4['freq'] > threshold)][['platformId', 'patch', 'core_items_4', 'freq']]
+    g4, ax = plt.subplots(figsize=(21.7, 11.00))
     g4 = sns.FacetGrid(df4,
                        col='patch', col_wrap=5, col_order=con.PATCHES)
     g4 = (g4.map(sns.barplot, 'freq', 'core_items_4', 'platformId', hue_order=["EUW1", "NA1", "BR1", "KR"],
                  palette=sns.color_palette("pastel"),
                  order=sorted(df4.core_items_4.unique(), key=operator.itemgetter(0))).add_legend())
     g4.fig.subplots_adjust(top=0.9)
-    g4.fig.suptitle(champion + "'s Itemsets - Games: " + str(num_games_4)+", Threshold:" + str(threshold), fontsize=20)
-    g4.savefig(path+"4_items.pdf")
+    # g4.fig.suptitle(champion + "'s Itemsets - Games: " + str(num_games_4)+", Threshold:" + str(threshold), fontsize=20)
+    # g4.tight_layout()
+    g4.savefig(path+"4_items.svg")

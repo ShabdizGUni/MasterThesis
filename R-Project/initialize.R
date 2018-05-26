@@ -45,6 +45,8 @@ coord_radar <- function (theta = "x", start = 0, direction = 1)
           is_linear = function(coord) TRUE)
 }
 
+# color palettes:
+cbPalette <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
 
 connection <-
   dbConnect(RMySQL::MySQL(), user = "root", password = "Milch4321", "leaguestats")
@@ -65,16 +67,16 @@ champPerformancePatchRegion <- data.table(dbReadTable(connection, "champ_kpi_pat
 bans <- data.table(dbReadTable(connection, "bans"))
 #champPerformancePatchByWin <- data.table(dbReadTable(connection, "champPerformancePatchWin"))
 
-# #ProGames
-# proplayerstats <- data.table(dbReadTable(connection, "proplayerdetails"))
-# proteamstats <- data.table(dbReadTable(connection, "proteamdetails"))
-# playerstats <- 
-#   merge(
-#     proplayerstats,
-#     proteamstats,
-#     by.x = c("gameId", "platformId", "teamId"),
-#     by.y = c("gameId", "platformId", "teamId")
-#   )
+#ProGames
+proplayerstats <- data.table(dbReadTable(connection, "proplayerdetails"))
+proteamstats <- data.table(dbReadTable(connection, "proteamdetails"))
+playerstats <-
+  merge(
+    proplayerstats,
+    proteamstats,
+    by.x = c("gameId", "platformId", "teamId"),
+    by.y = c("gameId", "platformId", "teamId")
+  )
 
 champPerformancePatchPro <- data.table(dbReadTable(connection, "champPerformancePatchPro"))
 champPerformancePatchRegionPro <- data.table(dbReadTable(connection, "champPerformancePatchRegionPro"))
@@ -106,6 +108,15 @@ patchOrder = c("6.23",
 tiers_order <- factor(c("CHALLENGER", "MASTER", "DIAMOND", "PLATINUM", "GOLD", "SILVER", "BRONZE", "UNRANKED"),
                       levels=c("CHALLENGER", "MASTER", "DIAMOND", "PLATINUM", "GOLD", "SILVER", "BRONZE", "UNRANKED"))
 
+tier_palette <- c("CHALLENGER"="orange", 
+                  "MASTER"="#966F33", 
+                  "DIAMOND"="#cbe3f0",
+                  "PLATINUM"="#A0BFB4",
+                  "GOLD"="#e6c200",
+                  "SILVER"="#c0c0c0",
+                  "BRONZE"="#cd7f32",
+                  "UNRANKED"="black")
+
 xpSteps = c(280,380,480,580,680,780,880,980,1080,1180,1280,1380,1480,1580,1680,1780,1880)
 
 ## Items
@@ -116,6 +127,8 @@ item <- itemLookUp$name
 names(item) <- itemLookUp$id
 itemLookUp[id == 3004]$name = "Manamune/Muramana"
 itemLookUp[id == 3042]$name = "Manamune/Muramana"
+itemLookUp[id == 3155]$name = "Hexdrinker/Maw"
+itemLookUp[id == 3156]$name = "Hexdrinker/Maw"
 
 
 
@@ -240,31 +253,59 @@ setnames(items.adc, c("championId","item", "platformId","patch","itemName", "cha
 items.adc <- subset(items.adc, !is.na(itemName))
 
 
-relItems.ADC = c("Infinity Edge",
+relItems.ADC = c("Infinity Edge", # crit
                  "Essence Reaver",
-                 "Manamune/Muramana",
-                 "Guinsoo's Rageblade",
-                 "Blade of the Ruined King",
-                 "The Bloodthirster",
-                 "Death's Dance",
-                 "Edge of Night",
-                 "Hexdrinker",
-                 "Wit's End",
-                 "The Black Cleaver",
-                 "Duskblade of Draktharr",
-                 "Youmuu's Ghostblade",
-                 "Trinity Force",
+                 "Manamune/Muramana", # mana
+                 "Iceborn Gauntlet",
+                 "Trinity Force",  # multiplier
                  "Runaan's Hurricane",
                  "Rapid Firecannon",
                  "Statikk Shiv",
                  "Phantom Dancer",
-                 "Iceborn Gauntlet")
+                 "The Bloodthirster", # defense
+                 "Death's Dance",
+                 "Hexdrinker/Maw",
+                 "Blade of the Ruined King", #  on hit
+                 "Guinsoo's Rageblade",
+                 "Wit's End",
+                 "The Black Cleaver", # leathality/armor pen
+                 "Edge of Night",
+                 "Duskblade of Draktharr",
+                 "Youmuu's Ghostblade")
+
+items.palette = c("#FFD700", #IE
+                  "#CFB53B", #ER
+                  "#007FFF", #Manamune
+                  "#89CFF0", #Iceborn
+                  "#a5ffb3", #Tri Force
+                  "#70d880", #Runaans
+                  "#4cb25c", #Rapid F
+                  "#2e963e", #Statikk
+                  "#156d23", # phantom
+                  "#e85a66", # bt
+                  "#ce2b39", # deaths dance
+                  "#9b121e",  # maw
+                  "#CDADED", # bork
+                  "#DF73FF", # guinsoo
+                  "#9966CC", # wits end
+                  "#D9D6CF", # Black Cleaver
+                  "#C9C0BB", # edge of night
+                  "#848482", # duskblade
+                  "#555555" # yomouus
+                  )
 
 ## support
 sup <- data.table(dbGetQuery(conn = connection, "SELECT * FROM playerdetails WHERE lane = 'BOTTOM' AND role = 'DUO_SUPPORT' AND gameDuration >= 900"))
-relchamps.sup <- sup[,list(gamesPlayed = .N), by = championId][order(by = gamesPlayed, decreasing = T)][,.SD[1:24]][,championId]
+relchamps.sup <- sup[patch %in% c("7.14","7.15","7.16","7.17","7.18")][,list(gamesPlayed = .N), by = championId][order(by = gamesPlayed, decreasing = T)][,.SD[1:20]][,championId]
 sup.relevant <- sup[championId %in% relchamps.sup]
-sup.performance <- champPerformancePatchRegion[lane=="BOTTOM" & role == "DUO_SUPPORT" & championId %in% unique(sup.relevant$championId)]
+sup.performance <- champPerformancePatchRegion[lane=="BOTTOM" & role == "DUO_SUPPORT"]
+sup.performance <- merge(
+  sup.performance,
+  banlist[, list(gamesBanned=.N), by= list(name, platformId, patch)],
+  by=c("patch", "platformId", "name")
+)
+sup.performance.patch <- champPerformancePatch[lane == "BOTTOM" & role == "DUO_SUPPORT" & championId %in% unique(sup.relevant$championId)]
+#sup.performance.patch.win <- champPerformancePatchByWin[lane == "BOTTOM" & role == "DUO_CARRY" & championId %in% unique(adc.relevant$championId)]
 
 sup.distribution <- merge(
   data.table(sup[,list(gamesPlayed = .N), by = championId][order(by = gamesPlayed, decreasing = T)]),
@@ -283,17 +324,30 @@ sup.distribution.patch <- merge(
 )
 setnames(sup.distribution,"name", "names")
 
-
-
 items.sup = rbind(
-  sup[championId %in% relchamps.sup,list(championId, platformId, patch, item=item0)], 
-  sup[championId %in% relchamps.sup,list(championId, platformId, patch, item=item1)],
-  sup[championId %in% relchamps.sup,list(championId, platformId, patch, item=item2)],
-  sup[championId %in% relchamps.sup,list(championId, platformId, patch, item=item3)],
-  sup[championId %in% relchamps.sup,list(championId, platformId, patch, item=item4)],
-  sup[championId %in% relchamps.sup,list(championId, platformId, patch, item=item5)],
-  sup[championId %in% relchamps.sup,list(championId, platformId, patch, item=item6)]
+  sup[championId %in% relchamps.sup,list(gameId, championId, platformId, patch, item=item0)], 
+  sup[championId %in% relchamps.sup,list(gameId, championId, platformId, patch, item=item1)],
+  sup[championId %in% relchamps.sup,list(gameId, championId, platformId, patch, item=item2)],
+  sup[championId %in% relchamps.sup,list(gameId, championId, platformId, patch, item=item3)],
+  sup[championId %in% relchamps.sup,list(gameId, championId, platformId, patch, item=item4)],
+  sup[championId %in% relchamps.sup,list(gameId, championId, platformId, patch, item=item5)],
+  sup[championId %in% relchamps.sup,list(gameId, championId, platformId, patch, item=item6)]
 )
+items.sup <- merge(
+  items.sup,
+  itemLookUp,
+  by.x = "item",
+  by.y = "id",
+  all.x = T,
+  allow.cartesian = T
+)
+items.sup <- merge(
+  items.sup,
+  champLookUp,
+  by = "championId"
+)
+setnames(items.sup, c("championId","item", "gameId","platformId","patch","itemName", "championName"))
+items.sup <- subset(items.sup, !is.na(itemName))
 
 
 # botlane adc+sup:

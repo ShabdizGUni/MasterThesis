@@ -20,6 +20,7 @@ def main():
     mongoDB.adc_frames.create_index([('championId', ASCENDING)])
     mongoDB.adc_frames.create_index([('championId', ASCENDING),
                                      ('patch', ASCENDING)])
+    mongoDB.adc_frames.create_index([('gameId', ASCENDING)])
 
     # purchase details:
     start = datetime.now()
