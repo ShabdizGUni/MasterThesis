@@ -1,58 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="4e29aa07-948d-4c5f-b43a-151662fe8a96" name="Default" comment="- Prepare skill_level_ups">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/run_classification_items_baseline.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/run_classification_skills_baseline.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/Viz/Ashe/2_items.pdf" afterPath="$PROJECT_DIR$/data/Viz/Ashe/2_items.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/Viz/Ashe/3_items.pdf" afterPath="$PROJECT_DIR$/data/Viz/Ashe/3_items.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/Viz/Ashe/4_items.pdf" afterPath="$PROJECT_DIR$/data/Viz/Ashe/4_items.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/Viz/Caitlyn/2_items.pdf" afterPath="$PROJECT_DIR$/data/Viz/Caitlyn/2_items.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/Viz/Caitlyn/3_items.pdf" afterPath="$PROJECT_DIR$/data/Viz/Caitlyn/3_items.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/Viz/Caitlyn/4_items.pdf" afterPath="$PROJECT_DIR$/data/Viz/Caitlyn/4_items.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/Viz/Draven/2_items.pdf" afterPath="$PROJECT_DIR$/data/Viz/Draven/2_items.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/Viz/Draven/3_items.pdf" afterPath="$PROJECT_DIR$/data/Viz/Draven/3_items.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/Viz/Draven/4_items.pdf" afterPath="$PROJECT_DIR$/data/Viz/Draven/4_items.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/Viz/Ezreal/2_items.pdf" afterPath="$PROJECT_DIR$/data/Viz/Ezreal/2_items.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/Viz/Ezreal/3_items.pdf" afterPath="$PROJECT_DIR$/data/Viz/Ezreal/3_items.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/Viz/Ezreal/4_items.pdf" afterPath="$PROJECT_DIR$/data/Viz/Ezreal/4_items.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/Viz/Jhin/2_items.pdf" afterPath="$PROJECT_DIR$/data/Viz/Jhin/2_items.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/Viz/Jhin/3_items.pdf" afterPath="$PROJECT_DIR$/data/Viz/Jhin/3_items.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/Viz/Jhin/4_items.pdf" afterPath="$PROJECT_DIR$/data/Viz/Jhin/4_items.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/Viz/Jinx/2_items.pdf" afterPath="$PROJECT_DIR$/data/Viz/Jinx/2_items.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/Viz/Jinx/3_items.pdf" afterPath="$PROJECT_DIR$/data/Viz/Jinx/3_items.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/Viz/Jinx/4_items.pdf" afterPath="$PROJECT_DIR$/data/Viz/Jinx/4_items.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/Viz/Kalista/2_items.pdf" afterPath="$PROJECT_DIR$/data/Viz/Kalista/2_items.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/Viz/Kalista/3_items.pdf" afterPath="$PROJECT_DIR$/data/Viz/Kalista/3_items.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/Viz/Kalista/4_items.pdf" afterPath="$PROJECT_DIR$/data/Viz/Kalista/4_items.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/Viz/Kog'Maw/2_items.pdf" afterPath="$PROJECT_DIR$/data/Viz/Kog'Maw/2_items.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/Viz/Kog'Maw/3_items.pdf" afterPath="$PROJECT_DIR$/data/Viz/Kog'Maw/3_items.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/Viz/Kog'Maw/4_items.pdf" afterPath="$PROJECT_DIR$/data/Viz/Kog'Maw/4_items.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/Viz/Lucian/2_items.pdf" afterPath="$PROJECT_DIR$/data/Viz/Lucian/2_items.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/Viz/Lucian/3_items.pdf" afterPath="$PROJECT_DIR$/data/Viz/Lucian/3_items.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/Viz/Lucian/4_items.pdf" afterPath="$PROJECT_DIR$/data/Viz/Lucian/4_items.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/Viz/Miss Fortune/2_items.pdf" afterPath="$PROJECT_DIR$/data/Viz/Miss Fortune/2_items.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/Viz/Miss Fortune/3_items.pdf" afterPath="$PROJECT_DIR$/data/Viz/Miss Fortune/3_items.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/Viz/Miss Fortune/4_items.pdf" afterPath="$PROJECT_DIR$/data/Viz/Miss Fortune/4_items.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/Viz/Sivir/2_items.pdf" afterPath="$PROJECT_DIR$/data/Viz/Sivir/2_items.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/Viz/Sivir/3_items.pdf" afterPath="$PROJECT_DIR$/data/Viz/Sivir/3_items.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/Viz/Sivir/4_items.pdf" afterPath="$PROJECT_DIR$/data/Viz/Sivir/4_items.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/Viz/Tristana/2_items.pdf" afterPath="$PROJECT_DIR$/data/Viz/Tristana/2_items.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/Viz/Tristana/3_items.pdf" afterPath="$PROJECT_DIR$/data/Viz/Tristana/3_items.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/Viz/Tristana/4_items.pdf" afterPath="$PROJECT_DIR$/data/Viz/Tristana/4_items.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/Viz/Twitch/2_items.pdf" afterPath="$PROJECT_DIR$/data/Viz/Twitch/2_items.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/Viz/Twitch/3_items.pdf" afterPath="$PROJECT_DIR$/data/Viz/Twitch/3_items.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/Viz/Twitch/4_items.pdf" afterPath="$PROJECT_DIR$/data/Viz/Twitch/4_items.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/Viz/Varus/2_items.pdf" afterPath="$PROJECT_DIR$/data/Viz/Varus/2_items.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/Viz/Varus/3_items.pdf" afterPath="$PROJECT_DIR$/data/Viz/Varus/3_items.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/Viz/Varus/4_items.pdf" afterPath="$PROJECT_DIR$/data/Viz/Varus/4_items.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/Viz/Vayne/2_items.pdf" afterPath="$PROJECT_DIR$/data/Viz/Vayne/2_items.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/Viz/Vayne/3_items.pdf" afterPath="$PROJECT_DIR$/data/Viz/Vayne/3_items.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/Viz/Vayne/4_items.pdf" afterPath="$PROJECT_DIR$/data/Viz/Vayne/4_items.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/Viz/Xayah/2_items.pdf" afterPath="$PROJECT_DIR$/data/Viz/Xayah/2_items.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/Viz/Xayah/3_items.pdf" afterPath="$PROJECT_DIR$/data/Viz/Xayah/3_items.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/Viz/Xayah/4_items.pdf" afterPath="$PROJECT_DIR$/data/Viz/Xayah/4_items.pdf" />
+    <list default="true" id="4e29aa07-948d-4c5f-b43a-151662fe8a96" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/Classification/Classifiers_skills.py" afterPath="$PROJECT_DIR$/Lib/Classification/Classifiers_skills.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/run_classification_items_baseline.py" afterPath="$PROJECT_DIR$/run_classification_items_baseline.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/run_classification_items_lstm.py" afterPath="$PROJECT_DIR$/run_classification_items_lstm.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/run_classification_skills_baseline.py" afterPath="$PROJECT_DIR$/run_classification_skills_baseline.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/run_classification_skills_lstm.py" afterPath="$PROJECT_DIR$/run_classification_skills_lstm.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -67,8 +22,8 @@
       <file leaf-file-name="Classifiers_items.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Lib/Classification/Classifiers_items.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1623">
-              <caret line="248" column="67" lean-forward="false" selection-start-line="248" selection-start-column="67" selection-end-line="248" selection-end-column="67" />
+            <state relative-caret-position="1083">
+              <caret line="132" column="24" lean-forward="true" selection-start-line="132" selection-start-column="24" selection-end-line="132" selection-end-column="24" />
               <folding />
             </state>
           </provider>
@@ -77,8 +32,8 @@
       <file leaf-file-name="run_classification_items_lstm.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/run_classification_items_lstm.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="5848">
-              <caret line="344" column="75" lean-forward="false" selection-start-line="344" selection-start-column="71" selection-end-line="344" selection-end-column="75" />
+            <state relative-caret-position="323">
+              <caret line="19" column="0" lean-forward="true" selection-start-line="19" selection-start-column="0" selection-end-line="20" selection-end-column="28" />
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
               </folding>
@@ -86,24 +41,14 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="run_classification_skills_lstm.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="run_classification_skills_lstm.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/run_classification_skills_lstm.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="5678">
-              <caret line="346" column="8" lean-forward="true" selection-start-line="346" selection-start-column="8" selection-end-line="346" selection-end-column="8" />
+            <state relative-caret-position="357">
+              <caret line="21" column="22" lean-forward="false" selection-start-line="21" selection-start-column="22" selection-end-line="21" selection-end-column="22" />
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="common.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Lib/Classification/common.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="51">
-              <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -111,7 +56,7 @@
       <file leaf-file-name="DataHandling.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Lib/Classification/DataHandling.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="191">
+            <state relative-caret-position="5372">
               <caret line="482" column="4" lean-forward="false" selection-start-line="482" selection-start-column="4" selection-end-line="482" selection-end-column="4" />
               <folding>
                 <element signature="e#829#1873#0" expanded="false" />
@@ -127,20 +72,20 @@
       <file leaf-file-name="prepare_skill_level_ups.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/prepare_skill_level_ups.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
-              <caret line="19" column="66" lean-forward="false" selection-start-line="19" selection-start-column="66" selection-end-line="19" selection-end-column="66" />
+            <state relative-caret-position="187">
+              <caret line="14" column="0" lean-forward="false" selection-start-line="14" selection-start-column="0" selection-end-line="20" selection-end-column="73" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Classifiers_skills.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Classifiers_skills.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Lib/Classification/Classifiers_skills.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="330">
-              <caret line="376" column="57" lean-forward="false" selection-start-line="376" selection-start-column="17" selection-end-line="376" selection-end-column="57" />
+            <state relative-caret-position="718">
+              <caret line="487" column="61" lean-forward="false" selection-start-line="487" selection-start-column="61" selection-end-line="487" selection-end-column="61" />
               <folding>
-                <marker date="1527331601825" expanded="true" signature="24120:24449" ph="..." />
+                <marker date="1527354752446" expanded="true" signature="24121:24414" ph="..." />
               </folding>
             </state>
           </provider>
@@ -149,8 +94,8 @@
       <file leaf-file-name="run_classification_items_stepwise.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/run_classification_items_stepwise.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1015">
-              <caret line="95" column="21" lean-forward="true" selection-start-line="95" selection-start-column="21" selection-end-line="95" selection-end-column="21" />
+            <state relative-caret-position="1513">
+              <caret line="95" column="21" lean-forward="false" selection-start-line="95" selection-start-column="21" selection-end-line="95" selection-end-column="21" />
               <folding />
             </state>
           </provider>
@@ -159,8 +104,28 @@
       <file leaf-file-name="run_classification_items_baseline.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/run_classification_items_baseline.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="14" column="0" lean-forward="false" selection-start-line="14" selection-start-column="0" selection-end-line="15" selection-end-column="17" />
+            <state relative-caret-position="276">
+              <caret line="20" column="8" lean-forward="true" selection-start-line="20" selection-start-column="8" selection-end-line="20" selection-end-column="8" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="run_classification_skills_baseline.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/run_classification_skills_baseline.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="820">
+              <caret line="82" column="0" lean-forward="true" selection-start-line="82" selection-start-column="0" selection-end-line="83" selection-end-column="34" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="prepare_purchases.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/prepare_purchases.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="480">
+              <caret line="50" column="51" lean-forward="false" selection-start-line="50" selection-start-column="51" selection-end-line="50" selection-end-column="51" />
               <folding />
             </state>
           </provider>
@@ -293,7 +258,6 @@
         <option value="$PROJECT_DIR$/run_classification_baseline.py" />
         <option value="$PROJECT_DIR$/run_classification_items_stepwise.py" />
         <option value="$PROJECT_DIR$/Classification TimeSeries test.py" />
-        <option value="$PROJECT_DIR$/prepare_purchases.py" />
         <option value="$PROJECT_DIR$/data/Schema/PlayerStats.py" />
         <option value="$PROJECT_DIR$/data/Pipelines.py" />
         <option value="$PROJECT_DIR$/data/Schema/ProPlayerStats.py" />
@@ -304,14 +268,15 @@
         <option value="$PROJECT_DIR$/Lib/Classification/DataHandling.py" />
         <option value="$PROJECT_DIR$/run_classification_skills_timeseries.py" />
         <option value="$PROJECT_DIR$/Lib/Viz.py" />
-        <option value="$PROJECT_DIR$/Lib/Classification/Classifiers_skills.py" />
         <option value="$PROJECT_DIR$/Lib/Classification/common.py" />
-        <option value="$PROJECT_DIR$/run_classification_items_baseline.py" />
-        <option value="$PROJECT_DIR$/run_classification_skills_baseline.py" />
         <option value="$PROJECT_DIR$/Lib/Classification/Classifiers_items.py" />
         <option value="$PROJECT_DIR$/prepare_skill_level_ups.py" />
-        <option value="$PROJECT_DIR$/run_classification_skills_lstm.py" />
+        <option value="$PROJECT_DIR$/prepare_purchases.py" />
         <option value="$PROJECT_DIR$/run_classification_items_lstm.py" />
+        <option value="$PROJECT_DIR$/run_classification_skills_lstm.py" />
+        <option value="$PROJECT_DIR$/run_classification_skills_baseline.py" />
+        <option value="$PROJECT_DIR$/run_classification_items_baseline.py" />
+        <option value="$PROJECT_DIR$/Lib/Classification/Classifiers_skills.py" />
       </list>
     </option>
   </component>
@@ -362,8 +327,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -428,12 +391,46 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="Lib" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MasterThesis" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MasterThesis" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Lib" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Classification" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MasterThesis" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MasterThesis" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="data" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -839,7 +836,21 @@
       <option name="project" value="LOCAL" />
       <updated>1527349213905</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="- base line scripts">
+      <created>1527349787336</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1527349787336</updated>
+    </task>
+    <task id="LOCAL-00023" summary="- Indexes for purchase details">
+      <created>1527351329441</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1527351329441</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -855,17 +866,17 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1066" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39435145" sideWeight="0.33177084" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.34728032" sideWeight="0.66770834" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.34728032" sideWeight="0.66770834" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980973" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39748955" sideWeight="0.67604166" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3294979" sideWeight="0.49583334" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.159375" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.159375" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="R Packages" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="R Graphics" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.37029287" sideWeight="0.47708333" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33891213" sideWeight="0.66822916" order="3" side_tool="false" content_ui="tabs" x="0" y="333" width="1920" height="374" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -877,6 +888,7 @@
       <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" x="1053" y="100" width="774" height="847" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.37029287" sideWeight="0.47708333" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
@@ -928,7 +940,9 @@
     <MESSAGE value="with_frames=True" />
     <MESSAGE value="- Skills and items" />
     <MESSAGE value="- Test run for server" />
-    <option name="LAST_COMMIT_MESSAGE" value="- Test run for server" />
+    <MESSAGE value="- base line scripts" />
+    <MESSAGE value="- Indexes for purchase details" />
+    <option name="LAST_COMMIT_MESSAGE" value="- Indexes for purchase details" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1014,9 +1028,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="374">
           <caret line="23" column="11" lean-forward="false" selection-start-line="23" selection-start-column="11" selection-end-line="23" selection-end-column="11" />
-          <folding>
-            <element signature="e#0#31#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1024,9 +1035,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="374">
           <caret line="30" column="0" lean-forward="false" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#21#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1034,9 +1042,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1003">
           <caret line="66" column="31" lean-forward="false" selection-start-line="66" selection-start-column="31" selection-end-line="66" selection-end-column="31" />
-          <folding>
-            <element signature="e#0#18#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1058,9 +1063,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2550">
           <caret line="158" column="53" lean-forward="false" selection-start-line="158" selection-start-column="53" selection-end-line="158" selection-end-column="53" />
-          <folding>
-            <element signature="e#0#18#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1068,7 +1070,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="221">
           <caret line="15" column="38" lean-forward="false" selection-start-line="15" selection-start-column="38" selection-end-line="15" selection-end-column="38" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1076,15 +1077,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="157">
           <caret line="123" column="64" lean-forward="false" selection-start-line="123" selection-start-column="59" selection-end-line="123" selection-end-column="64" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/prepare_purchases.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="18" column="66" lean-forward="false" selection-start-line="18" selection-start-column="66" selection-end-line="18" selection-end-column="66" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1092,7 +1084,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="306">
           <caret line="24" column="63" lean-forward="false" selection-start-line="24" selection-start-column="63" selection-end-line="24" selection-end-column="63" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1100,7 +1091,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1108,9 +1098,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="10" selection-end-column="38" />
-          <folding>
-            <element signature="e#0#24#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1118,7 +1105,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="153">
           <caret line="12" column="46" lean-forward="false" selection-start-line="12" selection-start-column="4" selection-end-line="12" selection-end-column="46" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1126,7 +1112,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="221">
           <caret line="15" column="29" lean-forward="false" selection-start-line="11" selection-start-column="3" selection-end-line="15" selection-end-column="29" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1134,18 +1119,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="323">
           <caret line="19" column="27" lean-forward="false" selection-start-line="19" selection-start-column="27" selection-end-line="19" selection-end-column="27" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/data/Schema/Varus.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="15" column="10" lean-forward="false" selection-start-line="15" selection-start-column="10" selection-end-line="15" selection-end-column="10" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/data/Schema/Varus.py" />
     <entry file="file://$PROJECT_DIR$/output/lstm_skills/LSTM_1/Loss1.png">
       <provider selected="true" editor-type-id="images">
         <state />
@@ -1165,7 +1142,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="391">
           <caret line="26" column="0" lean-forward="true" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1173,7 +1149,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-108">
           <caret line="185" column="4" lean-forward="false" selection-start-line="185" selection-start-column="4" selection-end-line="185" selection-end-column="4" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1181,9 +1156,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
           <caret line="7" column="10" lean-forward="false" selection-start-line="7" selection-start-column="10" selection-end-line="7" selection-end-column="10" />
-          <folding>
-            <element signature="e#0#34#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1191,7 +1163,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="199">
           <caret line="1268" column="0" lean-forward="false" selection-start-line="1268" selection-start-column="0" selection-end-line="1268" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1199,7 +1170,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="199">
           <caret line="1841" column="0" lean-forward="false" selection-start-line="1841" selection-start-column="0" selection-end-line="1841" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1207,7 +1177,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="199">
           <caret line="3851" column="0" lean-forward="false" selection-start-line="3851" selection-start-column="0" selection-end-line="3851" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1215,7 +1184,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="191">
           <caret line="2145" column="0" lean-forward="false" selection-start-line="2145" selection-start-column="0" selection-end-line="2145" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1223,7 +1191,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1231,9 +1198,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
           <caret line="10" column="4" lean-forward="false" selection-start-line="10" selection-start-column="4" selection-end-line="10" selection-end-column="4" />
-          <folding>
-            <element signature="e#0#46#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1241,15 +1205,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="51">
           <caret line="12" column="42" lean-forward="false" selection-start-line="12" selection-start-column="42" selection-end-line="12" selection-end-column="42" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/run_classification_skills_baseline.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-34">
-          <caret line="7" column="20" lean-forward="false" selection-start-line="7" selection-start-column="20" selection-end-line="7" selection-end-column="20" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1496,41 +1451,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/prepare_skill_level_ups.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="19" column="66" lean-forward="false" selection-start-line="19" selection-start-column="66" selection-end-line="19" selection-end-column="66" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/run_classification_items_baseline.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="14" column="0" lean-forward="false" selection-start-line="14" selection-start-column="0" selection-end-line="15" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Lib/Classification/Classifiers_items.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1623">
-          <caret line="248" column="67" lean-forward="false" selection-start-line="248" selection-start-column="67" selection-end-line="248" selection-end-column="67" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Lib/Classification/Classifiers_skills.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="376" column="57" lean-forward="false" selection-start-line="376" selection-start-column="17" selection-end-line="376" selection-end-column="57" />
-          <folding>
-            <marker date="1527331601825" expanded="true" signature="24120:24449" ph="..." />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1544,8 +1464,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/run_classification_items_stepwise.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1015">
-          <caret line="95" column="21" lean-forward="true" selection-start-line="95" selection-start-column="21" selection-end-line="95" selection-end-column="21" />
+        <state relative-caret-position="1513">
+          <caret line="95" column="21" lean-forward="false" selection-start-line="95" selection-start-column="21" selection-end-line="95" selection-end-column="21" />
           <folding />
         </state>
       </provider>
@@ -1557,7 +1477,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Lib/Classification/DataHandling.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="191">
+        <state relative-caret-position="5372">
           <caret line="482" column="4" lean-forward="false" selection-start-line="482" selection-start-column="4" selection-end-line="482" selection-end-column="4" />
           <folding>
             <element signature="e#829#1873#0" expanded="false" />
@@ -1569,22 +1489,72 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/run_classification_items_lstm.py">
+    <entry file="file://$PROJECT_DIR$/prepare_skill_level_ups.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5848">
-          <caret line="344" column="75" lean-forward="false" selection-start-line="344" selection-start-column="71" selection-end-line="344" selection-end-column="75" />
+        <state relative-caret-position="187">
+          <caret line="14" column="0" lean-forward="false" selection-start-line="14" selection-start-column="0" selection-end-line="20" selection-end-column="73" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/prepare_purchases.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="480">
+          <caret line="50" column="51" lean-forward="false" selection-start-line="50" selection-start-column="51" selection-end-line="50" selection-end-column="51" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/run_classification_skills_lstm.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="21" column="22" lean-forward="false" selection-start-line="21" selection-start-column="22" selection-end-line="21" selection-end-column="22" />
           <folding>
             <element signature="e#0#14#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/run_classification_skills_lstm.py">
+    <entry file="file://$PROJECT_DIR$/run_classification_skills_baseline.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5678">
-          <caret line="346" column="8" lean-forward="true" selection-start-line="346" selection-start-column="8" selection-end-line="346" selection-end-column="8" />
+        <state relative-caret-position="820">
+          <caret line="82" column="0" lean-forward="true" selection-start-line="82" selection-start-column="0" selection-end-line="83" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/run_classification_items_lstm.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="19" column="0" lean-forward="true" selection-start-line="19" selection-start-column="0" selection-end-line="20" selection-end-column="28" />
           <folding>
             <element signature="e#0#14#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/run_classification_items_baseline.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="276">
+          <caret line="20" column="8" lean-forward="true" selection-start-line="20" selection-start-column="8" selection-end-line="20" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Lib/Classification/Classifiers_items.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1083">
+          <caret line="132" column="24" lean-forward="true" selection-start-line="132" selection-start-column="24" selection-end-line="132" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Lib/Classification/Classifiers_skills.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="718">
+          <caret line="487" column="61" lean-forward="false" selection-start-line="487" selection-start-column="61" selection-end-line="487" selection-end-column="61" />
+          <folding>
+            <marker date="1527354752446" expanded="true" signature="24121:24414" ph="..." />
           </folding>
         </state>
       </provider>

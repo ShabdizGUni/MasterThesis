@@ -18,6 +18,8 @@ from sklearn.metrics import accuracy_score, confusion_matrix
 # rmsp = RMSprop(lr=0.001, rho=0.9, epsilon=None, decay=0.0)
 rmsp = SGD(lr=0.001, decay=1e-6, momentum=0.9, nesterov=True)
 
+print("Items LSTM started!")
+
 
 def setup(name):
     path = "output/lstm_items" + "/" + name
@@ -249,84 +251,6 @@ for it, cols in enumerate(cols_collection):
                                           random_state=42)
     x_org = pd.DataFrame(data=x_org.reshape(-1, len(gb.head(15)[df.columns].columns)), columns=df.columns)
 
-    # print("ONE LAYER")
-    # start = datetime.now()
-    # path = setup(name="LSTM_1")
-    # monitor = EarlyStopping(monitor='val_loss', min_delta=1e-4, patience=10, verbose=0, mode='auto')
-    # checkpointer = ModelCheckpoint(filepath=path + "/best_weights.hdf5", verbose=0, save_best_only=True)
-    # model = mb.lstm_classifier(num_feat=x.shape[2], classes=y.shape[2], timesteps=x.shape[1],
-    #                            batch_size=5, units_per_layer=[len(feat)], layers=1, dropout=0.2,
-    #                            optimizer='adam')
-    # history = model.fit(x_train, y_train, epochs=1000, validation_split=0.1, callbacks=[monitor, checkpointer],
-    #                     batch_size=5, verbose=False, shuffle=False).history
-    # try:
-    #     plot_accuracy_dev(history['acc'], history['val_acc'], filepath=path + "/Accuracy1.png", title="LSTM 1")
-    #     plot_loss_dev(history['loss'], history['val_loss'], filepath=path + "/Loss1.png", title="LSTM 1")
-    # except Exception as e:
-    #     print("Plotting did not work!")
-    #     print(str(e))
-    #     pass
-    # model.load_weights(path + "/best_weights.hdf5")
-    # score, acc = model.evaluate(x_test, y_test, verbose=0, batch_size=5)
-    # print("Test accuracy: %2.3f" % acc)
-    # preds = model.predict(x_test, batch_size=5)
-    # preds_lab = lb.inverse_transform(preds.reshape(-1, len(lb.classes_)))
-    # y_test_lab = lb.inverse_transform(y_test.reshape(-1, len(lb.classes_)))
-    # preds_f = np.delete(preds_lab, np.argwhere(preds_lab == 0))
-    # y_test_f = np.delete(y_test_lab, np.argwhere(y_test_lab == 0))
-    # preds_f = [item_names[i] for i in preds_f]
-    # y_test_f = [item_names[i] for i in y_test_f]
-    # itemLabels = list(set().union(y_test_f, preds_f))
-    # cm = confusion_matrix(y_test_f, preds_f, labels=itemLabels)
-    # df_cm = pd.DataFrame(data=cm, index=itemLabels, columns=itemLabels)
-    # df_cm.to_csv(path + "/confusion_matrix_1.csv", sep=";")
-    # acc = accuracy_score(y_test_f, preds_f)
-    #
-    # x_org.reset_index(drop=True)
-    # x_org.loc[:, 'actual'] = y_test_f
-    # x_org.loc[:, 'one_layer'] = preds_f
-    #
-    # print("Test accuracy filtered: %2.3f" % acc)
-    # print("Finished ONE LAYER after: ", str(datetime.now() - start))
-    #
-    # print("TWO LAYERS A")
-    # start = datetime.now()
-    # path = setup(name="LSTM_2a")
-    # monitor = EarlyStopping(monitor='val_loss', min_delta=1e-4, patience=10, verbose=0, mode='auto')
-    # checkpointer = ModelCheckpoint(filepath=path + "/best_weights2a.hdf5", verbose=0, save_best_only=True)
-    # print("Shape X: (", str(x.shape[0]), ", ", str(x.shape[1]), ", ", str(x.shape[2]), ")")
-    # # model, monitor, checkpointer = build_param_model_2a(x, y, path, units=units, dropout=0.3)
-    # model = mb.lstm_classifier(num_feat=x.shape[2], classes=y.shape[2], timesteps=x.shape[1],
-    #                            batch_size=5, units_per_layer=[128, 64], layers=2, dropout=0.2,
-    #                            optimizer='adam')
-    # model.summary()
-    # history = model.fit(x_train, y_train, epochs=1000, validation_split=0.1, callbacks=[monitor, checkpointer],
-    #                     batch_size=5, verbose=False, shuffle=False).history
-    # try:
-    #     plot_accuracy_dev(history['acc'], history['val_acc'], filepath=path + "/Accuracy2a.png", title="LSTM 2a")
-    #     plot_loss_dev(history['loss'], history['val_loss'], filepath=path + "/Loss2a.png", title="LSTM 2a")
-    # except Exception as e:
-    #     print("Plotting did not work!")
-    #     print(str(e))
-    #     pass
-    # model.load_weights(path + "/best_weights2a.hdf5")
-    # score, acc = model.evaluate(x_test, y_test, verbose=0, batch_size=5)
-    # print("Test accuracy: %2.3f" % acc)
-    # preds = model.predict(x_test, batch_size=5)
-    # preds_lab = lb.inverse_transform(preds.reshape(-1, len(lb.classes_)))
-    # y_test_lab = lb.inverse_transform(y_test.reshape(-1, len(lb.classes_)))
-    # preds_f = np.delete(preds_lab, np.argwhere(preds_lab == 0))
-    # y_test_f = np.delete(y_test_lab, np.argwhere(y_test_lab == 0))
-    # preds_f = [item_names[i] for i in preds_f]
-    # y_test_f = [item_names[i] for i in y_test_f]
-    # itemLabels = list(set().union(y_test_f, preds_f))
-    # cm = confusion_matrix(y_test_f, preds_f, labels=itemLabels)
-    # df_cm = pd.DataFrame(data=cm, index=itemLabels, columns=itemLabels)
-    # df_cm.to_csv(path + "/confusion_matrix_2a.csv", sep=";")
-    # acc = accuracy_score(y_test_f, preds_f)
-    # x_org.loc[:, 'two_layers_2a'] = preds_f
-    # print("Test accuracy filtered: %2.3f" % acc)
-    # print("Finished TWO LAYERS A after: ", str(datetime.now() - start))
 
     print("TWO LAYERS ")
     start = datetime.now()
@@ -369,80 +293,4 @@ for it, cols in enumerate(cols_collection):
     print("Test accuracy filtered: %2.3f" % acc)
     print("Finished TWO LAYERS B after: ", str(datetime.now() - start))
 
-
-    # print("THREE LAYERS")
-    # start = datetime.now()
-    # path = setup(name="LSTM_3")
-    # monitor = EarlyStopping(monitor='val_loss', min_delta=1e-4, patience=10, verbose=0, mode='auto')
-    # checkpointer = ModelCheckpoint(filepath=path + "/best_weights3.hdf5", verbose=0, save_best_only=True)
-    # model = mb.lstm_classifier(num_feat=x.shape[2], classes=y.shape[2], timesteps=x.shape[1],
-    #                            batch_size=5, units_per_layer=[128, 128, 64], layers=3, dropout=0.2,
-    #                            optimizer='adam')
-    # history = model.fit(x_train, y_train, epochs=1000, validation_split=0.1, callbacks=[monitor, checkpointer],
-    #                     batch_size=5, verbose=False, shuffle=False).history
-    # try:
-    #     plot_accuracy_dev(history['acc'], history['val_acc'], filepath=path + "/Accuracy3.png", title="LSTM 3")
-    #     plot_loss_dev(history['loss'], history['val_loss'], filepath=path + "/Loss3.png", title="LSTM 3")
-    # except Exception as e:
-    #     print("Plotting did not work!")
-    #     print(str(e))
-    #     pass
-    # model.load_weights(path + "/best_weights3.hdf5")
-    # score, acc = model.evaluate(x_test, y_test, verbose=0, batch_size=5)
-    # print("Test accuracy: %2.3f" % acc)
-    # preds = model.predict(x_test, batch_size=5)
-    # preds_lab = lb.inverse_transform(preds.reshape(-1, len(lb.classes_)))
-    # y_test_lab = lb.inverse_transform(y_test.reshape(-1, len(lb.classes_)))
-    # preds_f = np.delete(preds_lab, np.argwhere(preds_lab == 0))
-    # y_test_f = np.delete(y_test_lab, np.argwhere(y_test_lab == 0))
-    # preds_f = [item_names[i] for i in preds_f]
-    # y_test_f = [item_names[i] for i in y_test_f]
-    # itemLabels = list(set().union(y_test_f, preds_f))
-    # cm = confusion_matrix(y_test_f, preds_f, labels=itemLabels)
-    # df_cm = pd.DataFrame(data=cm, index=itemLabels, columns=itemLabels)
-    # df_cm.to_csv(path + "/confusion_matrix_3.csv", sep=";")
-    # acc = accuracy_score(y_test_f, preds_f)
-    # x_org.loc[:, 'three_layers'] = preds_f
-    # print("Test accuracy filtered: %2.3f" % acc)
-    # print("Finished THREE LAYERS after: ", str(datetime.now() - start))
-    #
-    # print("FOUR LAYERS")
-    # start = datetime.now()
-    # path = setup(name="LSTM_4")
-    # monitor = EarlyStopping(monitor='val_loss', min_delta=1e-4, patience=10, verbose=0, mode='auto')
-    # checkpointer = ModelCheckpoint(filepath=path + "/best_weights4.hdf5", verbose=0, save_best_only=True)
-    # print("Shape X: (", str(x.shape[0]), ", ", str(x.shape[1]), ", ", str(x.shape[2]), ")")
-    # # model, monitor, checkpointer = build_param_model_2a(x, y, path, units=units, dropout=0.3)
-    # model = mb.lstm_classifier(num_feat=x.shape[2], classes=y.shape[2], timesteps=x.shape[1],
-    #                            batch_size=5, units_per_layer=[128, 128, 64, 64], layers=4, dropout=0.2,
-    #                            optimizer='adam')
-    # model.summary()
-    # history = model.fit(x_train, y_train, epochs=1000, validation_split=0.1, callbacks=[monitor, checkpointer],
-    #                     batch_size=5, verbose=False, shuffle=False).history
-    # try:
-    #     plot_accuracy_dev(history['acc'], history['val_acc'], filepath=path + "/Accuracy4.png", title="LSTM 4")
-    #     plot_loss_dev(history['loss'], history['val_loss'], filepath=path + "/Loss4.png", title="LSTM 4")
-    # except Exception as e:
-    #     print("Plotting did not work!")
-    #     print(str(e))
-    #     pass
-    # model.load_weights(path + "/best_weights4.hdf5")
-    # score, acc = model.evaluate(x_test, y_test, verbose=0, batch_size=5)
-    # print("Test accuracy: %2.3f" % acc)
-    # preds = model.predict(x_test, batch_size=5)
-    # preds_lab = lb.inverse_transform(preds.reshape(-1, len(lb.classes_)))
-    # y_test_lab = lb.inverse_transform(y_test.reshape(-1, len(lb.classes_)))
-    # preds_f = np.delete(preds_lab, np.argwhere(preds_lab == 0))
-    # y_test_f = np.delete(y_test_lab, np.argwhere(y_test_lab == 0))
-    # preds_f = [item_names[i] for i in preds_f]
-    # y_test_f = [item_names[i] for i in y_test_f]
-    # itemLabels = list(set().union(y_test_f, preds_f))
-    # cm = confusion_matrix(y_test_f, preds_f, labels=itemLabels)
-    # df_cm = pd.DataFrame(data=cm, index=itemLabels, columns=itemLabels)
-    # df_cm.to_csv(path + "/confusion_matrix_4.csv", sep=";")
-    # acc = accuracy_score(y_test_f, preds_f)
-    # x_org.loc[:, 'four_layers'] = preds_f
-    # print("Test accuracy filtered: %2.3f" % acc)
-    # print("Finished FOUR LAYERS  after: ", str(datetime.now() - start))
-    #
-    # x_org.to_csv('lstm_items/results.csv', sep=";")
+print("Items LSTM Finished!")

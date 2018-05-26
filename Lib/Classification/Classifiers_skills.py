@@ -124,7 +124,7 @@ class Classifier_skills:
         cnf_matrix = metrics.confusion_matrix(actual, predicted, labels=spells[1:])
         df_cm = pd.DataFrame(cnf_matrix, index=spells[1:], columns=spells[1:])
         df_cm.to_csv(path + "/confusion_matrix.csv", sep=";")
-        save_conf_matrix(df_cm, path, normalize=True, figsize=(6,4))
+        save_conf_matrix(df_cm, path, normalize=True, figsize=(6, 4))
 
         time_sec = (datetime.now() - start).seconds
         print("Finished " + name + " after " + str(time_sec) + " seconds.")
@@ -482,10 +482,10 @@ class Classifier_skills:
         _, x_test, _, y_test = train_test_split(x, y, test_size=0.1, random_state=self.random_state)
         x_test.reset_index(drop=True)
         x_test.loc[:, 'actual'] = y_test.tolist()
-        x_test.loc[:, 'naive_bayes'] = naive_bayes_pred.tolist()
-        x_test.loc[:, 'decision_tree'] = decision_tree_pred.tolist()
-        x_test.loc[:, 'random_forest'] = random_forest_pred.tolist()
-        x_test.loc[:, 'neural_network'] = neural_network_pred.tolist()
+        x_test.loc[:, 'naive_bayes'] = naive_bayes_pred
+        x_test.loc[:, 'decision_tree'] = decision_tree_pred
+        x_test.loc[:, 'random_forest'] = random_forest_pred
+        x_test.loc[:, 'neural_network'] = neural_network_pred
         x_test.loc[:, 'deep_learning_1'] = deep_learning_1_pred
         x_test.loc[:, 'deep_learning_2'] = deep_learning_2_pred
         x_test.to_csv(self.path + '/results.csv', sep=";")

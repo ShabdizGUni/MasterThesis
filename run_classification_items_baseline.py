@@ -3,13 +3,16 @@ import Lib.Classification.DataHandling as dh
 import Lib.Classification.Classifiers_items as cl
 import Lib.Classification.common as common
 
+
+print("Items Base started!")
+
 # Ashe, Ezreal, Caitlyn, Varus, Jhin
-# champions = [22, 51, 83, 110, 202]
-champions = [22, 51]
+champions = [22, 51, 83, 110, 202]
+# champions = [22, 51]
 limit = 1000
 tiers = ["CHALLENGER", "MASTER", "DIAMOND", "PLATINUM"]
 
-df = dh.get_purchase_teams(champions=champions, patches=PATCHES, tiers=tiers, limit=limit)
+df = dh.get_purchase_teams(champions=champions, patches=PATCHES, tiers=tiers, limit=limit, timeseries=True)
 print("Number of Records: %d" % (len(df)))
 print("_________________________________")
 print('Features for Blank: ')
@@ -47,3 +50,6 @@ print(df.columns)
 clf = cl.Classifier_items('Patch Context', df[common.columns_teams + common.item_columns])
 clf.run_clfs()
 del df
+
+
+print("Items Baseline Finished!")

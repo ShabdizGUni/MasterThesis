@@ -3,9 +3,11 @@ import Lib.Classification.DataHandling as dh
 import Lib.Classification.Classifiers_skills as cl
 import Lib.Classification.common as common
 
+print("Skill Level Ups Baseline started!")
+
 # Ashe, Ezreal, Caitlyn, Varus, Jhin
-# champions = [22, 51, 83, 110, 202]
-champions = [22, 51]
+champions = [22, 51, 83, 110, 202]
+#champions = [22, 51]
 limit = 1000
 tiers = ["CHALLENGER", "MASTER", "DIAMOND", "PLATINUM"]
 
@@ -77,3 +79,6 @@ cols.append('skillSlot')
 clf = cl.Classifier_skills('Patch Context', df[cols])
 clf.run_clfs()
 del df
+
+
+print("Skills Baseline Finished!")
