@@ -6,9 +6,9 @@ import Lib.Classification.common as common
 print("Skill Level Ups Baseline started!")
 
 # Ashe, Ezreal, Caitlyn, Varus, Jhin
-# champions = [22, 51, 83, 110, 202]
-champions = [22, 51]
-limit = 1000
+champions = [22, 51, 83, 110, 202]
+# champions = [22, 51]
+limit = 100000
 tiers = ["CHALLENGER", "MASTER", "DIAMOND", "PLATINUM"]
 
 df = dh.get_skills_teams(champions=champions, patches=PATCHES, tiers=tiers, limit=limit, timeseries=True, min_purch=10)
@@ -20,8 +20,8 @@ if 'type' in cols: cols.remove("type")
 if 'itemId' in cols: cols.remove("itemId")
 cols.append('skillSlot')
 print(df[cols].columns)
-# clf = cl.Classifier_skills('Blank', df[cols])
-# clf.run_clfs()
+clf = cl.Classifier_skills('Blank', df[cols])
+clf.run_clfs()
 
 print('Features for Pre-Game Choices: ')
 cols = common.columns_pre_game
@@ -29,8 +29,8 @@ if 'type' in cols: cols.remove("type")
 if 'itemId' in cols: cols.remove("itemId")
 cols.append('skillSlot')
 print(df.columns)
-# clf = cl.Classifier_skills('Pre-Game Choices', df[cols])
-# clf.run_clfs()
+clf = cl.Classifier_skills('Pre-Game Choices', df[cols])
+clf.run_clfs()
 
 print('Features for In-Game Choices: ')
 cols = common.columns_in_game
@@ -38,8 +38,8 @@ if 'type' in cols: cols.remove("type")
 if 'itemId' in cols: cols.remove("itemId")
 cols.append('skillSlot')
 print(df.columns)
-# clf = cl.Classifier_skills('In-Game Choices', df[cols])
-# clf.run_clfs()
+clf = cl.Classifier_skills('In-Game Choices', df[cols])
+clf.run_clfs()
 
 print('Features for "Inventory Choices": ')
 cols = common.columns_inventory
@@ -47,8 +47,8 @@ if 'type' in cols: cols.remove("type")
 if 'itemId' in cols: cols.remove("itemId")
 cols.append('skillSlot')
 print(df.columns)
-# clf = cl.Classifier_skills('Inventory Choices', df[cols])
-# clf.run_clfs()
+clf = cl.Classifier_skills('Inventory Choices', df[cols])
+clf.run_clfs()
 
 print('Features for Performance Dependent Choices: ')
 cols = common.columns_performance

@@ -4,12 +4,12 @@ import Lib.Classification.Classifiers_skills as cl
 import Lib.Classification.common as common
 
 # Ashe, Ezreal, Caitlyn, Varus, Jhin
-champions = [110, 202]
+champions = [22, 51, 83, 110, 202]
 limit = 10000
 tiers = ["CHALLENGER", "MASTER", "DIAMOND", "PLATINUM"]
 
 df = dh.get_purchase_teams(champions=champions, patches=PATCHES, tiers=["CHALLENGER", "MASTER", "DIAMOND", "PLATINUM"],
-                           limit=9000, timeseries=True, min_purch=15)
+                           limit=100000, timeseries=True, min_purch=15)
 print("Number of Records: %d" % (len(df)))
 print("_________________________________")
 print('Features for Blank: ')

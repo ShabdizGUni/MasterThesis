@@ -209,10 +209,11 @@ cols_collection = [
     list(np.setdiff1d(common.columns_teams, ["q_rank", "w_rank", "e_rank", "r_rank"])) + common.item_columns
 ]
 
-set_1 = [110, 202]
+# set_1 = [110, 202]
 set_2 = [22, 51, 81, 110, 202]
-data = dh.get_skills_teams(champions=set_1, patches=PATCHES, tiers=["CHALLENGER", "MASTER", "DIAMOND", "PLATINUM"],
-                           limit=1000, timeseries=True, min_purch=15)
+data = dh.get_skills_teams(champions=set_2, patches=PATCHES, tiers=["CHALLENGER", "MASTER", "DIAMOND", "PLATINUM"],
+                           limit=100000, timeseries=True, min_purch=15)
+print("Rows : "+ str(len(data)))
 for it, cols in enumerate(cols_collection):
     if 'availGold' in cols: cols.remove('availGold')
     cols.remove('type')

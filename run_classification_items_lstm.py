@@ -208,10 +208,11 @@ cols_collection = [
     list(np.setdiff1d(common.columns_teams, common.inventory)) + common.item_columns
 ]
 
-set_1 = [110, 202]
+# set_1 = [110, 202]
 set_2 = [22, 51, 81, 110, 202]
-data = dh.get_purchase_teams(champions=set_1, patches=PATCHES, tiers=["CHALLENGER", "MASTER", "DIAMOND", "PLATINUM"],
-                             limit=1000, timeseries=True, min_purch=15)
+data = dh.get_purchase_teams(champions=set_2, patches=PATCHES, tiers=["CHALLENGER", "MASTER", "DIAMOND", "PLATINUM"],
+                             limit=100000, timeseries=True, min_purch=15)
+print("Rows : "+ str(len(data)))
 for it, cols in enumerate(cols_collection):
     print('Features for Iteration: ' + str(it+1))
     print(cols)
