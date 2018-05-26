@@ -12,7 +12,7 @@ champions = [22, 51, 83, 110, 202]
 limit = 1000
 tiers = ["CHALLENGER", "MASTER", "DIAMOND", "PLATINUM"]
 
-df = dh.get_purchase_teams(champions=champions, patches=PATCHES, tiers=tiers, limit=limit, timeseries=True)
+df = dh.get_purchase_teams(champions=champions, patches=PATCHES, tiers=tiers, limit=limit, timeseries=True, min_purch=10)
 print("Number of Records: %d" % (len(df)))
 print("_________________________________")
 print('Features for Blank: ')

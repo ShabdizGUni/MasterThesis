@@ -54,7 +54,7 @@ def build_model1(x, y, filepath):
     model.add(Dense(x.shape[1], input_dim=x.shape[1], activation='relu'))
     model.add(Dense(y.shape[1], activation='softmax'))
     model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['acc'])
-    monitor = EarlyStopping(monitor='val_loss', min_delta=1e-4, patience=10, verbose=0, mode='auto')
+    monitor = EarlyStopping(monitor='val_loss', min_delta=1e-3, patience=10, verbose=0, mode='auto')
     checkpointer = ModelCheckpoint(filepath=filepath + "/best_weights.hdf5", verbose=0, save_best_only=True)
     return model, monitor, checkpointer
 
@@ -66,7 +66,7 @@ def build_model2(x, y, filepath):
     model.add(Dense(x.shape[1], input_dim=x.shape[1], activation='relu'))
     model.add(Dense(y.shape[1], activation='softmax'))
     model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['acc'])
-    monitor = EarlyStopping(monitor='val_loss', min_delta=1e-3, patience=5, verbose=0, mode='auto')
+    monitor = EarlyStopping(monitor='val_loss', min_delta=1e-3, patience=10, verbose=0, mode='auto')
     checkpointer = ModelCheckpoint(filepath=filepath + "/best_weights.hdf5", verbose=0, save_best_only=True)
     return model, monitor, checkpointer
 
@@ -226,8 +226,6 @@ class Classifier_items:
              'patch'])
         # prepare data set
         x, y = df[[x for x in df.columns if x in features]], df['itemId_fact']
-        print("X before Scaling: ")
-        print(df)
         # Split into train/test
         x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.1, random_state=self.random_state)
 
@@ -302,8 +300,6 @@ class Classifier_items:
         # prepare data set
         y = df['itemId_fact']
         x = df[[x for x in df.columns if x in features]]
-        print("X before Scaling: ")
-        print(df)
         scaler = MinMaxScaler()
         scaler.fit(x)
         x_norm = scaler.transform(x)

@@ -204,7 +204,7 @@ cols_collection = [
     common.columns_pre_game,
     # spell level ups (in_game) do not make sense here
     list(np.setdiff1d(common.columns_inventory, ["q_rank", "w_rank", "e_rank", "r_rank"])),
-    list(np.setdiff1d(common.columns_performance,["q_rank", "w_rank", "e_rank", "r_rank"])),
+    list(np.setdiff1d(common.columns_performance, ["q_rank", "w_rank", "e_rank", "r_rank"])),
     list(np.setdiff1d(common.columns_teams, ["q_rank", "w_rank", "e_rank", "r_rank"])),
     list(np.setdiff1d(common.columns_teams, ["q_rank", "w_rank", "e_rank", "r_rank"])) + common.item_columns
 ]
@@ -255,7 +255,6 @@ for it, cols in enumerate(cols_collection):
     _, x_org, _, y_org = train_test_split(gb.head(15)[df.columns].as_matrix().reshape(-1, 15, len(gb.head(15)[df.columns].columns)), y, test_size=0.1,
                                           random_state=42)
     x_org = pd.DataFrame(data=x_org.reshape(-1, len(gb.head(15)[df.columns].columns)), columns=df.columns)
-
 
     print("TWO LAYERS ")
     start = datetime.now()

@@ -303,5 +303,5 @@ item_columns = [
     # Phantom Dancer
     "pd_goldTotal",
     "pd_goldBase",
-    "pd_goldSell",
+    "pd_goldSell"
 ]

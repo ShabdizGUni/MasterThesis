@@ -251,11 +251,10 @@ for it, cols in enumerate(cols_collection):
                                           random_state=42)
     x_org = pd.DataFrame(data=x_org.reshape(-1, len(gb.head(15)[df.columns].columns)), columns=df.columns)
 
-
     print("TWO LAYERS ")
     start = datetime.now()
     path = setup(name="LSTM_2_iteration_" + str(it+1))
-    monitor = EarlyStopping(monitor='val_loss', min_delta=1e-4, patience=10, verbose=0, mode='auto')
+    monitor = EarlyStopping(monitor='val_loss', min_delta=1e-3, patience=10, verbose=0, mode='auto')
     checkpointer = ModelCheckpoint(filepath=path + "/best_weights2b.hdf5", verbose=0, save_best_only=True)
     print("Shape X: (", str(x.shape[0]), ", ", str(x.shape[1]), ", ", str(x.shape[2]), ")")
     # model, monitor, checkpointer = build_param_model_2a(x, y, path, units=units, dropout=0.3)
