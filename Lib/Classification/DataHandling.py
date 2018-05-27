@@ -71,25 +71,11 @@ def get_purchases_as_timeseries(champions, patches, tiers, limit, min_purch):
                 {"$limit": per_crit}
             ], allowDiskUse=True))
     print("Get Purchases")
-    # columns = list(mongo.adc_purchase_details.find_one())
-    # frame = pd.DataFrame([], columns=columns)
     for idx, Id in enumerate(Ids):
-        # new = list(mongo.adc_purchase_details.find({
-        #     "gameId": Id['gameId'],
-        #     "side": Id['side']}
-        # ))
         data.extend(list(mongo.adc_purchase_details.find({
             "gameId": Id['gameId'],
             "side": Id['side']}
         )))
-    #     print(str(idx))
-    #     if (idx + 1) % 1000 == 0:
-    #         print("Unload No.: ", str(int(idx / 1000)))
-    #         new_frame = pd.DataFrame(data, columns=columns)
-    #         for i in range(len(new_frame.index)):
-    #             frame.loc[len(frame)] = new_frame.loc[i, columns]
-    #         data = []
-    # return frame
     keys = data[1].keys()
     df = pd.DataFrame(data, columns=keys)
     return df.drop(columns=["_id"])
@@ -118,25 +104,11 @@ def get_skills_as_timeseries(champions, patches, tiers, limit, min_purch):
                 {"$limit": per_crit}
             ], allowDiskUse=True))
     print("Get Purchases")
-    # columns = list(mongo.adc_purchase_details.find_one())
-    # frame = pd.DataFrame([], columns=columns)
     for idx, Id in enumerate(Ids):
-        # new = list(mongo.adc_purchase_details.find({
-        #     "gameId": Id['gameId'],
-        #     "side": Id['side']}
-        # ))
         data.extend(list(mongo.adc_skill_level_ups.find({
             "gameId": Id['gameId'],
             "side": Id['side']}
         )))
-    #     print(str(idx))
-    #     if (idx + 1) % 1000 == 0:
-    #         print("Unload No.: ", str(int(idx / 1000)))
-    #         new_frame = pd.DataFrame(data, columns=columns)
-    #         for i in range(len(new_frame.index)):
-    #             frame.loc[len(frame)] = new_frame.loc[i, columns]
-    #         data = []
-    # return frame
     keys = data[1].keys()
     df = pd.DataFrame(data, columns=keys)
     return df.drop(columns=["_id"])

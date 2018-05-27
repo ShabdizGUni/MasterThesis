@@ -2,10 +2,11 @@ from data.constants import PATCHES
 import Lib.Classification.DataHandling as dh
 import Lib.Classification.Classifiers_skills as cl
 import Lib.Classification.common as common
+import sys
 
+limit = sys.argv[1]
 # Ashe, Ezreal, Caitlyn, Varus, Jhin
-champions = [22, 51, 83, 110, 202]
-limit = 10000
+champions = [22, 51, 81, 110, 202]
 tiers = ["CHALLENGER", "MASTER", "DIAMOND", "PLATINUM"]
 
 df = dh.get_purchase_teams(champions=champions, patches=PATCHES, tiers=["CHALLENGER", "MASTER", "DIAMOND", "PLATINUM"],
