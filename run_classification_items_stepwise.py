@@ -119,6 +119,6 @@ tiers = ["CHALLENGER", "MASTER", "DIAMOND", "PLATINUM"]
 
 limit = int(sys.argv[1])
 df = dh.get_purchase_teams(champions=champions, patches=PATCHES, tiers=tiers, limit=limit, timeseries=True, min_purch=10)
-print(df.group_by(by=['patch', 'championId']).size())
+print(df.groupby(by=['patch', 'championId']).size())
 
 dnn_2("stepwise", df[common.columns_teams])

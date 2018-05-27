@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="4e29aa07-948d-4c5f-b43a-151662fe8a96" name="Default" comment="- blub">
+    <list default="true" id="4e29aa07-948d-4c5f-b43a-151662fe8a96" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/Classification/ModelBuilder.py" afterPath="$PROJECT_DIR$/Lib/Classification/ModelBuilder.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/run_classification_items_stepwise.py" afterPath="$PROJECT_DIR$/run_classification_items_stepwise.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -51,8 +50,8 @@
       <file leaf-file-name="run_classification_items_stepwise.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/run_classification_items_stepwise.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="684">
-              <caret line="117" column="15" lean-forward="true" selection-start-line="117" selection-start-column="15" selection-end-line="117" selection-end-column="15" />
+            <state relative-caret-position="718">
+              <caret line="119" column="24" lean-forward="true" selection-start-line="119" selection-start-column="24" selection-end-line="119" selection-end-column="24" />
               <folding />
             </state>
           </provider>
@@ -953,7 +952,14 @@
       <option name="project" value="LOCAL" />
       <updated>1527453148182</updated>
     </task>
-    <option name="localTasksCounter" value="39" />
+    <task id="LOCAL-00039" summary="- blub">
+      <created>1527453259571</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1527453259571</updated>
+    </task>
+    <option name="localTasksCounter" value="40" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1664,8 +1670,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/run_classification_items_stepwise.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="684">
-          <caret line="117" column="15" lean-forward="true" selection-start-line="117" selection-start-column="15" selection-end-line="117" selection-end-column="15" />
+        <state relative-caret-position="718">
+          <caret line="119" column="24" lean-forward="true" selection-start-line="119" selection-start-column="24" selection-end-line="119" selection-end-column="24" />
           <folding />
         </state>
       </provider>
