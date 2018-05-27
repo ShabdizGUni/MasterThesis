@@ -2,13 +2,14 @@ from data.constants import PATCHES
 import Lib.Classification.DataHandling as dh
 import Lib.Classification.Classifiers_skills as cl
 import Lib.Classification.common as common
+import sys
 
 print("Skill Level Ups Baseline started!")
 
 # Ashe, Ezreal, Caitlyn, Varus, Jhin
 champions = [22, 51, 83, 110, 202]
 # champions = [22, 51]
-limit = 100000
+limit = int(sys.argv[1])
 tiers = ["CHALLENGER", "MASTER", "DIAMOND", "PLATINUM"]
 
 df = dh.get_skills_teams(champions=champions, patches=PATCHES, tiers=tiers, limit=limit, timeseries=True, min_purch=10)
