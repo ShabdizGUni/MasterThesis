@@ -13,7 +13,7 @@ import sys
 import graphviz as gv
 import time
 import pathlib
-from Lib.Viz import plot_confusion_matrix, plot_loss_dev, plot_accuracy_dev
+from Lib.Viz import save_conf_matrix, plot_loss_dev, plot_accuracy_dev
 from datetime import datetime as datetime
 from sklearn import preprocessing as pp
 from sklearn.neural_network import MLPClassifier
@@ -84,8 +84,7 @@ def dnn_2(name, df):
         cm = confusion_matrix(actual, preds, labels=list(set().union(actual, preds)))
         df_cm = pd.DataFrame(data=cm, index=list(set().union(actual, preds)), columns=list(set().union(actual, preds)))
         df_cm.to_csv(path + "/confusion_matrix.csv", sep=";")
-        plot_confusion_matrix(cm, names=list(set().union(actual, preds)))
-        plt.savefig(path + "/confusion_matrix.svg")
+        save_conf_matrix(df_cm, path + "/confusion_matrix.svg", normalize=True)
         plt.clf()
 
         precision = accuracy_score(actual, preds)
