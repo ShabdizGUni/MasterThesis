@@ -5,6 +5,8 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/Classification/Classifiers_items.py" afterPath="$PROJECT_DIR$/Lib/Classification/Classifiers_items.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Lib/Classification/Classifiers_skills.py" afterPath="$PROJECT_DIR$/Lib/Classification/Classifiers_skills.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/run_classification_items_lstm.py" afterPath="$PROJECT_DIR$/run_classification_items_lstm.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/run_classification_skills_lstm.py" afterPath="$PROJECT_DIR$/run_classification_skills_lstm.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -16,11 +18,11 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Classifiers_items.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Classifiers_items.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Lib/Classification/Classifiers_items.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-6490">
-              <caret line="56" column="74" lean-forward="false" selection-start-line="56" selection-start-column="74" selection-end-line="56" selection-end-column="74" />
+            <state relative-caret-position="412">
+              <caret line="237" column="24" lean-forward="false" selection-start-line="237" selection-start-column="24" selection-end-line="237" selection-end-column="24" />
               <folding />
             </state>
           </provider>
@@ -41,10 +43,10 @@
       <file leaf-file-name="Classifiers_skills.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Lib/Classification/Classifiers_skills.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="735">
-              <caret line="67" column="74" lean-forward="false" selection-start-line="67" selection-start-column="74" selection-end-line="67" selection-end-column="74" />
+            <state relative-caret-position="344">
+              <caret line="234" column="24" lean-forward="false" selection-start-line="234" selection-start-column="24" selection-end-line="234" selection-end-column="24" />
               <folding>
-                <marker date="1527414536645" expanded="true" signature="24120:24413" ph="..." />
+                <marker date="1527416274488" expanded="true" signature="23814:24107" ph="..." />
               </folding>
             </state>
           </provider>
@@ -77,8 +79,8 @@
       <file leaf-file-name="run_classification_skills_lstm.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/run_classification_skills_lstm.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3349">
-              <caret line="213" column="24" lean-forward="false" selection-start-line="213" selection-start-column="24" selection-end-line="213" selection-end-column="24" />
+            <state relative-caret-position="713">
+              <caret line="271" column="52" lean-forward="false" selection-start-line="271" selection-start-column="52" selection-end-line="271" selection-end-column="52" />
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
               </folding>
@@ -86,11 +88,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="run_classification_items_lstm.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="run_classification_items_lstm.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/run_classification_items_lstm.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3383">
-              <caret line="215" column="16" lean-forward="false" selection-start-line="215" selection-start-column="16" selection-end-line="215" selection-end-column="16" />
+            <state relative-caret-position="973">
+              <caret line="265" column="19" lean-forward="true" selection-start-line="265" selection-start-column="19" selection-end-line="265" selection-end-column="19" />
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
               </folding>
@@ -275,12 +277,12 @@
         <option value="$PROJECT_DIR$/run_classification_skills_baseline.py" />
         <option value="$PROJECT_DIR$/run_classification_items_baseline.py" />
         <option value="$PROJECT_DIR$/run_classification_skills_timeseries.py" />
-        <option value="$PROJECT_DIR$/run_classification_skills_lstm.py" />
         <option value="$PROJECT_DIR$/run_classification_items_timeseries.py" />
-        <option value="$PROJECT_DIR$/run_classification_items_lstm.py" />
         <option value="$PROJECT_DIR$/Lib/Classification/DataHandling.py" />
         <option value="$PROJECT_DIR$/Lib/Classification/Classifiers_skills.py" />
         <option value="$PROJECT_DIR$/Lib/Classification/Classifiers_items.py" />
+        <option value="$PROJECT_DIR$/run_classification_skills_lstm.py" />
+        <option value="$PROJECT_DIR$/run_classification_items_lstm.py" />
       </list>
     </option>
   </component>
@@ -917,7 +919,14 @@
       <option name="project" value="LOCAL" />
       <updated>1527414408398</updated>
     </task>
-    <option name="localTasksCounter" value="33" />
+    <task id="LOCAL-00033" summary="- blub">
+      <created>1527415994236</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1527415994236</updated>
+    </task>
+    <option name="localTasksCounter" value="34" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1543,26 +1552,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/run_classification_items_lstm.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3383">
-          <caret line="215" column="16" lean-forward="false" selection-start-line="215" selection-start-column="16" selection-end-line="215" selection-end-column="16" />
-          <folding>
-            <element signature="e#0#14#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/run_classification_skills_lstm.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3349">
-          <caret line="213" column="24" lean-forward="false" selection-start-line="213" selection-start-column="24" selection-end-line="213" selection-end-column="24" />
-          <folding>
-            <element signature="e#0#14#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/run_classification_items_baseline.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
@@ -1618,19 +1607,39 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Lib/Classification/Classifiers_skills.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="735">
-          <caret line="67" column="74" lean-forward="false" selection-start-line="67" selection-start-column="74" selection-end-line="67" selection-end-column="74" />
+        <state relative-caret-position="344">
+          <caret line="234" column="24" lean-forward="false" selection-start-line="234" selection-start-column="24" selection-end-line="234" selection-end-column="24" />
           <folding>
-            <marker date="1527414536645" expanded="true" signature="24120:24413" ph="..." />
+            <marker date="1527416274488" expanded="true" signature="23814:24107" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Lib/Classification/Classifiers_items.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-6490">
-          <caret line="56" column="74" lean-forward="false" selection-start-line="56" selection-start-column="74" selection-end-line="56" selection-end-column="74" />
+        <state relative-caret-position="412">
+          <caret line="237" column="24" lean-forward="false" selection-start-line="237" selection-start-column="24" selection-end-line="237" selection-end-column="24" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/run_classification_skills_lstm.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="713">
+          <caret line="271" column="52" lean-forward="false" selection-start-line="271" selection-start-column="52" selection-end-line="271" selection-end-column="52" />
+          <folding>
+            <element signature="e#0#14#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/run_classification_items_lstm.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="973">
+          <caret line="265" column="19" lean-forward="true" selection-start-line="265" selection-start-column="19" selection-end-line="265" selection-end-column="19" />
+          <folding>
+            <element signature="e#0#14#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

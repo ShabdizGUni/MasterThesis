@@ -269,7 +269,7 @@ for it, cols in enumerate(cols_collection):
                                batch_size=5, units_per_layer=[x.shape[2], x.shape[2]], layers=2, dropout=0.2,
                                optimizer='adam')
     model.summary()
-    history = model.fit(x_train, y_train, epochs=1000, validation_split=0.1, callbacks=[monitor, checkpointer],
+    history = model.fit(x_train, y_train, epochs=200, validation_split=0.1, callbacks=[monitor, checkpointer],
                         batch_size=5, verbose=False, shuffle=False).history
     try:
         plot_accuracy_dev(history['acc'], history['val_acc'], filepath=path + "/Accuracy2b.png", title="LSTM 2b")

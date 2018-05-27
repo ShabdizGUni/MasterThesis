@@ -149,10 +149,9 @@ class Classifier_skills:
         start = datetime.now()
         path = self.setup(name)
 
-        clf = DecisionTreeClassifier(max_depth=5,
-                                     # max_leaf_nodes=30,
-                                     # min_samples_leaf=5,
-                                     random_state=self.random_state)
+        clf = DecisionTreeClassifier(
+            max_depth=10,
+            random_state=self.random_state)
         clf.fit(x_train, y_train)
         train_preds = clf.predict(x_train)
         test_preds = clf.predict(x_test)
@@ -232,11 +231,9 @@ class Classifier_skills:
         start = datetime.now()
         path = self.setup(name)
 
-        clf = RandomForestClassifier(n_jobs=-1,
-                                     # max_depth=5,
-                                     # max_leaf_nodes=30,
-                                     # min_samples_leaf=5,
-                                     random_state=self.random_state)
+        clf = RandomForestClassifier(
+            max_depth=10,
+            random_state=self.random_state)
         clf.fit(x_train, y_train)
         train_preds = clf.predict(x_train)
         test_preds = clf.predict(x_test)
@@ -316,7 +313,7 @@ class Classifier_skills:
         clf = MLPClassifier(activation='relu', alpha=0.0001, batch_size='auto', beta_1=0.9,
                             beta_2=0.999, early_stopping=True, epsilon=1e-08,
                             hidden_layer_sizes=(120,), learning_rate='adaptive',
-                            learning_rate_init=0.001, max_iter=150, momentum=0.9,
+                            learning_rate_init=0.001, max_iter=100, momentum=0.9,
                             nesterovs_momentum=True, power_t=0.5, random_state=self.random_state,
                             shuffle=False, solver='adam', tol=0.0001, validation_fraction=0.33,
                             verbose=False, warm_start=False)
@@ -396,7 +393,7 @@ class Classifier_skills:
             # create model
             model, monitor, checkpointer = build_model1(x, y, path)
             # Fit the model
-            model.fit(x[train], y[train], epochs=150, validation_split=0.33, verbose=0, callbacks=[monitor, checkpointer])
+            model.fit(x[train], y[train], epochs=100, validation_split=0.33, verbose=0, callbacks=[monitor, checkpointer])
             # evaluate the model
             scores = model.evaluate(x[test], y[test], verbose=0)
             print("%s: %.2f%% , %s: %.2f%%" % (model.metrics_names[1], scores[1] * 100, model.metrics_names[0], scores[0]))
