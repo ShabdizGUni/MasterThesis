@@ -152,7 +152,9 @@ class Classifier_items:
         start = datetime.now()
         path = self.setup(name)
 
-        clf = DecisionTreeClassifier(random_state=self.random_state)
+        clf = DecisionTreeClassifier(
+            max_depth=8,
+            random_state=self.random_state)
         clf.fit(x_train, y_train)
         train_preds = item_keys[clf.predict(x_train)]
         test_preds = item_keys[clf.predict(x_test)]
@@ -232,7 +234,9 @@ class Classifier_items:
         start = datetime.now()
         path = self.setup(name)
 
-        clf = RandomForestClassifier(random_state=self.random_state)
+        clf = RandomForestClassifier(
+            max_depth=8,
+            random_state=self.random_state)
         clf.fit(x_train, y_train)
         train_preds = item_keys[clf.predict(x_train)]
         test_preds = item_keys[clf.predict(x_test)]
@@ -310,7 +314,7 @@ class Classifier_items:
 
         clf = MLPClassifier(activation='relu', alpha=0.0001, batch_size='auto', beta_1=0.9,
                             beta_2=0.999, early_stopping=True, epsilon=1e-08,
-                            hidden_layer_sizes=(120,), learning_rate='adaptive',
+                            hidden_layer_sizes=(x.shape[1],), learning_rate='adaptive',
                             learning_rate_init=0.001, max_iter=150, momentum=0.9,
                             nesterovs_momentum=True, power_t=0.5, random_state=self.random_state,
                             shuffle=False, solver='adam', tol=0.0001, validation_fraction=0.33,
