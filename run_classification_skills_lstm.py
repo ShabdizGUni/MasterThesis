@@ -211,11 +211,13 @@ cols_collection = [
 ]
 
 
-limit = int(sys.argv[1])
-set_2 = [22, 51, 81, 110, 202]
+# limit = int(sys.argv[1])
+limit = 1000
+# set_2 = [22, 51, 81, 110, 202]
+set_2 = [110, 202]
 data = dh.get_skills_teams(champions=set_2, patches=PATCHES, tiers=["CHALLENGER", "MASTER", "DIAMOND", "PLATINUM"],
                            limit=limit, timeseries=True, min_purch=15)
-print("Rows : "+ str(len(data)))
+print("Rows : " + str(len(data)))
 for it, cols in enumerate(cols_collection):
     if 'availGold' in cols: cols.remove('availGold')
     cols.remove('type')

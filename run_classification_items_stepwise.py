@@ -68,7 +68,7 @@ def dnn_2(name, df):
         start = datetime.now()
         model, monitor, checkpointer = mb.dnn_2_layers(x, y, path)
         history = model.fit(x_train, y_train, validation_split=0.33, callbacks=[monitor, checkpointer], verbose=0,
-                            epochs=300).history
+                            epochs=100).history
         plot_accuracy_dev(history['acc'], history['val_acc'], path + "/acc.png", title="Deep Learning 2")
         plot_loss_dev(history['loss'], history['val_loss'], path + "/loss.png", title="Deep Learning 2")
         model.load_weights(path + "/best_weights.hdf5")
@@ -85,7 +85,7 @@ def dnn_2(name, df):
         df_cm = pd.DataFrame(data=cm, index=list(set().union(actual, preds)), columns=list(set().union(actual, preds)))
         df_cm.to_csv(path + "/confusion_matrix.csv", sep=";")
         plot_confusion_matrix(cm, names=list(set().union(actual, preds)))
-        plt.savefig(path + "/confusion_matrix.png")
+        plt.savefig(path + "/confusion_matrix.svg")
         plt.clf()
 
         precision = accuracy_score(actual, preds)
@@ -113,11 +113,11 @@ Ashe = [22]
 Ezreal = [51]
 Caitlyn = [81]
 Varus = [110]
-champions = [110]
+champions = [110, 202]
 limit = 100000
 tiers = ["CHALLENGER", "MASTER", "DIAMOND", "PLATINUM"]
 
-df = dh.get_purchase_teams(champions=champions, patches=PATCHES, tiers=tiers, limit=limit)
+df = dh.get_purchase_teams(champions=champions, patches=PATCHES, tiers=tiers, limit=limit, timeseries=True, min_purch=10)
 print(df.group_by(by=['patch', 'championId']).size())
 
 dnn_2("stepwise", df[common.columns_teams])
