@@ -296,6 +296,7 @@ for it, cols in enumerate(cols_collection):
 
     acc = accuracy_score(y_test_f, preds_f)
     x_org.loc[:, 'two_layers_2b'] = preds_f
+    x_org.to_csv("LSTM_skills_predictions.csv", sep=";")
     print("Test accuracy filtered: %2.3f" % acc)
     print("Finished TWO LAYERS B after: ", str(datetime.now() - start))
 
