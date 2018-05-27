@@ -209,11 +209,11 @@ cols_collection = [
     list(np.setdiff1d(common.columns_teams, common.inventory)) + common.item_columns
 ]
 
-limit = sys.argv[1]
+limit = int(sys.argv[1])
 champions = [22, 51, 81, 110, 202]
 data = dh.get_purchase_teams(champions=champions, patches=PATCHES, tiers=["CHALLENGER", "MASTER", "DIAMOND", "PLATINUM"],
                              limit=limit, timeseries=True, min_purch=15)
-print("Rows : "+ str(len(data)))
+print("Rows : " + str(len(data)))
 for it, cols in enumerate(cols_collection):
     print('Features for Iteration: ' + str(it+1))
     print(cols)

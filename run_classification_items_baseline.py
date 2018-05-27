@@ -7,7 +7,7 @@ import sys
 
 print("Items Base started!")
 
-limit = sys.argv[1]
+limit = int(sys.argv[1])
 # Ashe, Ezreal, Caitlyn, Varus, Jhin
 champions = [22, 51, 81, 110, 202]
 tiers = ["CHALLENGER", "MASTER", "DIAMOND", "PLATINUM"]

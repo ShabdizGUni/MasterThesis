@@ -211,7 +211,7 @@ cols_collection = [
 ]
 
 
-limit = sys.argv[1]
+limit = int(sys.argv[1])
 set_2 = [22, 51, 81, 110, 202]
 data = dh.get_skills_teams(champions=set_2, patches=PATCHES, tiers=["CHALLENGER", "MASTER", "DIAMOND", "PLATINUM"],
                            limit=limit, timeseries=True, min_purch=15)
