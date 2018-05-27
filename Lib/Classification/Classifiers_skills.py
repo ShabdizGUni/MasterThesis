@@ -49,23 +49,23 @@ def save_crosstab(path, actual, predicted):
 
 def build_model1(x, y, filepath):
     model = Sequential()
-    model.add(Dense(y.shape[1], input_dim=x.shape[1], activation='tanh'))
-    model.add(Dense(y.shape[1], input_dim=x.shape[1], activation='tanh'))
+    model.add(Dense(y.shape[1], input_dim=x.shape[1], activation='relu'))
+    model.add(Dense(y.shape[1], input_dim=x.shape[1], activation='relu'))
     model.add(Dense(y.shape[1], activation='softmax'))
     model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['acc'])
-    monitor = EarlyStopping(monitor='val_loss', min_delta=1e-3, patience=5, verbose=0, mode='auto')
+    monitor = EarlyStopping(monitor='val_loss', min_delta=1e-2, patience=5, verbose=0, mode='auto')
     checkpointer = ModelCheckpoint(filepath=filepath + "/best_weights.hdf5", verbose=0, save_best_only=True)
     return model, monitor, checkpointer
 
 
 def build_model2(x, y, filepath):
     model = Sequential()
-    model.add(Dense(y.shape[1], input_dim=x.shape[1], activation='tanh'))
-    model.add(Dense(y.shape[1], input_dim=x.shape[1], activation='tanh'))
-    model.add(Dense(y.shape[1], input_dim=x.shape[1], activation='tanh'))
+    model.add(Dense(y.shape[1], input_dim=x.shape[1], activation='relu'))
+    model.add(Dense(y.shape[1], input_dim=x.shape[1], activation='relu'))
+    model.add(Dense(y.shape[1], input_dim=x.shape[1], activation='relu'))
     model.add(Dense(y.shape[1], activation='softmax'))
     model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['acc'])
-    monitor = EarlyStopping(monitor='val_loss', min_delta=1e-3, patience=5, verbose=0, mode='auto')
+    monitor = EarlyStopping(monitor='val_loss', min_delta=1e-2, patience=5, verbose=0, mode='auto')
     checkpointer = ModelCheckpoint(filepath=filepath + "/best_weights.hdf5", verbose=0, save_best_only=True)
     return model, monitor, checkpointer
 

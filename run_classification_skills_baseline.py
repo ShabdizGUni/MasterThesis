@@ -8,7 +8,6 @@ print("Skill Level Ups Baseline started!")
 
 # Ashe, Ezreal, Caitlyn, Varus, Jhin
 champions = [22, 51, 83, 110, 202]
-# champions = [22, 51]
 limit = int(sys.argv[1])
 tiers = ["CHALLENGER", "MASTER", "DIAMOND", "PLATINUM"]
 
