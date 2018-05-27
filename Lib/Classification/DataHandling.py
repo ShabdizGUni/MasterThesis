@@ -103,7 +103,7 @@ def get_skills_as_timeseries(champions, patches, tiers, limit, min_purch):
                 {"$match": criteria},
                 {"$limit": per_crit}
             ], allowDiskUse=True))
-    print("Get Purchases")
+    print("Get Level Ups")
     for idx, Id in enumerate(Ids):
         data.extend(list(mongo.adc_skill_level_ups.find({
             "gameId": Id['gameId'],
