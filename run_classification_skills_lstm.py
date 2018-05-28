@@ -211,12 +211,12 @@ cols_collection = [
 ]
 
 
-# limit = int(sys.argv[1])
-limit = 1000
-# set_2 = [22, 51, 81, 110, 202]
-set_2 = [110, 202]
+limit = int(sys.argv[1])
+# limit = 1000
+set_2 = [22, 51, 81, 110, 202]
+# set_2 = [110, 202]
 data = dh.get_skills_teams(champions=set_2, patches=PATCHES, tiers=["CHALLENGER", "MASTER", "DIAMOND", "PLATINUM"],
-                           limit=limit, timeseries=True, min_purch=15)
+                           limit=limit, timeseries=True, min_purch=10)
 print("Rows : " + str(len(data)))
 for it, cols in enumerate(cols_collection):
     if 'availGold' in cols: cols.remove('availGold')
@@ -255,11 +255,11 @@ for it, cols in enumerate(cols_collection):
     scaler.fit(df[feat])
     df_scale = scaler.transform(df[feat])
 
-    x, y = to_xy_staggered(df_scale, feat, target='skillSlot', length=15)
+    x, y = to_xy_staggered(df_scale, feat, target='skillSlot', length=10)
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.1, random_state=42)
-    _, x_org, _, y_org = train_test_split(gb.head(15)[df.columns].as_matrix().reshape(-1, 15, len(gb.head(15)[df.columns].columns)), y, test_size=0.1,
+    _, x_org, _, y_org = train_test_split(gb.head(10)[df.columns].as_matrix().reshape(-1, 10, len(gb.head(10)[df.columns].columns)), y, test_size=0.1,
                                           random_state=42)
-    x_org = pd.DataFrame(data=x_org.reshape(-1, len(gb.head(15)[df.columns].columns)), columns=df.columns)
+    x_org = pd.DataFrame(data=x_org.reshape(-1, len(gb.head(10)[df.columns].columns)), columns=df.columns)
 
     print("TWO LAYERS ")
     start = datetime.now()
