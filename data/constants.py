@@ -166,6 +166,7 @@ ADC_RELEVANT_ITEMS = [
     3031,   # infinity edge
     3508,   # essence reaver
     3142,   # youmuu's ghostblade
+    3153,   # BORK
     3147,   # duskblade
     3814,   # edge of night
     3042,   # muramana

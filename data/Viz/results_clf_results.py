@@ -206,12 +206,12 @@ std_skills_base = [
 df_skills_base = pd.DataFrame({
     'clf': clf_names*6,
     'data': df_names,
-    'variable': variable*18,
     'avg': avg_skills_base,
     'std': std_skills_base
     },
-    columns=['clf', 'data', 'variable', 'avg', 'std']
+    columns=['clf', 'data', 'avg', 'std']
 )
+df_skills_base.to_csv("skills_base.csv", sep=";")
 
 
 # Skills Base

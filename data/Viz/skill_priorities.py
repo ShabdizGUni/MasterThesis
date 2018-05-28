@@ -144,7 +144,7 @@ for _id in con.ADC_CHAMPIONS_DICT.keys():
 
     # frame_melt2 = pd.melt(frame2, id_vars=['patch', 'spells'], value_vars=['count'])
     try:
-        g2, axs = plt.subplots(figsize=(8, 2),ncols=3)
+        g2, axs = plt.subplots(figsize=(8, 2), ncols=3)
         plt.rc('ytick', labelsize=6)
         g2 = sns.barplot(data=test[(test['patch'] == '7.3')].sort_values(by='count', ascending=False).head(5), x='count', y='spell_prio', ax=axs[0], color="#6593F5")
         axs[0].set(ylabel="Spell Level Ups", title="Patch 7.3")
