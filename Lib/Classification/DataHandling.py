@@ -481,6 +481,7 @@ def get_skills_teams(champions=None, patches=None, tiers=None, limit=None, times
         events = get_skills_as_timeseries(champions=champions, patches=patches, tiers=tiers, limit=limit, min_purch=min_purch)
     cols = ['skillSlot' if c == 'itemId' else c for c in common.columns_teams]
     cols.remove('availGold')
+    cols.remove('type')
     events.drop(columns=events.columns.difference(cols), inplace=True)
     print('Join Frames...')
     events = join_frames(events)
@@ -491,7 +492,7 @@ def get_skills_teams(champions=None, patches=None, tiers=None, limit=None, times
     # print('Calculate available Gold ...')
     # events = compute_reward_gold(events)
     # events = filter_data_set(events)
-    # print('Join Itemstats by Patch ...')
+    print('Join Itemstats by Patch ...')
     events = pd.merge(events, get_item_stats(), how='left', on='patch', copy=False)
     return events
 
