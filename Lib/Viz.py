@@ -8,14 +8,14 @@ import matplotlib.pyplot as plt
 plt.switch_backend('agg')
 
 
-def save_conf_matrix(df_cm, path, normalize=False, figsize=(10, 7)):
+def save_conf_matrix(df_cm, path, normalize=False, figsize=(10, 7), name="confusion_matrix"):
     if normalize:
         df_cm = pd.DataFrame(MinMaxScaler().fit_transform(df_cm.T), columns=df_cm.columns, index=df_cm.index)
     plt.figure(figsize=figsize)
-    sns.set(font_scale=1)
+    sns.set(font_scale=0.6)
     sns_plot = sns.heatmap(df_cm, cmap='Blues').get_figure()
     plt.tight_layout()
-    sns_plot.savefig(path + "/confusion_matrix.svg", format='svg')
+    sns_plot.savefig(path + "/" + name + ".svg", format='svg')
 
 
 def plot_confusion_matrix(cm, names,
